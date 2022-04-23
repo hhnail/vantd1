@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import {Layout, Menu} from 'antd';
 import {UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons';
 import {getHeaderMenu} from "../service/commonService";
+import ConfigPlatform from "./ConfigPlatform";
 
 const {Header, Content, Sider} = Layout;
 
@@ -39,13 +40,17 @@ export default function Home() {
     return (
         <div>
             {/* home header */}
-            <Header>
+            <Header style={{
+                size: 18,
+                fontWeight: 800,
+            }}>
                 {/*先获取头部菜单，才能知道默认高亮的key是多少*/}
                 {headerMenu
                     && <Menu items={headerMenu}
                              theme="dark"
                              mode="horizontal"
-                             defaultSelectedKeys={[headerMenu[0].key]}/>}
+                             defaultSelectedKeys={[headerMenu[0].key]}
+                    />}
             </Header>
 
 
@@ -69,12 +74,12 @@ export default function Home() {
                 </div>
 
                 <div style={{
-                    display:'inline',
                     overflow: 'hidden',
                     width: '85%',
                     height: '100%',
+                    padding: '10px 0px 10px 0px'
                 }}>
-                    Content
+                    <ConfigPlatform/>
                 </div>
             </div>
         </div>
