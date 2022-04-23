@@ -1,16 +1,10 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import {Layout, Menu} from 'antd';
 import {UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons';
+import {getHeaderMenu} from "../service/commonService";
 
 const {Header, Content, Sider} = Layout;
-
-
-const items1 = ['1', '2', '3'].map((key) => ({
-    key,
-    label: `nav ${key}`,
-}));
-
 
 const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined]
     .map((icon, index) => {
@@ -31,16 +25,30 @@ const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined]
 
 export default function Home() {
 
+    const [headerMenu, setHeaderMenu] = useState()
+
+    useEffect(() => {
+        // 获取顶部菜单
+        getHeaderMenu().then(res => {
+            const {data} = res
+            setHeaderMenu(data)
+        })
+    }, [])
+
+
     return (
         <>
             <Layout>
                 {/*头部菜单*/}
                 <Header>
-                    <Menu items={items1} theme="dark" mode="horizontal" defaultSelectedKeys={['1']} />
+                    {/*先获取头部菜单，才能知道默认高亮的key是多少*/}
+                    {headerMenu
+                        && <Menu items={headerMenu}
+                                 theme="dark"
+                                 mode="horizontal"
+                                 defaultSelectedKeys={[headerMenu[0].key]}/>}
                 </Header>
                 {/*头部菜单 over ==============================*/}
-
-
 
 
                 <Layout>
@@ -56,7 +64,6 @@ export default function Home() {
                               items={items2}
                         />
                     </Sider>
-
 
 
                     <Layout style={{
