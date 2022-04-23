@@ -54,6 +54,8 @@ export default function ModuleMaintenance() {
                         <Button size={"small"}
                                 type={"primary"}
                                 onClick={() => {
+                                    // 清空表单
+                                    addModuleForm.resetFields();
                                     console.log("=v1", item)
                                     setCurrentItem(item)
                                     setAddModalVisible(true)
@@ -138,6 +140,7 @@ export default function ModuleMaintenance() {
             }}>
                 <Table dataSource={data}
                        columns={columns}
+                       pagination={false}
                 />
             </div>
 
