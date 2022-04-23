@@ -37,51 +37,47 @@ export default function Home() {
 
 
     return (
-        <>
-            <Layout>
-                {/*头部菜单*/}
-                <Header>
-                    {/*先获取头部菜单，才能知道默认高亮的key是多少*/}
-                    {headerMenu
-                        && <Menu items={headerMenu}
-                                 theme="dark"
-                                 mode="horizontal"
-                                 defaultSelectedKeys={[headerMenu[0].key]}/>}
-                </Header>
-                {/*头部菜单 over ==============================*/}
+        <div>
+            {/* home header */}
+            <Header>
+                {/*先获取头部菜单，才能知道默认高亮的key是多少*/}
+                {headerMenu
+                    && <Menu items={headerMenu}
+                             theme="dark"
+                             mode="horizontal"
+                             defaultSelectedKeys={[headerMenu[0].key]}/>}
+            </Header>
 
 
-                <Layout>
-                    {/*侧边栏菜单*/}
-                    <Sider width={200} className="site-layout-background">
-                        <Menu mode="inline"
-                              defaultSelectedKeys={['1']}
-                              defaultOpenKeys={['sub1']}
-                              style={{
-                                  height: '100%',
-                                  borderRight: 0,
-                              }}
-                              items={items2}
-                        />
-                    </Sider>
+            {/* home body */}
+            <div style={{
+                display: 'flex',
+                flexDirection: 'row',
+            }}>
+                {/*侧边栏菜单*/}
+                <div style={{
+                    width: '15%',
+                }}>
+                    <Menu mode="inline"
+                          defaultSelectedKeys={['1']}
+                          defaultOpenKeys={['sub1']}
+                          style={{
+                              overflowX: 'hidden',
+                          }}
+                          items={items2}
+                    />
+                </div>
 
-
-                    <Layout style={{
-                        padding: '0 24px 24px',
-                    }}
-                    >
-                        <Content style={{
-                            padding: 24,
-                            margin: 0,
-                            minHeight: 280,
-                        }}
-                        >
-                            Content
-                        </Content>
-                    </Layout>
-                </Layout>
-            </Layout>
-        </>
+                <div style={{
+                    display:'inline',
+                    overflow: 'hidden',
+                    width: '85%',
+                    height: '100%',
+                }}>
+                    Content
+                </div>
+            </div>
+        </div>
     );
 }
 
