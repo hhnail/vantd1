@@ -4,15 +4,12 @@ module.exports = function (app) {
     app.use(
         '/vapi',
         createProxyMiddleware({
-            target: 'http://localhost:8080/vapi',
+            target: 'http://localhost:8080',
             changeOrigin: true,
-        })
-    );
-    app.use(
-        '/association',
-        createProxyMiddleware({
-            target: 'http://localhost:7100',
-            changeOrigin: true,
+            secure: false,
+            pathRewrite: {
+                "^/vapi": "/vapi"
+            }
         })
     );
 };
