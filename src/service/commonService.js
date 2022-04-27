@@ -16,6 +16,13 @@ export function getModule(){
 }
 
 /**
+ * 获取侧边栏
+ */
+export function getSidebar(){
+    return axios.post('/vapi/getSidebar')
+}
+
+/**
  * 新增模块
  */
 export function addModule(data){
