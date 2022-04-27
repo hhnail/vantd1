@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react";
 
 import {Layout, Menu} from 'antd';
-import {UserOutlined, LaptopOutlined, NotificationOutlined} from '@ant-design/icons';
+import {LaptopOutlined, NotificationOutlined, UserOutlined} from '@ant-design/icons';
 import {getHeaderMenu} from "../service/commonService";
 import ConfigPlatform from "./ConfigPlatform";
+import {HashRouter, Route, Routes, useNavigate} from "react-router-dom";
 
-const {Header, Content, Sider} = Layout;
+const {Header} = Layout;
 
 const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined]
     .map((icon, index) => {
@@ -27,6 +28,7 @@ const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined]
 export default function Home() {
 
     const [headerMenu, setHeaderMenu] = useState()
+    const navigate = useNavigate()
 
     useEffect(() => {
         // 获取顶部菜单
@@ -50,6 +52,10 @@ export default function Home() {
                              theme="dark"
                              mode="horizontal"
                              defaultSelectedKeys={[headerMenu[0].key]}
+                             onClick={() => {
+                                 console.log("click!")
+                                 navigate("/configPlatform")
+                             }}
                     />}
             </Header>
 
@@ -79,7 +85,11 @@ export default function Home() {
                     height: '100%',
                     padding: '10px 0px 10px 0px'
                 }}>
-                    <ConfigPlatform/>
+                    <Routes>
+                        <Route exact path="/" element={<>login......</>}/>
+                        <Route exact path="/configPlatform" element={<ConfigPlatform/>}/>
+                    </Routes>
+                    {/*<ConfigPlatform/>*/}
                 </div>
             </div>
         </div>
