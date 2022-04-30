@@ -36,3 +36,13 @@ export function deleteModule(id){
     return axios.post('/vapi/deleteModule',id)
 }
 
+/**
+ * 获取表
+ */
+export function getTables(){
+    return axios.post('/vapi/getTables')
+}
+
+
+
+

@@ -66,18 +66,15 @@ export default function Home() {
             }}>
                 {/* ======= sidebar =======*/}
                 <div style={{
-                    width: '15%',
+                    width: '13%',
                 }}>
                     <Menu mode="vertical"
-                          style={{
-                              width: 204,
-                          }}
                           items={sidebar}
                     />
                 </div>
                 {/* ======= over sidebar =======*/}
                 <div style={{
-                    overflow: 'hidden', width: '85%', height: '100%', padding: '10px 0px 10px 0px'
+                    overflow: 'hidden', width: '87%', height: '100%', padding: '10px 0px 10px 0px'
                 }}>
                     <Routes>
                         <Route exact path="/" element={<>login......</>}/>
