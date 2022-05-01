@@ -1,28 +1,9 @@
 import {Tree} from 'antd';
 
 import {Table, Switch, Space} from 'antd';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {getTables} from "../../../service/commonService";
 
-const columns = [
-    {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-    },
-    {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
-        width: '12%',
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-        width: '30%',
-        key: 'address',
-    },
-];
 
 const {DirectoryTree} = Tree;
 
@@ -30,10 +11,26 @@ export default function DataRestructure() {
 
     const [dataSource, setDataSource] = useState()
 
-    getTables().then(res => {
-        const {data} = res
-        console.log(data)
-    })
+    const columns = [
+        {
+            title: '编号',
+            dataIndex: 'id',
+            key: 'id',
+        },
+        {
+            title: '名称',
+            dataIndex: 'name',
+            key: 'name',
+        },
+    ];
+
+    useEffect(() => {
+        getTables().then(res => {
+            const {data} = res
+            console.log(data)
+            setDataSource(data)
+        })
+    }, [])
 
     const treeData = [
         {

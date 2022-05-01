@@ -4,8 +4,7 @@ import ModuleMaintenance from "./ModuleMaintenance";
 export default function ConfigPlatform() {
     return (
         <div>
-            <DataRestructure/>
-            {/*<ModuleMaintenance/>*/}
+            welcome to ConfigPlatform
         </div>
     )
 }

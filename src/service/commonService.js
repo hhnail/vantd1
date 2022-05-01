@@ -1,9 +1,10 @@
 import axios from "axios";
+import qs from 'qs'
 
 /**
  * 获取头部菜单
  */
-export function getHeaderMenu(){
+export function getHeaderMenu() {
     return axios.post('/vapi/getHeaderMenu')
 }
 
@@ -11,35 +12,39 @@ export function getHeaderMenu(){
 /**
  * 获取模块信息
  */
-export function getModule(){
+export function getModule() {
     return axios.post('/vapi/getModule')
 }
 
 /**
  * 获取侧边栏
  */
-export function getSidebar(){
-    return axios.post('/vapi/getSidebar')
+export function getSidebar(pid) {
+    return axios.post('/vapi/getSidebar',
+        qs.stringify({
+            pid: pid
+        })
+    )
 }
 
 /**
  * 新增模块
  */
-export function addModule(data){
-    return axios.post('/vapi/addModule',data)
+export function addModule(data) {
+    return axios.post('/vapi/addModule', data)
 }
 
 /**
  * 删除模块
  */
-export function deleteModule(id){
-    return axios.post('/vapi/deleteModule',id)
+export function deleteModule(id) {
+    return axios.post('/vapi/deleteModule', id)
 }
 
 /**
  * 获取表
  */
-export function getTables(){
+export function getTables() {
     return axios.post('/vapi/getTables')
 }
 

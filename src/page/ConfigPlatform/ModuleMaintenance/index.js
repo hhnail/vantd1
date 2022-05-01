@@ -56,7 +56,6 @@ export default function ModuleMaintenance() {
                                 onClick={() => {
                                     // 清空表单
                                     addModuleForm.resetFields();
-                                    console.log("=v1", item)
                                     setCurrentItem(item)
                                     setAddModalVisible(true)
                                 }}
