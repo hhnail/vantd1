@@ -2,7 +2,7 @@ import {Tree} from 'antd';
 
 import {Table, Switch, Space} from 'antd';
 import {useEffect, useState} from "react";
-import {getTables} from "../../../service/commonService";
+import {getTables} from "../../../../service/commonService";
 
 
 const {DirectoryTree} = Tree;

@@ -1,5 +1,5 @@
-import DataRestructure from "./DataRestructure";
-import ModuleMaintenance from "./ModuleMaintenance";
+import DataRestructure from "./SystemTool/DataRestructure";
+import ModuleMaintenance from "./SystemTool/ModuleMaintenance";
 import {Alert} from "antd";
 
 export default function ConfigPlatform() {

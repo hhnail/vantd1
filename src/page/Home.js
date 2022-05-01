@@ -4,10 +4,14 @@ import {Layout, Menu} from 'antd';
 import {getHeaderMenu, getSidebar} from "../service/commonService";
 import ConfigPlatform from "./ConfigPlatform";
 import {Route, Routes, useNavigate} from "react-router-dom";
-import ModuleMaintenance from "./ConfigPlatform/ModuleMaintenance";
-import DataRestructure from "./ConfigPlatform/DataRestructure";
+import ModuleMaintenance from "./ConfigPlatform/SystemTool/ModuleMaintenance";
+import DataRestructure from "./ConfigPlatform/SystemTool/DataRestructure";
 import StaffDesktop from "./StaffDesktop";
 import HumanResource from "./HumanResource";
+import MyMessage from "./StaffDesktop/MyMessage";
+import MyTodo from "./StaffDesktop/MyTodo";
+import SystemTool from "./ConfigPlatform/SystemTool";
+import OnlineLearn from "./OnlineLearn";
 
 const {Header} = Layout;
 
@@ -108,7 +112,7 @@ export default function Home() {
                 // console.log(item)
                 if (item.key == targetKey) {
                     setCurrentSidebar(item)
-                    console.log("map success!",item)
+                    // console.log("map success!",item)
                     return
                 } else {
                     if (item.children) {
@@ -151,10 +155,17 @@ export default function Home() {
             <div style={{
                 overflow: 'hidden', width: '87%', height: '100%', padding: '10px 0px 10px 0px'
             }}>
+                {/* TODO 动态路由 */}
                 <Routes>
                     <Route exact path="/" element={<a>login please......</a>}/>
                     {/*===== 员工桌面 =====*/}
                     <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
+                    <Route exact path="/staffDesktop/myMessage" element={<MyMessage/>}/>
+                    <Route exact path="/staffDesktop/myTodo" element={<MyTodo/>}/>
+
+
+                    {/*===== 在线学习 =====*/}
+                    <Route exact path="/onlineLearn" element={<OnlineLearn/>}/>
 
                     {/*===== 人力资本 =====*/}
                     <Route exact path="/humanResource" element={<HumanResource/>}/>
@@ -162,8 +173,9 @@ export default function Home() {
 
                     {/*===== 配置平台 =====*/}
                     <Route exact path="/configPlatform" element={<ConfigPlatform/>}/>
-                    <Route exact path="/configPlatform/moduleMaintenance" element={<ModuleMaintenance/>}/>
-                    <Route exact path="/configPlatform/dataRestructure" element={<DataRestructure/>}/>
+                    <Route exact path="/configPlatform/systemTool" element={<SystemTool/>}/>
+                    <Route exact path="/configPlatform/systemTool/moduleMaintenance" element={<ModuleMaintenance/>}/>
+                    <Route exact path="/configPlatform/systemTool/dataRestructure" element={<DataRestructure/>}/>
                 </Routes>
             </div>
         </div>

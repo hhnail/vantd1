@@ -1,29 +1,42 @@
-import {Button, Checkbox, Form, Input, message, Modal, Space, Table} from 'antd';
+import {Button, Checkbox, Form, Input, InputNumber, message, Modal, Space, Table} from 'antd';
 import React, {useEffect, useState} from "react";
-import {addModule, deleteModule, getModule} from "../../../service/commonService";
+import {addModule, deleteModule, getModule} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
-import {TREE_NODE_TYPE} from "../../../enums/treeNodeType";
+import {TREE_NODE_TYPE} from "../../../../enums/treeNodeType";
 import qs from 'qs'
+import {ReloadOutlined} from '@ant-design/icons'
 
 
+/**
+ * 模块管理
+ */
 export default function ModuleMaintenance() {
 
 
     // 模块信息
     const [data, setData] = useState([]);
-    // 新增模态框
+    // 模态框——新增
+    const [addModuleForm] = useForm()
     const [addModalVisible, setAddModalVisible] = useState(false);
+    // 模态框——编辑
+    const [editModuleForm] = useForm()
+    const [editModalVisible, setEditModalVisible] = useState(false);
     // 当前操作的节点（方便拿pid、level等信息）
     const [currentItem, setCurrentItem] = useState(false);
 
-    const [addModuleForm] = useForm()
+    const [reloadBtnLoading,setReloadBtnLoading] = useState(false)
 
-    const refreshData = () => {
+
+    const refreshData = (isByBtn) => {
         // 获取模块信息
         getModule().then(res => {
             const {data} = res
-            // console.log(data)
+            // console.log("==v6 module list",data)
             setData(data)
+            if(isByBtn){
+                setReloadBtnLoading(false)
+                message.success("操作成功")
+            }
         })
     }
 
@@ -31,16 +44,43 @@ export default function ModuleMaintenance() {
         refreshData()
     }, [])
 
+
+    /**
+     * 按钮——删除
+     */
+    const btnDelete = (item) => {
+        setCurrentItem(item)
+        Modal.confirm({
+            title: `您确认要删除[${item.name}]吗？`,
+            okText: '确认',
+            cancelText: '取消',
+            onOk: () => {
+                const data = qs.stringify({id: item.key})
+                deleteModule(data)
+                    .then(() => {
+                        message.success("操作成功")
+                    })
+                    .catch((err) => {
+                        message.error("操作失败")
+                        console.log("==v5",err)
+                    })
+                    .finally(() => {
+                        refreshData()
+                    })
+            }
+        })
+    }
+
     const columns = [
         {
-            title: '名称',
+            title: '模块名称',
             dataIndex: 'name',
             key: 'name',
         },
         {
             title: '路由地址',
             dataIndex: 'routingAddress',
-            width: '30%',
+            width: '50%',
             key: 'routingAddress',
         },
         {
@@ -57,42 +97,20 @@ export default function ModuleMaintenance() {
                                     // 清空表单
                                     addModuleForm.resetFields();
                                     setCurrentItem(item)
+                                    console.log("add currentItem",item)
                                     setAddModalVisible(true)
                                 }}
-                        >
-                            新增
-                        </Button>
+                        >新增</Button>
                         <Button size={"small"} type={"primary"}
                                 onClick={() => {
+                                    // editModuleForm.resetFields();
                                     setCurrentItem(item)
+                                    console.log("edit currentItem",item)
+                                    setEditModalVisible(true)
                                 }}
-                        >
-                            编辑
-                        </Button>
+                        >编辑</Button>
                         <Button size={"small"} danger
-                                onClick={() => {
-                                    setCurrentItem(item)
-                                    Modal.confirm({
-                                        title: `您确认要删除[${item.name}]吗？`,
-                                        okText: '确认',
-                                        cancelText: '取消',
-                                        onOk: () => {
-                                            const data = qs.stringify({id: key})
-                                            deleteModule(data)
-                                                .then(() => {
-                                                    message.success("操作成功")
-                                                })
-                                                .catch(() => {
-                                                    message.error("操作失败")
-                                                })
-                                                .finally(() => {
-                                                    refreshData()
-                                                })
-                                        }
-                                    })
-                                }}>
-                            删除
-                        </Button>
+                                onClick={() => btnDelete(item)}>删除</Button>
                     </Space>
                 </>
             },
@@ -103,7 +121,7 @@ export default function ModuleMaintenance() {
     const addModalOk = () => {
         addModuleForm.validateFields()
             .then(res => {
-                console.log(res)
+                // console.log(res)
                 const {name, routingAddress} = res
                 // 关闭模态框
                 const data = {
@@ -128,6 +146,9 @@ export default function ModuleMaintenance() {
             })
     }
 
+    const editModalOk = () => {
+        console.log('edit!')
+    }
 
     return (
         <div style={{
@@ -137,12 +158,33 @@ export default function ModuleMaintenance() {
             <div style={{
                 // width: '80%',
             }}>
+                <Space>
+                    <Button
+                        type={"primary"}
+                        icon={<ReloadOutlined />}
+                        loading={reloadBtnLoading}
+                        onClick={()=>{
+                            setReloadBtnLoading(true)
+                            refreshData(true)
+                        }}
+                    >刷新</Button>
+                </Space>
                 <Table dataSource={data}
                        columns={columns}
                        pagination={false}
                 />
             </div>
 
+
+
+
+
+
+
+
+
+
+            {/* =================== 新增模态框  =================== */}
             <Modal title="新增模块" visible={addModalVisible}
                    okText={"新增"}
                    cancelText={"取消"}
@@ -181,6 +223,47 @@ export default function ModuleMaintenance() {
                     ]}
                     ><Input addonBefore={currentItem.routingAddress}/>
 
+                    </Form.Item>
+                </Form>
+            </Modal>
+
+
+            {/* =================== 编辑模态框 =================== */}
+            <Modal title="编辑模块" visible={editModalVisible}
+                   okText={"确定"}
+                   cancelText={"取消"}
+                   width={780}
+                   onOk={editModalOk}
+                   onCancel={() => {
+                       setEditModalVisible(false)
+                   }}>
+                <Form name="editModuleForm" autoComplete="off"
+                      form={editModuleForm}
+                      labelCol={{span: 6,}}
+                      wrapperCol={{span: 16,}}
+                      initialValues={{
+                          name: currentItem.name,
+                          routingAddress: currentItem.routingAddress,
+                          orderId: currentItem.orderId,
+                      }}>
+                    <Form.Item label="模块名称" name="name" rules={[
+                        {
+                            required: true,
+                            message: '请输入模块名称',
+                        },
+                    ]}>
+                        <Input/>
+                    </Form.Item>
+                    <Form.Item label="路由地址" name="routingAddress" rules={[
+                        {
+                            required: true,
+                            message: '请输入路由地址',
+                        },
+                    ]}>
+                        <Input addonBefore={currentItem.parentRoutingAddress}/>
+                    </Form.Item>
+                    <Form.Item label="排序号" name="orderId">
+                        <InputNumber/>
                     </Form.Item>
                 </Form>
             </Modal>
