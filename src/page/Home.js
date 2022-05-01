@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 
 import {Layout, Menu} from 'antd';
-import {AppstoreOutlined, MailOutlined, SettingOutlined} from '@ant-design/icons';
 import {getHeaderMenu, getSidebar} from "../service/commonService";
 import ConfigPlatform from "./ConfigPlatform";
 import {Route, Routes, useNavigate} from "react-router-dom";
@@ -12,28 +11,27 @@ import HumanResource from "./HumanResource";
 
 const {Header} = Layout;
 
-function getItem(label, key, icon, children, type) {
-    return {
-        key, icon, children, label, type,
-    };
-}
-
 export default function Home() {
 
+    // 顶部菜单及当前选中的菜单
     const [headerMenu, setHeaderMenu] = useState()
     const [currentHeader, setCurrentHeader] = useState()
-
+    // 侧边栏及当前选中的侧边栏
     const [sidebar, setSidebar] = useState()
+    const [currentSidebar, setCurrentSidebar] = useState()
+
+    // 路由跳转
     const navigate = useNavigate()
 
     useEffect(() => {
         // 获取顶部菜单
         getHeaderMenu().then(res => {
             const {data} = res
-            console.log("header", data)
-            setHeaderMenu(data, () => {
-                refreshSideBar(-1)
-            })
+            // console.log("header", data)
+            setHeaderMenu(data)
+            if (data && data.length > 0) {
+                setCurrentHeader(data[0])
+            }
         })
     }, [])
 
@@ -57,6 +55,13 @@ export default function Home() {
     }, [currentHeader])
 
 
+    useEffect(()=>{
+        if(currentSidebar){
+            navigate(currentSidebar.url)
+        }
+    },[currentSidebar])
+
+
     /**
      * 根据模块编码，重新获取侧边栏
      */
@@ -67,9 +72,51 @@ export default function Home() {
         // 获取侧边栏
         getSidebar(moduleId).then(res => {
             const {data} = res
-            console.log("sidebar", data)
+            // console.log("sidebar", data)
             setSidebar(data)
         })
+    }
+
+    /**
+     * 顶部菜单点击事件
+     */
+    const headerClick = (item) => {
+        headerMenu.forEach(menu => {
+            if (menu.key == item.key) {
+                setCurrentHeader(menu)
+                return;
+            }
+        })
+    }
+
+    /**
+     * 侧边栏点击事件
+     */
+    const sidebarClick = (item) => {
+        console.log("sidebar item", item)
+        // setCurrentSidebar()
+        mapRoute(sidebar, item.key)
+    }
+
+    /**
+     * 匹配路由
+     */
+    const mapRoute = (routeList, targetKey) => {
+        // 当为数组
+        if (routeList.length > 0) {
+            routeList.forEach((item) => {
+                // console.log(item)
+                if (item.key == targetKey) {
+                    setCurrentSidebar(item)
+                    console.log("map success!",item)
+                    return
+                } else {
+                    if (item.children) {
+                        mapRoute(item.children,targetKey)
+                    }
+                }
+            })
+        }
     }
 
 
@@ -82,14 +129,7 @@ export default function Home() {
             {headerMenu && <Menu items={headerMenu} theme="dark" mode="horizontal"
                 // 默认选择首个菜单
                                  defaultSelectedKeys={[headerMenu[0].key]}
-                                 onClick={(item) => {
-                                     headerMenu.forEach(menu => {
-                                         if (menu.key == item.key) {
-                                             setCurrentHeader(menu)
-                                             return;
-                                         }
-                                     })
-                                 }}
+                                 onClick={(item) => headerClick(item)}
             />}
         </Header>
         {/* ============================== over home header ============================== */}
@@ -104,6 +144,7 @@ export default function Home() {
             }}>
                 <Menu mode="vertical"
                       items={sidebar}
+                      onClick={(item) => sidebarClick(item)}
                 />
             </div>
             {/* ======= over sidebar =======*/}
