@@ -20,11 +20,12 @@ export default function ModuleMaintenance() {
     const [addModalVisible, setAddModalVisible] = useState(false);
     // 模态框——编辑
     const [editModuleForm] = useForm()
+    // const [editModuleForm] = Form.useForm()
     const [editModalVisible, setEditModalVisible] = useState(false);
     // 当前操作的节点（方便拿pid、level等信息）
     const [currentItem, setCurrentItem] = useState(false);
 
-    const [reloadBtnLoading,setReloadBtnLoading] = useState(false)
+    const [reloadBtnLoading, setReloadBtnLoading] = useState(false)
 
 
     const refreshData = (isByBtn) => {
@@ -33,7 +34,7 @@ export default function ModuleMaintenance() {
             const {data} = res
             // console.log("==v6 module list",data)
             setData(data)
-            if(isByBtn){
+            if (isByBtn) {
                 setReloadBtnLoading(false)
                 message.success("操作成功")
             }
@@ -44,6 +45,17 @@ export default function ModuleMaintenance() {
         refreshData()
     }, [])
 
+
+    /**
+     * 按钮——新增
+     */
+    const btnAdd = (item) => {
+        // 清空表单
+        addModuleForm.resetFields();
+        setCurrentItem(item)
+        // console.log("add currentItem", item)
+        setAddModalVisible(true)
+    }
 
     /**
      * 按钮——删除
@@ -62,13 +74,36 @@ export default function ModuleMaintenance() {
                     })
                     .catch((err) => {
                         message.error("操作失败")
-                        console.log("==v5",err)
+                        console.log("==v5", err)
                     })
                     .finally(() => {
                         refreshData()
                     })
             }
         })
+    }
+
+
+    /**
+     * 按钮——编辑
+     */
+    const btnEdit = (item) => {
+        // editModuleForm.resetFields();
+        setCurrentItem(item)
+        // console.log("edit currentItem", item)
+        // editModuleForm.resetFields()
+
+        // 表单回显
+        const {name, routingAddress, orderId} = item
+        const beginIndex = routingAddress.lastIndexOf("/")
+        const endIndex = routingAddress.length
+        const lastRoutingAddress = routingAddress.substring(beginIndex, endIndex)
+        editModuleForm.setFieldsValue({
+            name: name,
+            routingAddress: lastRoutingAddress,
+            orderId: orderId
+        })
+        setEditModalVisible(true)
     }
 
     const columns = [
@@ -93,21 +128,10 @@ export default function ModuleMaintenance() {
                     <Space>
                         <Button size={"small"}
                                 type={"primary"}
-                                onClick={() => {
-                                    // 清空表单
-                                    addModuleForm.resetFields();
-                                    setCurrentItem(item)
-                                    console.log("add currentItem",item)
-                                    setAddModalVisible(true)
-                                }}
+                                onClick={(item) => btnAdd(item)}
                         >新增</Button>
                         <Button size={"small"} type={"primary"}
-                                onClick={() => {
-                                    // editModuleForm.resetFields();
-                                    setCurrentItem(item)
-                                    console.log("edit currentItem",item)
-                                    setEditModalVisible(true)
-                                }}
+                                onClick={(item) => btnEdit(item)}
                         >编辑</Button>
                         <Button size={"small"} danger
                                 onClick={() => btnDelete(item)}>删除</Button>
@@ -161,9 +185,9 @@ export default function ModuleMaintenance() {
                 <Space>
                     <Button
                         type={"primary"}
-                        icon={<ReloadOutlined />}
+                        icon={<ReloadOutlined/>}
                         loading={reloadBtnLoading}
-                        onClick={()=>{
+                        onClick={() => {
                             setReloadBtnLoading(true)
                             refreshData(true)
                         }}
@@ -176,14 +200,6 @@ export default function ModuleMaintenance() {
             </div>
 
 
-
-
-
-
-
-
-
-
             {/* =================== 新增模态框  =================== */}
             <Modal title="新增模块" visible={addModalVisible}
                    okText={"新增"}
@@ -192,6 +208,7 @@ export default function ModuleMaintenance() {
                    onOk={addModalOk}
                    onCancel={() => {
                        setAddModalVisible(false)
+                       addModuleForm.resetFields();
                    }}>
                 <Form name="addModalForm"
                       form={addModuleForm}
@@ -237,15 +254,16 @@ export default function ModuleMaintenance() {
                    onCancel={() => {
                        setEditModalVisible(false)
                    }}>
-                <Form name="editModuleForm" autoComplete="off"
+                <Form name="editModuleForm"
                       form={editModuleForm}
                       labelCol={{span: 6,}}
                       wrapperCol={{span: 16,}}
-                      initialValues={{
-                          name: currentItem.name,
-                          routingAddress: currentItem.routingAddress,
-                          orderId: currentItem.orderId,
-                      }}>
+                    // initialValues={{
+                    //     name: currentItem.name,
+                    //     routingAddress: currentItem.routingAddress,
+                    //     orderId: currentItem.orderId,
+                    // }}
+                      autoComplete="off">
                     <Form.Item label="模块名称" name="name" rules={[
                         {
                             required: true,
