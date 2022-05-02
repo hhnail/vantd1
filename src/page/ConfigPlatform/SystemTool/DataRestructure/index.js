@@ -1,16 +1,29 @@
-import {Tree} from 'antd';
-
-import {Table, Switch, Space} from 'antd';
+import {Button, Col, Form, Input, message, Modal, Row, Space, Table, Tree} from 'antd';
 import {useEffect, useState} from "react";
-import {getTables} from "../../../../service/commonService";
+import {getTableGroup, getTables} from "../../../../service/commonService";
+import {useForm} from "antd/es/form/Form";
 
 
 const {DirectoryTree} = Tree;
 
+/**
+ * 数据重构
+ */
 export default function DataRestructure() {
 
+    // 数据——表
     const [dataSource, setDataSource] = useState()
+    // 数据——表分组树
+    const [tableGroup, setTableGroup] = useState()
+    // 刷新按钮loading效果
+    const [btnFlushLoading, setBtnFlushLoading] = useState(false)
+    // 多选框当前选中的key
+    const [selectedRowKeys, setSelectedRowKeys] = useState([])
+    // 模态框——添加表——是否可见
+    const [addModalVisible, setAddModalVisible] = useState(false)
+    const [addModuleForm] = useForm()
 
+    // 表格字段
     const columns = [
         {
             title: '编号',
@@ -24,73 +37,162 @@ export default function DataRestructure() {
         },
     ];
 
-    useEffect(() => {
-        getTables().then(res => {
-            const {data} = res
-            console.log(data)
-            setDataSource(data)
+    /**
+     * 刷新表分组和表数据
+     * @param isByBtn 是否通过手动刷新按钮触发。若是，则刷新后需要关闭按钮刷新特效
+     */
+    const refreshTableAndGroup = (isByBtn) => {
+        // 1、先查询表分组
+        getTableGroup().then(res => {
+            const {data} = res.data
+            // console.log("sys table group", data)
+            setTableGroup(data)
+
+            // 2、再查询分组下的表
+            getTables().then(res => {
+                const {data} = res
+                // console.log("sys tables", data)
+                setDataSource(data)
+                if (isByBtn) {
+                    setBtnFlushLoading(false)
+                    message.success("操作成功")
+                }
+            })
         })
+    }
+
+    // 获取表格
+    useEffect(() => {
+        refreshTableAndGroup()
     }, [])
 
-    const treeData = [
-        {
-            title: 'parent 0',
-            key: '0-0',
-            children: [
-                {
-                    title: 'leaf 0-0',
-                    key: '0-0-0',
-                    isLeaf: true,
-                },
-                {
-                    title: 'leaf 0-1',
-                    key: '0-0-1',
-                    isLeaf: true,
-                },
-            ],
-        },
-        {
-            title: 'parent 1',
-            key: '0-1',
-            children: [
-                {
-                    title: 'leaf 1-0',
-                    key: '0-1-0',
-                    isLeaf: true,
-                },
-                {
-                    title: 'leaf 1-1',
-                    key: '0-1-1',
-                    isLeaf: true,
-                },
-            ],
-        },
-    ];
+
+    const onSelectChange = selectedRowKeys => {
+        // console.log('selectedRowKeys changed: ', selectedRowKeys);
+        setSelectedRowKeys(selectedRowKeys)
+    };
+
+    const btnAdd = () => {
+        console.log('btn add!')
+    }
+
+    const btnEdit = () => {
+        console.log('btn edit!')
+        if (selectedRowKeys.length < 1) {
+            message.info("请选择数据")
+        }
+    }
+
+    const btnDelete = () => {
+        console.log('btn delete!')
+        if (selectedRowKeys.length < 1) {
+            message.info("请选择数据")
+        }
+    }
+
+
+    /**
+     * 确认添加表——回调
+     */
+    const addModalOk = () => {
+
+    }
 
 
     return (
         <div style={{
             display: 'flex',
-            flexDirection: 'row',
+            flexDirection: 'column',
+            padding: "10px 10px 0px 10px",
         }}>
-            <div style={{
-                width: '20%',
-            }}>
-                <DirectoryTree
-                    treeData={treeData}
-                    multiple
-                    defaultExpandAll
+            <Row>
+                <div style={{
+                    width: '20%',
+                }}>
+                    <DirectoryTree
+                        treeData={tableGroup}
+                        multiple
+                        defaultExpandAll
 
-                />
-            </div>
-            <div style={{
-                width: '80%',
-            }}>
-                <Table dataSource={dataSource}
-                       columns={columns}
-                />
-            </div>
+                    />
+                </div>
+
+                <div style={{
+                    width: '80%',
+                }}>
+                    <Row
+                        style={{
+                            padding: "0px 0px 10px 0px",
+                        }}>
+                        <Col span={14}>
+                            <Space>
+                                <Button type={"primary"} size={"small"}>字段维护</Button>
+                                <Button type={"primary"} size={"small"}>字段关联</Button>
+                                <Button type={"primary"} size={"small"}>校验规则</Button>
+                            </Space>
+                        </Col>
+                        <Col push={3}>
+                            <Space>
+                                <Button type={"primary"} size={"small"} onClick={() => btnAdd()}>新增</Button>
+                                <Button type={"primary"} size={"small"} onClick={() => btnEdit()}>编辑</Button>
+                                <Button danger size={"small"} onClick={() => btnDelete()}>删除</Button>
+                                <Button type={"primary"} size={"small"}
+                                        loading={btnFlushLoading}
+                                        onClick={() => {
+                                            setBtnFlushLoading(true)
+                                            refreshTableAndGroup(true)
+                                        }}
+                                        style={{
+                                            width: '70px'
+                                        }}
+                                >刷新</Button>
+                            </Space>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={24}>
+                            <Table dataSource={dataSource}
+                                   columns={columns}
+                                // 表格行唯一标识，用于判断选中等操作（默认为key）
+                                   rowKey={"id"}
+                                   rowSelection={{
+                                       selectedRowKeys,
+                                       onChange: onSelectChange,
+                                   }}/>
+                        </Col>
+                    </Row>
+                </div>
+            </Row>
+
+
+            <Modal title="新增表" visible={addModalVisible}
+                   okText={"新增"}
+                   cancelText={"取消"}
+                   width={780}
+                   onOk={addModalOk}
+                   onCancel={() => {
+                       setAddModalVisible(false)
+                       addModuleForm.resetFields();
+                   }}>
+                <Form name="addModalForm"
+                      form={addModuleForm}
+                      labelCol={{
+                          span: 6,
+                      }}
+                      wrapperCol={{
+                          span: 16,
+                      }}
+                      autoComplete="off"
+                >
+                    <Form.Item label="模块名称" name="name" rules={[
+                        {
+                            required: true,
+                            message: '请输入模块名称',
+                        },
+                    ]}
+                    ><Input/></Form.Item>
+                </Form>
+            </Modal>
         </div>
     )
 }
-

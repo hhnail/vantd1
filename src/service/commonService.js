@@ -55,6 +55,13 @@ export function getTables() {
     return axios.post('/vapi/getTables')
 }
 
+/**
+ * 获取表分组
+ */
+export function getTableGroup() {
+    return axios.post('/vapi/getTableGroup')
+}
+
 
 
 
