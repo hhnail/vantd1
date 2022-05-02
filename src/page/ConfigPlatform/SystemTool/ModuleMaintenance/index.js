@@ -1,6 +1,6 @@
 import {Button, Checkbox, Form, Input, InputNumber, message, Modal, Space, Table} from 'antd';
 import React, {useEffect, useState} from "react";
-import {addModule, deleteModule, getModule} from "../../../../service/commonService";
+import {addModule, deleteModule, getModule, updateModule} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
 import {TREE_NODE_TYPE} from "../../../../enums/treeNodeType";
 import qs from 'qs'
@@ -23,7 +23,7 @@ export default function ModuleMaintenance() {
     // const [editModuleForm] = Form.useForm()
     const [editModalVisible, setEditModalVisible] = useState(false);
     // 当前操作的节点（方便拿pid、level等信息）
-    const [currentItem, setCurrentItem] = useState(false);
+    const [currentItem, setCurrentItem] = useState({});
 
     const [reloadBtnLoading, setReloadBtnLoading] = useState(false)
 
@@ -62,6 +62,7 @@ export default function ModuleMaintenance() {
      */
     const btnDelete = (item) => {
         setCurrentItem(item)
+        // 确认操作弹窗
         Modal.confirm({
             title: `您确认要删除[${item.name}]吗？`,
             okText: '确认',
@@ -92,8 +93,12 @@ export default function ModuleMaintenance() {
         setCurrentItem(item)
         // console.log("edit currentItem", item)
         // editModuleForm.resetFields()
-
-        // 表单回显
+        /*
+        表单回显
+        form上的initValues不会随着setState改变。而resetFieldValues又有延迟
+        input上的defaultValues只有初次渲染时生效
+        所有只能这么干了
+         */
         const {name, routingAddress, orderId} = item
         const beginIndex = routingAddress.lastIndexOf("/")
         const endIndex = routingAddress.length
@@ -128,10 +133,10 @@ export default function ModuleMaintenance() {
                     <Space>
                         <Button size={"small"}
                                 type={"primary"}
-                                onClick={(item) => btnAdd(item)}
+                                onClick={() => btnAdd(item)}
                         >新增</Button>
                         <Button size={"small"} type={"primary"}
-                                onClick={(item) => btnEdit(item)}
+                                onClick={() => btnEdit(item)}
                         >编辑</Button>
                         <Button size={"small"} danger
                                 onClick={() => btnDelete(item)}>删除</Button>
@@ -170,8 +175,33 @@ export default function ModuleMaintenance() {
             })
     }
 
+    /**
+     * 编辑模块，点击确定修改
+     */
     const editModalOk = () => {
-        console.log('edit!')
+        editModuleForm.validateFields().then(values => {
+            console.log('edit!', values)
+            console.log('edit currentItem', currentItem)
+            console.log('edit currentItem.parentRoutingAddress', currentItem.parentRoutingAddress)
+            const {name, routingAddress, orderId} = values;
+            const data = {
+                id: currentItem.key,
+                name: name,
+                routingAddress: currentItem.parentRoutingAddress + routingAddress,
+                orderId: orderId
+            }
+            updateModule(data).then(res => {
+                message.success("操作成功")
+            }).catch(err => {
+                message.error(err)
+            }).finally(() => {
+                setEditModalVisible(false)
+                refreshData(false)
+                editModuleForm.resetFields()
+            })
+        }).catch(err => {
+            message.error(err)
+        })
     }
 
     return (

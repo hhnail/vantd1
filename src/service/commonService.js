@@ -35,6 +35,13 @@ export function addModule(data) {
 }
 
 /**
+ * 编辑模块
+ */
+export function updateModule(data) {
+    return axios.post('/vapi/updateModule', data)
+}
+
+/**
  * 删除模块
  */
 export function deleteModule(id) {
