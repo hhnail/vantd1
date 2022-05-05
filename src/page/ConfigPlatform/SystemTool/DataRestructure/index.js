@@ -1,9 +1,9 @@
-import {Button, Col, Form, Input, message, Modal, Row, Space, Table, Tree} from 'antd';
+import {Button, Col, Form, Input, message, Modal, Row, Space, Steps, Table, Tree} from 'antd';
 import {useEffect, useState} from "react";
 import {getTableGroup, getTables} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
 
-
+const { Step } = Steps;
 const {DirectoryTree} = Tree;
 
 /**
@@ -19,9 +19,15 @@ export default function DataRestructure() {
     const [btnFlushLoading, setBtnFlushLoading] = useState(false)
     // 多选框当前选中的key
     const [selectedRowKeys, setSelectedRowKeys] = useState([])
-    // 模态框——添加表——是否可见
+
+    // ========================== 创建表 ==========================
+    // 模态框是否可见
     const [addModalVisible, setAddModalVisible] = useState(false)
-    const [addModuleForm] = useForm()
+    // form表单
+    const [addTableForm] = useForm()
+    // 创建表步骤条
+    const [addTableCurrentStep,setAddTableCurrentStep] = useState(0)
+
 
     // 表格字段
     const columns = [
@@ -73,7 +79,9 @@ export default function DataRestructure() {
     };
 
     const btnAdd = () => {
-        console.log('btn add!')
+        // console.log('btn add!')
+        setAddModalVisible(true)
+
     }
 
     const btnEdit = () => {
@@ -108,6 +116,9 @@ export default function DataRestructure() {
             <Row>
                 <div style={{
                     width: '20%',
+                    paddingRight:5,
+                    borderRight:'thick double',
+                    borderColor:"#78a3b6",
                 }}>
                     <DirectoryTree
                         treeData={tableGroup}
@@ -119,6 +130,7 @@ export default function DataRestructure() {
 
                 <div style={{
                     width: '80%',
+                    padding:"0px 0px 0px 5px"
                 }}>
                     <Row
                         style={{
@@ -166,16 +178,21 @@ export default function DataRestructure() {
 
 
             <Modal title="新增表" visible={addModalVisible}
-                   okText={"新增"}
+                   okText={"确定"}
                    cancelText={"取消"}
-                   width={780}
+                   width={1000}
                    onOk={addModalOk}
                    onCancel={() => {
                        setAddModalVisible(false)
-                       addModuleForm.resetFields();
+                       addTableForm.resetFields();
                    }}>
-                <Form name="addModalForm"
-                      form={addModuleForm}
+                <Steps current={addTableCurrentStep}>
+                    <Step title="表基本信息"/>
+                    <Step title="字段维护"/>
+                    <Step title="数据录入"/>
+                </Steps>
+                <Form name="addTableForm"
+                      form={addTableForm}
                       labelCol={{
                           span: 6,
                       }}
@@ -184,10 +201,10 @@ export default function DataRestructure() {
                       }}
                       autoComplete="off"
                 >
-                    <Form.Item label="模块名称" name="name" rules={[
+                    <Form.Item label="表名称" name="name" rules={[
                         {
                             required: true,
-                            message: '请输入模块名称',
+                            message: '请输入表名称',
                         },
                     ]}
                     ><Input/></Form.Item>
@@ -196,3 +213,4 @@ export default function DataRestructure() {
         </div>
     )
 }
+
