@@ -32,7 +32,7 @@ export default function ModuleMaintenance() {
         // 获取模块信息
         getModule().then(res => {
             const {data} = res
-            // console.log("==v6 module list",data)
+            console.log("==v6 module list", data)
             setData(data)
             if (isByBtn) {
                 setReloadBtnLoading(false)
@@ -52,6 +52,7 @@ export default function ModuleMaintenance() {
     const btnAdd = (item) => {
         // 清空表单
         addModuleForm.resetFields();
+        console.log("点击这个item的新增", item)
         setCurrentItem(item)
         // console.log("add currentItem", item)
         setAddModalVisible(true)
@@ -149,17 +150,19 @@ export default function ModuleMaintenance() {
 
     const addModalOk = () => {
         addModuleForm.validateFields()
-            .then(res => {
-                // console.log(res)
-                const {name, routingAddress} = res
+            .then(value => {
+                console.log("add modal submit:", value)
+                console.log("add modal current:", currentItem)
+                const {name, routingAddress} = value
                 // 关闭模态框
                 const data = {
                     // 要新增的节点的pid == 当前操作节点的id
                     pid: currentItem.key,
                     name: name,
-                    routingAddress: routingAddress,
+                    routingAddress: currentItem.routingAddress + routingAddress,
                     level: currentItem.level + 1,
                     type: TREE_NODE_TYPE.SIDEBAR.value,
+                    moduleId: currentItem.moduleId,
                 }
                 addModule(data).then(res => {
                     message.success("操作成功")
