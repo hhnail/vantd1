@@ -14,6 +14,7 @@ import SystemTool from "./ConfigPlatform/SystemTool";
 import OnlineLearn from "./OnlineLearn";
 import SingleCode from "./ConfigPlatform/DataDictionary/SingleCode";
 import MultilevelCode from "./ConfigPlatform/DataDictionary/MultilevelCode";
+import AddTable from "./ConfigPlatform/SystemTool/DataRestructure/AddTable";
 
 const {Header} = Layout;
 
@@ -146,7 +147,7 @@ export default function Home() {
         }}>
             {/* ======= sidebar =======*/}
             <div style={{
-                width: '13%',
+                width: '11%',
             }}>
                 <Menu mode="vertical"
                       items={sidebar}
@@ -155,7 +156,7 @@ export default function Home() {
             </div>
             {/* ======= over sidebar =======*/}
             <div style={{
-                overflow: 'hidden', width: '87%', height: '100%', padding: '10px 0px 10px 0px'
+                overflow: 'hidden', width: '89%', height: '100%', padding: '10px 0px 10px 0px'
             }}>
                 {/* TODO 动态路由 */}
                 <Routes>
@@ -178,10 +179,13 @@ export default function Home() {
                     <Route exact path="/configPlatform/systemTool" element={<SystemTool/>}/>
                     <Route exact path="/configPlatform/systemTool/moduleMaintenance" element={<ModuleMaintenance/>}/>
                     <Route exact path="/configPlatform/systemTool/dataRestructure" element={<DataRestructure/>}/>
+                    <Route exact path="/configPlatform/systemTool/dataRestructure/addTable" element={<AddTable/>}/>
+
 
                     <Route exact path="/configPlatform/dataDictionary" element={<>数据字典</>}/>
                     <Route exact path="/configPlatform/dataDictionary/singleCode" element={<SingleCode/>}/>
                     <Route exact path="/configPlatform/dataDictionary/multilevelCode" element={<MultilevelCode/>}/>
+
                 </Routes>
             </div>
         </div>

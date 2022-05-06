@@ -1,7 +1,9 @@
-import {Button, Col, Form, Input, message, Modal, Row, Space, Steps, Table, Tree} from 'antd';
+import {Button, Col, Form, Input, InputNumber, message, Modal, Row, Space, Steps, Table, Tree} from 'antd';
 import {useEffect, useState} from "react";
 import {getTableGroup, getTables} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
+import {useNavigate} from "react-router-dom";
+
 
 const {Step} = Steps;
 const {DirectoryTree} = Tree;
@@ -20,13 +22,9 @@ export default function DataRestructure() {
     // 多选框当前选中的key
     const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
-    // ========================== 创建表 ==========================
-    // 模态框是否可见
-    const [addModalVisible, setAddModalVisible] = useState(false)
-    // form表单
-    const [addTableForm] = useForm()
-    // 创建表步骤条
-    const [addTableCurrentStep, setAddTableCurrentStep] = useState(0)
+
+    const navigate = useNavigate()
+
 
 
     // 表格字段
@@ -42,6 +40,9 @@ export default function DataRestructure() {
             key: 'name',
         },
     ];
+
+
+
 
     /**
      * 刷新表分组和表数据
@@ -80,7 +81,8 @@ export default function DataRestructure() {
 
     const btnAdd = () => {
         // console.log('btn add!')
-        setAddModalVisible(true)
+        // setAddModalVisible(true)
+        navigate("/configPlatform/systemTool/dataRestructure/addTable")
 
     }
 
@@ -99,12 +101,6 @@ export default function DataRestructure() {
     }
 
 
-    /**
-     * 确认添加表——回调
-     */
-    const addModalOk = () => {
-
-    }
 
 
     return (
@@ -176,90 +172,9 @@ export default function DataRestructure() {
                 </div>
             </Row>
 
-
-            <Modal title="新增表" visible={addModalVisible}
-                   okText={"确定"}
-                   cancelText={"取消"}
-                   width={1000}
-                   footer={[
-                       <Button
-                           onClick={() => {
-                               setAddTableCurrentStep(addTableCurrentStep - 1)
-                           }}
-                           style={{
-                               display: addTableCurrentStep > 0 ? "" : "none"
-                           }}
-                       >上一步</Button>,
-                       <Button
-                           type={"primary"}
-                           onClick={() => {
-                               setAddTableCurrentStep(addTableCurrentStep + 1)
-                           }}
-                           style={{
-                               display: addTableCurrentStep < 2 ? "" : "none"
-                           }}
-                       >下一步</Button>,
-                       <Button
-                           type={"primary"}
-                           onClick={() => addModalOk()}
-                           style={{
-                               display: addTableCurrentStep == 2 ? "" : "none"
-                           }}
-                       >确定</Button>,
-                       <Button
-                           danger
-                           onClick={() => {
-                               setAddModalVisible(false)
-                               addTableForm.resetFields();
-                           }}>取消</Button>,
-                   ]}>
-                <div>
-                    <Steps current={addTableCurrentStep}>
-                        <Step title="表基本信息"/>
-                        <Step title="字段维护"/>
-                        <Step title="数据录入"/>
-                    </Steps>
-                </div>
-                <div style={{
-                    padding: '20px 0px 0px 0px'
-                }}>
-                    <Col span={24}>
-                        <Form
-                            name="addTableForm"
-                            form={addTableForm}
-                            labelCol={{
-                                span: 4,
-                            }}
-                            wrapperCol={{
-                                span: 16,
-                            }}
-                            autoComplete="off"
-                        >
-                            {/* =============== Step1 =============== */}
-                            {/* 简单表单 */}
-                            <Form.Item
-                                label="表名称"
-                                name="name"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: '请输入表名称',
-                                    },
-                                ]}
-                                style={{display: addTableCurrentStep == 0 ? "" : "none"}}
-                            >
-                                <Input/>
-                            </Form.Item>
-                            {/* =============== Step2 =============== */}
-                            {/* 动态表单 */}
-
-                            {/* =============== Step3 =============== */}
-                            {/* 可编辑表格 */}
-                        </Form>
-                    </Col>
-                </div>
-            </Modal>
         </div>
     )
 }
+
+
 
