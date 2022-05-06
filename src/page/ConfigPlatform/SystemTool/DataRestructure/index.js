@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {getTableGroup, getTables} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
 
-const { Step } = Steps;
+const {Step} = Steps;
 const {DirectoryTree} = Tree;
 
 /**
@@ -26,7 +26,7 @@ export default function DataRestructure() {
     // form表单
     const [addTableForm] = useForm()
     // 创建表步骤条
-    const [addTableCurrentStep,setAddTableCurrentStep] = useState(0)
+    const [addTableCurrentStep, setAddTableCurrentStep] = useState(0)
 
 
     // 表格字段
@@ -116,9 +116,9 @@ export default function DataRestructure() {
             <Row>
                 <div style={{
                     width: '20%',
-                    paddingRight:5,
-                    borderRight:'thick double',
-                    borderColor:"#78a3b6",
+                    paddingRight: 5,
+                    borderRight: 'thick double',
+                    borderColor: "#78a3b6",
                 }}>
                     <DirectoryTree
                         treeData={tableGroup}
@@ -130,7 +130,7 @@ export default function DataRestructure() {
 
                 <div style={{
                     width: '80%',
-                    padding:"0px 0px 0px 5px"
+                    padding: "0px 0px 0px 5px"
                 }}>
                     <Row
                         style={{
@@ -181,34 +181,83 @@ export default function DataRestructure() {
                    okText={"确定"}
                    cancelText={"取消"}
                    width={1000}
-                   onOk={addModalOk}
-                   onCancel={() => {
-                       setAddModalVisible(false)
-                       addTableForm.resetFields();
-                   }}>
-                <Steps current={addTableCurrentStep}>
-                    <Step title="表基本信息"/>
-                    <Step title="字段维护"/>
-                    <Step title="数据录入"/>
-                </Steps>
-                <Form name="addTableForm"
-                      form={addTableForm}
-                      labelCol={{
-                          span: 6,
-                      }}
-                      wrapperCol={{
-                          span: 16,
-                      }}
-                      autoComplete="off"
-                >
-                    <Form.Item label="表名称" name="name" rules={[
-                        {
-                            required: true,
-                            message: '请输入表名称',
-                        },
-                    ]}
-                    ><Input/></Form.Item>
-                </Form>
+                   footer={[
+                       <Button
+                           onClick={() => {
+                               setAddTableCurrentStep(addTableCurrentStep - 1)
+                           }}
+                           style={{
+                               display: addTableCurrentStep > 0 ? "" : "none"
+                           }}
+                       >上一步</Button>,
+                       <Button
+                           type={"primary"}
+                           onClick={() => {
+                               setAddTableCurrentStep(addTableCurrentStep + 1)
+                           }}
+                           style={{
+                               display: addTableCurrentStep < 2 ? "" : "none"
+                           }}
+                       >下一步</Button>,
+                       <Button
+                           type={"primary"}
+                           onClick={() => addModalOk()}
+                           style={{
+                               display: addTableCurrentStep == 2 ? "" : "none"
+                           }}
+                       >确定</Button>,
+                       <Button
+                           danger
+                           onClick={() => {
+                               setAddModalVisible(false)
+                               addTableForm.resetFields();
+                           }}>取消</Button>,
+                   ]}>
+                <div>
+                    <Steps current={addTableCurrentStep}>
+                        <Step title="表基本信息"/>
+                        <Step title="字段维护"/>
+                        <Step title="数据录入"/>
+                    </Steps>
+                </div>
+                <div style={{
+                    padding: '20px 0px 0px 0px'
+                }}>
+                    <Col span={24}>
+                        <Form
+                            name="addTableForm"
+                            form={addTableForm}
+                            labelCol={{
+                                span: 4,
+                            }}
+                            wrapperCol={{
+                                span: 16,
+                            }}
+                            autoComplete="off"
+                        >
+                            {/* =============== Step1 =============== */}
+                            {/* 简单表单 */}
+                            <Form.Item
+                                label="表名称"
+                                name="name"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '请输入表名称',
+                                    },
+                                ]}
+                                style={{display: addTableCurrentStep == 0 ? "" : "none"}}
+                            >
+                                <Input/>
+                            </Form.Item>
+                            {/* =============== Step2 =============== */}
+                            {/* 动态表单 */}
+
+                            {/* =============== Step3 =============== */}
+                            {/* 可编辑表格 */}
+                        </Form>
+                    </Col>
+                </div>
             </Modal>
         </div>
     )
