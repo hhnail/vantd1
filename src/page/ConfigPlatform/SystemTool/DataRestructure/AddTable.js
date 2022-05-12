@@ -1,8 +1,9 @@
-import {Button, Col, Form, Input, InputNumber, message, Modal, Space, Steps, Table, Tree} from "antd";
+import {Button, Col, Form, Input, InputNumber, message, Modal, Row, Space, Steps, Table, Tree} from "antd";
 import {useState} from "react";
 import {useForm} from "antd/es/form/Form";
 import {PageHeader} from 'antd';
 import {useHistory, useNavigate} from "react-router-dom";
+import CurdButtonGroup from "../../../../component/CurdButtonGroup";
 
 const {Step} = Steps;
 
@@ -121,37 +122,17 @@ export default function AddTable() {
             }}
             title="返回"
             extra={[
-                <Button
-                    size={"small"}
-                    onClick={() => {
-                        setAddTableCurrentStep(addTableCurrentStep - 1)
+                <CurdButtonGroup
+                    addClick={()=>{
+                        message.success("addClick！")
                     }}
-                    style={{
-                        display: addTableCurrentStep > 0 ? "" : "none",
-                        width: 74,
+                    editClick={()=>{
+                        message.success("editClick！")
                     }}
-                >上一步</Button>,
-                <Button
-                    size={"small"}
-                    type={"primary"}
-                    onClick={() => {
-                        setAddTableCurrentStep(addTableCurrentStep + 1)
-                        // setAddFieldModalVisible(true)
+                    deleteClick={()=>{
+                        message.success("deleteClick！")
                     }}
-                    style={{
-                        display: addTableCurrentStep < 2 ? "" : "none",
-                        width: 74,
-                    }}
-                >下一步</Button>,
-                <Button
-                    size={"small"}
-                    type={"primary"}
-                    onClick={() => addModalOk()}
-                    style={{
-                        display: addTableCurrentStep == 2 ? "" : "none",
-                        width: 74,
-                    }}
-                >保存</Button>,
+                />
             ]}
         />
         <div style={{
@@ -169,7 +150,7 @@ export default function AddTable() {
             <div style={{
                 padding: '20px 0px 0px 0px'
             }}>
-                <Col span={24}>
+                <div>
                     <Form
                         name="addTableForm"
                         form={addTableForm}
@@ -232,7 +213,44 @@ export default function AddTable() {
                         {/* =============== Step3 =============== */}
                         {/* 可编辑表格 */}
                     </Form>
-                </Col>
+                </div>
+
+
+                {/* =============== 按钮组 =============== */}
+                <Row>
+                    <Col span={8} push={8}>
+                        <Space>
+                            <Button
+                                onClick={() => {
+                                    setAddTableCurrentStep(addTableCurrentStep - 1)
+                                }}
+                                style={{
+                                    display: addTableCurrentStep > 0 ? "" : "none",
+                                    width: 74,
+                                }}
+                            >上一步</Button>
+                            <Button
+                                type={"primary"}
+                                onClick={() => {
+                                    setAddTableCurrentStep(addTableCurrentStep + 1)
+                                    // setAddFieldModalVisible(true)
+                                }}
+                                style={{
+                                    display: addTableCurrentStep < 2 ? "" : "none",
+                                    width: 74,
+                                }}
+                            >下一步</Button>
+                            <Button
+                                type={"primary"}
+                                onClick={() => addModalOk()}
+                                style={{
+                                    display: addTableCurrentStep == 2 ? "" : "none",
+                                    width: 74,
+                                }}
+                            >保存</Button>
+                        </Space>
+                    </Col>
+                </Row>
             </div>
         </div>
 
