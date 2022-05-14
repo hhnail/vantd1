@@ -139,7 +139,7 @@ export default function AddTable() {
             padding: '0px 20px 0px 20px'
         }}>
             <div style={{
-                padding: '0px 0px 0px 0px'
+                padding: '0px 200px 0px 200px'
             }}>
                 <Steps current={addTableCurrentStep}>
                     <Step title="表基本信息"/>

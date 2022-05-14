@@ -162,8 +162,10 @@ export default function ModuleMaintenance() {
                     routingAddress: currentItem.routingAddress + routingAddress,
                     level: currentItem.level + 1,
                     type: TREE_NODE_TYPE.SIDEBAR.value,
-                    moduleId: currentItem.moduleId,
+                    // currentItem为一级菜单时，moduleId为空。此时的moduleId就是item的key本身
+                    moduleId: currentItem.moduleId || currentItem.key,
                 }
+                // console.log("v5 ", data)
                 addModule(data).then(res => {
                     message.success("操作成功")
                 }).catch(err => {
@@ -183,9 +185,9 @@ export default function ModuleMaintenance() {
      */
     const editModalOk = () => {
         editModuleForm.validateFields().then(values => {
-            console.log('edit!', values)
-            console.log('edit currentItem', currentItem)
-            console.log('edit currentItem.parentRoutingAddress', currentItem.parentRoutingAddress)
+            // console.log('edit!', values)
+            // console.log('edit currentItem', currentItem)
+            // console.log('edit currentItem.parentRoutingAddress', currentItem.parentRoutingAddress)
             const {name, routingAddress, orderId} = values;
             const data = {
                 id: currentItem.key,
