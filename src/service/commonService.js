@@ -63,5 +63,13 @@ export function getTableGroup() {
 }
 
 
+/**
+ * 获取角色分组
+ */
+export function getRoleGroup() {
+    return axios.post('/vapi/getRoleGroup')
+}
+
+
 
 

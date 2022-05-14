@@ -26,10 +26,12 @@ export default function ModuleMaintenance() {
     const [currentItem, setCurrentItem] = useState({});
 
     const [reloadBtnLoading, setReloadBtnLoading] = useState(false)
+    const [moduleTableLoading, setModuleTableLoading] = useState(false)
 
 
     const refreshData = (isByBtn) => {
         // 获取模块信息
+        setModuleTableLoading(true)
         getModule().then(res => {
             const {data} = res
             console.log("==v6 module list", data)
@@ -38,6 +40,7 @@ export default function ModuleMaintenance() {
                 setReloadBtnLoading(false)
                 message.success("操作成功")
             }
+            setModuleTableLoading(false)
         })
     }
 
@@ -231,6 +234,7 @@ export default function ModuleMaintenance() {
                 <Table dataSource={data}
                        columns={columns}
                        pagination={false}
+                       loading={moduleTableLoading}
                 />
             </div>
 

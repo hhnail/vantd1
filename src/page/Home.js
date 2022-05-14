@@ -15,6 +15,7 @@ import OnlineLearn from "./OnlineLearn";
 import SingleCode from "./ConfigPlatform/DataDictionary/SingleCode";
 import MultilevelCode from "./ConfigPlatform/DataDictionary/MultilevelCode";
 import AddTable from "./ConfigPlatform/SystemTool/DataRestructure/AddTable";
+import RoleManage from "./ConfigPlatform/PermissionManage/RoleManage";
 
 const {Header} = Layout;
 
@@ -162,7 +163,8 @@ export default function Home() {
                 <Routes>
                     <Route exact path="/" element={<a>login please......</a>}/>
                     {/*===== 员工桌面 =====*/}
-                    <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
+                    {/*<Route exact path="/staffDesktop" element={<StaffDesktop/>}/>*/}
+                    <Route exact path="/staffDesktop" element={<RoleManage/>}/>
                     <Route exact path="/staffDesktop/myMessage" element={<MyMessage/>}/>
                     <Route exact path="/staffDesktop/myTodo" element={<MyTodo/>}/>
 
@@ -180,6 +182,7 @@ export default function Home() {
                     <Route exact path="/configPlatform/systemTool/moduleMaintenance" element={<ModuleMaintenance/>}/>
                     <Route exact path="/configPlatform/systemTool/dataRestructure" element={<DataRestructure/>}/>
                     <Route exact path="/configPlatform/systemTool/dataRestructure/addTable" element={<AddTable/>}/>
+                    <Route exact path="/configPlatform/permissionManage/role" element={<RoleManage/>}/>
 
 
                     <Route exact path="/configPlatform/dataDictionary" element={<>数据字典</>}/>
