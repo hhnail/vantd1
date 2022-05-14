@@ -4,9 +4,7 @@ import {HashRouter, Navigate, Route, Routes, Link, BrowserRouter} from 'react-ro
 
 function App() {
     return (<>
-
             <Home/>
-
     </>)
 }
 

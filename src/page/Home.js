@@ -131,20 +131,27 @@ export default function Home() {
     return (<div>
         {/* ============================== home header ============================== */}
         <Header style={{
-            size: 18, fontWeight: 800,
+            height: '63px',
+            size: 18,
+            fontWeight: 800,
         }}>
             {/*先获取头部菜单，才能知道默认高亮的key是多少*/}
-            {headerMenu && <Menu items={headerMenu} theme="dark" mode="horizontal"
-                // 默认选择首个菜单
-                                 defaultSelectedKeys={[headerMenu[0].key]}
-                                 onClick={(item) => headerClick(item)}
-            />}
+            {headerMenu
+                &&
+                <Menu items={headerMenu}
+                      theme="dark"
+                      mode="horizontal"
+                    // 默认选择首个菜单
+                      defaultSelectedKeys={[headerMenu[0].key]}
+                      onClick={(item) => headerClick(item)}
+                />}
         </Header>
         {/* ============================== over home header ============================== */}
 
         {/* ============================== home body ============================== */}
         <div style={{
-            display: 'flex', flexDirection: 'row',
+            display: 'flex',
+            flexDirection: 'row',
         }}>
             {/* ======= sidebar =======*/}
             <div style={{
@@ -157,7 +164,11 @@ export default function Home() {
             </div>
             {/* ======= over sidebar =======*/}
             <div style={{
-                overflow: 'hidden', width: '89%', height: '100%', padding: '10px 0px 10px 0px'
+                overflowX: 'hidden',
+                // overflowY: 'auto',
+                width: '89%',
+                // height:400,
+                padding: '10px 0px 10px 0px'
             }}>
                 {/* TODO 动态路由 */}
                 <Routes>
