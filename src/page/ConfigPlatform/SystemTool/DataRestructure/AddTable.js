@@ -3,7 +3,7 @@ import {useState} from "react";
 import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
 import CurdButtonGroup from "../../../../component/CurdButtonGroup";
-import PublicIcon from "../../../../component/PublicIcon";
+import PublicIcon, {IconType} from "../../../../component/PublicIcon";
 
 const {Step} = Steps;
 
@@ -161,7 +161,7 @@ export default function AddTable() {
                                     textAlign: 'center',
                                     padding: 30
                                 }}>
-                                    <PublicIcon type={"nodata"}></PublicIcon>
+                                    <PublicIcon type={IconType.NO_DATA}/>
                                     <p>请根据右上角按钮组编辑字段</p>
                                 </div>
                             }}>
