@@ -124,7 +124,21 @@ export default function RoleManage() {
                                 Content of Tab Pane 3
                             </TabPane>
                             <TabPane tab="角色人员" key="6">
-                                Content of Tab Pane 3
+                                {/* role personnel */}
+                                <Tabs tabPosition={'left'}>
+                                    <TabPane tab="按人员" key="1">
+                                        Content of Tab 1
+                                    </TabPane>
+                                    <TabPane tab="按组织" key="2">
+                                        Content of Tab 2
+                                    </TabPane>
+                                    <TabPane tab="按岗位" key="3">
+                                        Content of Tab 3
+                                    </TabPane>
+                                    <TabPane tab="按职位" key="4">
+                                        Content of Tab 3
+                                    </TabPane>
+                                </Tabs>
                             </TabPane>
                             <TabPane tab="角色权限管理" key="7">
                                 Content of Tab Pane 3
