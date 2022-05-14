@@ -22,84 +22,44 @@ export default function AddTable() {
 
     const fieldColumns = [
         {
-            title: 'Name',
+            title: '名',
             dataIndex: 'name',
-            filters: [
-                {
-                    text: 'Joe',
-                    value: 'Joe',
-                },
-                {
-                    text: 'Jim',
-                    value: 'Jim',
-                },
-                {
-                    text: 'Submenu',
-                    value: 'Submenu',
-                    children: [
-                        {
-                            text: 'Green',
-                            value: 'Green',
-                        },
-                        {
-                            text: 'Black',
-                            value: 'Black',
-                        },
-                    ],
-                },
-            ],
-            onFilter: (value, record) => record.name.indexOf(value) === 0,
-            sorter: (a, b) => a.name.length - b.name.length,
-            sortDirections: ['descend'],
         },
         {
-            title: 'Age',
-            dataIndex: 'age',
-            defaultSortOrder: 'descend',
-            sorter: (a, b) => a.age - b.age,
+            title: '类型',
+            dataIndex: 'type',
         },
         {
-            title: 'Address',
-            dataIndex: 'address',
-            filters: [
-                {
-                    text: 'London',
-                    value: 'London',
-                },
-                {
-                    text: 'New York',
-                    value: 'New York',
-                },
-            ],
-            onFilter: (value, record) => record.address.indexOf(value) === 0,
+            title: '长度',
+            dataIndex: 'length',
         },
+        {
+            title: '精度',
+            dataIndex: 'accuracy',
+        },
+        {
+            title: '非null',
+            dataIndex: 'nullable',
+        },
+        {
+            title: '虚拟',
+            dataIndex: 'virtual',
+        },
+        {
+            title: '注释',
+            dataIndex: 'remark',
+        },
+        // {
+        //     title: '操作',
+        //     key: 'operation',
+        //     fixed: 'right',
+        //     width: 100,
+        //     render: () => <a>action</a>,
+        // },
     ];
 
     const fields = [
-        {
-            key: '1',
-            name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            age: 32,
-            address: 'Sidney No. 1 Lake Park',
-        },
-        {
-            key: '4',
-            name: 'Jim Red',
-            age: 32,
-            address: 'London No. 2 Lake Park',
-        },
+
     ];
 
 
@@ -148,7 +108,8 @@ export default function AddTable() {
                 </Steps>
             </div>
             <div style={{
-                padding: '20px 0px 0px 0px'
+                padding: '20px 0px 0px 0px',
+                // position:'absolute',
             }}>
                 <div>
                     <Form
@@ -168,12 +129,6 @@ export default function AddTable() {
                             <Form.Item
                                 label="表类型"
                                 name="name"
-                                // rules={[
-                                //     {
-                                //         required: true,
-                                //         message: '请输入表名称',
-                                //     },
-                                // ]}
                             >
                                 <Input disabled={true}/>
                             </Form.Item>
@@ -206,9 +161,17 @@ export default function AddTable() {
                         <div style={{display: addTableCurrentStep == 1 ? "" : "none"}}>
                             <Table
                                 dataSource={fields}
-                                columns={fieldColumns}/>
+                                columns={fieldColumns}
+                                pagination={{
+                                    // style: {
+                                    //     position:'absolute',
+                                    //     bottom:0,
+                                    //     right:45,
+                                    // }
+                                    size:5,
+                                }}
+                            />
                         </div>
-
 
                         {/* =============== Step3 =============== */}
                         {/* 可编辑表格 */}
@@ -217,40 +180,43 @@ export default function AddTable() {
 
 
                 {/* =============== 按钮组 =============== */}
-                <Row>
-                    <Col span={8} push={8}>
-                        <Space>
-                            <Button
-                                onClick={() => {
-                                    setAddTableCurrentStep(addTableCurrentStep - 1)
-                                }}
-                                style={{
-                                    display: addTableCurrentStep > 0 ? "" : "none",
-                                    width: 74,
-                                }}
-                            >上一步</Button>
-                            <Button
-                                type={"primary"}
-                                onClick={() => {
-                                    setAddTableCurrentStep(addTableCurrentStep + 1)
-                                    // setAddFieldModalVisible(true)
-                                }}
-                                style={{
-                                    display: addTableCurrentStep < 2 ? "" : "none",
-                                    width: 74,
-                                }}
-                            >下一步</Button>
-                            <Button
-                                type={"primary"}
-                                onClick={() => addModalOk()}
-                                style={{
-                                    display: addTableCurrentStep == 2 ? "" : "none",
-                                    width: 74,
-                                }}
-                            >保存</Button>
-                        </Space>
-                    </Col>
-                </Row>
+                <div style={{
+                    position: 'absolute',
+                    bottom: 35,
+                    right: 45,
+                }}>
+                    <Space>
+                        <Button
+                            onClick={() => {
+                                setAddTableCurrentStep(addTableCurrentStep - 1)
+                            }}
+                            style={{
+                                display: addTableCurrentStep > 0 ? "" : "none",
+                                width: 74,
+                            }}
+                        >上一步</Button>
+                        <Button
+                            type={"primary"}
+                            onClick={() => {
+                                setAddTableCurrentStep(addTableCurrentStep + 1)
+                                // setAddFieldModalVisible(true)
+                            }}
+                            style={{
+                                display: addTableCurrentStep < 2 ? "" : "none",
+                                width: 74,
+                            }}
+                        >下一步</Button>
+                        <Button
+                            type={"primary"}
+                            onClick={() => addModalOk()}
+                            style={{
+                                display: addTableCurrentStep == 2 ? "" : "none",
+                                width: 74,
+                            }}
+                        >保存</Button>
+                    </Space>
+                </div>
+
             </div>
         </div>
 
