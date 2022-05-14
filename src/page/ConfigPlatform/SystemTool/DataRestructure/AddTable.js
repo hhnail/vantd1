@@ -1,9 +1,9 @@
-import {Button, Col, Form, Input, InputNumber, message, Modal, Row, Space, Steps, Table, Tree} from "antd";
+import {Button, ConfigProvider, Form, Input, InputNumber, message, Modal, PageHeader, Space, Steps, Table} from "antd";
 import {useState} from "react";
 import {useForm} from "antd/es/form/Form";
-import {PageHeader} from 'antd';
-import {useHistory, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import CurdButtonGroup from "../../../../component/CurdButtonGroup";
+import PublicIcon from "../../../../component/PublicIcon";
 
 const {Step} = Steps;
 
@@ -58,9 +58,7 @@ export default function AddTable() {
         // },
     ];
 
-    const fields = [
-
-    ];
+    const fields = [];
 
 
     /**
@@ -73,7 +71,6 @@ export default function AddTable() {
         })
     }
 
-
     return <>
         <PageHeader
             onBack={() => {
@@ -83,13 +80,13 @@ export default function AddTable() {
             title="返回"
             extra={[
                 <CurdButtonGroup
-                    addClick={()=>{
+                    addClick={() => {
                         message.success("addClick！")
                     }}
-                    editClick={()=>{
+                    editClick={() => {
                         message.success("editClick！")
                     }}
-                    deleteClick={()=>{
+                    deleteClick={() => {
                         message.success("deleteClick！")
                     }}
                 />
@@ -159,18 +156,28 @@ export default function AddTable() {
                         {/* =============== Step2 =============== */}
                         {/* 可编辑表格 */}
                         <div style={{display: addTableCurrentStep == 1 ? "" : "none"}}>
-                            <Table
-                                dataSource={fields}
-                                columns={fieldColumns}
-                                pagination={{
-                                    // style: {
-                                    //     position:'absolute',
-                                    //     bottom:0,
-                                    //     right:45,
-                                    // }
-                                    size:5,
-                                }}
-                            />
+                            <ConfigProvider renderEmpty={() => {
+                                return <div style={{
+                                    textAlign: 'center',
+                                    padding: 30
+                                }}>
+                                    <PublicIcon type={"nodata"}></PublicIcon>
+                                    <p>请根据右上角按钮组编辑字段</p>
+                                </div>
+                            }}>
+                                <Table
+                                    dataSource={fields}
+                                    columns={fieldColumns}
+                                    pagination={{
+                                        // style: {
+                                        //     position:'absolute',
+                                        //     bottom:0,
+                                        //     right:45,
+                                        // }
+                                        size: 5,
+                                    }}
+                                />
+                            </ConfigProvider>
                         </div>
 
                         {/* =============== Step3 =============== */}
