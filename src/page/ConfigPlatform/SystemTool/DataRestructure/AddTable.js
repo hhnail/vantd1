@@ -20,6 +20,10 @@ import {useNavigate} from "react-router-dom";
 import CurdButtonGroup from "../../../../component/CurdButtonGroup";
 import PublicIcon, {IconType} from "../../../../component/PublicIcon";
 import {translate} from "../../../../service/utilService";
+import {Select} from 'antd';
+import {FIELD_TYPE_LIST} from "../../../../enums/fieldType";
+
+const {Option} = Select;
 
 const {Step} = Steps;
 const {TextArea} = Input;
@@ -41,6 +45,9 @@ export default function AddTable() {
     const onSelectChange = selectedRowKeys => {
         setSelectedRowKeys(selectedRowKeys)
     };
+
+    const [fieldTypeOptions] = useState(FIELD_TYPE_LIST)
+    console.log(FIELD_TYPE_LIST)
 
 
     const fieldColumns = [
@@ -73,6 +80,14 @@ export default function AddTable() {
             dataIndex: 'tableKey',
         },
         {
+            title: '自增',
+            dataIndex: 'autoIncrement',
+        },
+        {
+            title: '默认值',
+            dataIndex: 'defaultValue',
+        },
+        {
             title: '注释',
             dataIndex: 'remark',
         },
@@ -102,6 +117,18 @@ export default function AddTable() {
             message.success("操作成功")
         })
     }
+
+    const renderFieldOptions = () => {
+        const options = []
+        FIELD_TYPE_LIST.forEach(item => {
+            options.push(<Option value={item.value}>{item.value}</Option>)
+        })
+        console.log(options)
+        return <Select style={{width: 120}} defaultValue={FIELD_TYPE_LIST[0].value}>
+            {options}
+        </Select>
+    }
+
 
     return <>
         <PageHeader
@@ -179,41 +206,51 @@ export default function AddTable() {
                         {/* =============== Step1 =============== */}
                         {/* 简单表单 */}
                         <div style={{display: addTableCurrentStep == 0 ? "" : "none"}}>
-                            <Form.Item
-                                label="表类型"
-                                name="name"
-                            >
-                                <Input disabled={true}/>
-                            </Form.Item>
+                            {/*<Form.Item*/}
+                            {/*    label="表类型"*/}
+                            {/*    name="name"*/}
+                            {/*>*/}
+                            {/*    <Input disabled={true}/>*/}
+                            {/*</Form.Item>*/}
 
                             <Form.Item
                                 label="中文名称"
-                                name="name"
+                                name="chineseName"
                             >
                                 <Input/>
                             </Form.Item>
 
                             <Form.Item
                                 label="英文名称"
-                                name="name"
+                                name="englishName"
                             >
-                                <Input.Search enterButton={
-                                    <PublicIcon
-                                        onClick={() => {
-                                            translate("人员离职").then(res=>{
-                                                const {data} = res.data
-                                                console.log(data)
-                                            })
-                                        }}
-                                        type={IconType.TRANSLATE}
-                                        iconSize={25}
-                                        style={{
-                                            colon: 'white'
-                                        }}/>
-                                }
+                                <Input.Search
+                                    enterButton={
+                                        <PublicIcon
+                                            onClick={() => {
+                                                const chineseName = addTableForm.getFieldValue("chineseName")
+                                                translate(chineseName).then(res => {
+                                                    const {data} = res.data
+                                                    addTableForm.setFieldsValue({englishName: data})
+                                                })
+                                            }}
+                                            type={IconType.TRANSLATE}
+                                            iconSize={25}
+                                            style={{
+                                                colon: 'white'
+                                            }}/>
+                                    }
                                 />
+                                {/*<Input.Group compact>*/}
+                                {/*    <Input*/}
+                                {/*        style={{ width: 'calc(100% - 200px)' }}*/}
+                                {/*        defaultValue="git@github.com:ant-design/ant-design.git"*/}
+                                {/*    />*/}
+                                {/*    <Tooltip title="copy git url">*/}
+                                {/*        <Button icon={<CopyOutlined />} />*/}
+                                {/*    </Tooltip>*/}
+                                {/*</Input.Group>*/}
                             </Form.Item>
-
                             <Form.Item
                                 label="排序号"
                                 name="orderId"
@@ -316,6 +353,7 @@ export default function AddTable() {
                     setFields([...fields, newField])
                 }).finally(() => {
                     setAddFieldModalVisible(false)
+                    setSelectedRowKeys([])
                 })
 
             }}
@@ -342,6 +380,12 @@ export default function AddTable() {
                             wrapperCol={{
                                 span: 16,
                             }}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '字段名不得为空',
+                                },
+                            ]}
                             label={"名"}
                             name={'name'}>
                             <Input/>
@@ -355,7 +399,8 @@ export default function AddTable() {
                             }}
                             label={"类型"}
                             name={'type'}>
-                            <Input/>
+                            {renderFieldOptions()}
+                            {/*<Option value="Yiminghe">yiminghe</Option>*/}
                         </Form.Item>
                     </Col>
                 </Row>
@@ -364,7 +409,7 @@ export default function AddTable() {
                         <Form.Item
                             label={"长度"}
                             name={'length'}>
-                            <Input/>
+                            <InputNumber/>
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -376,27 +421,53 @@ export default function AddTable() {
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={8}>
+                    <Col span={6}>
                         <Form.Item
                             labelCol={{span: 6, push: 1}}
-                            wrapperCol={{push: 1}}
+                            wrapperCol={{push: 2}}
                             label={"非null"}
                             name={'nullable'}>
                             <Checkbox/>
                         </Form.Item>
                     </Col>
-                    <Col span={8}>
+                    <Col span={6}>
                         <Form.Item
+                            labelCol={{span: 6, push: 1}}
+                            wrapperCol={{push: 2}}
                             label={"虚拟"}
                             name={'virtual'}>
                             <Checkbox/>
                         </Form.Item>
                     </Col>
-                    <Col span={8}>
+                    <Col span={6}>
                         <Form.Item
+                            labelCol={{span: 6, push: 1}}
+                            wrapperCol={{push: 2}}
                             label={"主键"}
                             name={'tableKey'}>
                             <Checkbox/>
+                        </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                        <Form.Item
+                            labelCol={{span: 6, push: 1}}
+                            wrapperCol={{push: 2}}
+                            label={"自增"}
+                            name={'autoIncrement'}>
+                            <Checkbox/>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={12}>
+                        <Form.Item
+                            // labelCol={{span: 4}}
+                            // wrapperCol={{
+                            //     span: 16,
+                            // }}
+                            label={"默认值"}
+                            name={'autoIncrement'}>
+                            <Input/>
                         </Form.Item>
                     </Col>
                 </Row>
@@ -411,7 +482,7 @@ export default function AddTable() {
                                 showCount={true}
                                 maxLength={100}
                                 style={{
-                                    height: 120,
+                                    height: 60,
                                 }}/>
                         </Form.Item>
                     </Col>
