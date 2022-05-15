@@ -1,4 +1,5 @@
 import Icon from "@ant-design/icons";
+import React from "react";
 
 // TODO 需要优化写法 change1
 import {ReactComponent as HumanResouce} from "../../static/humanResource.svg";
@@ -31,6 +32,8 @@ import {ReactComponent as Boy} from "../../static/boy.svg";
 import {ReactComponent as Girl} from "../../static/girl.svg";
 import {ReactComponent as Accept} from "../../static/accept.svg";
 import {ReactComponent as Avatar} from "../../static/avatar.svg";
+import {ReactComponent as Translate_Gray} from "../../static/translate_gray.svg";
+import {ReactComponent as Translate_White} from "../../static/translate_white.svg";
 
 
 const defaultIconSize = 50
@@ -41,6 +44,7 @@ export const IconType = {
     HUMAN_RESOURCE: "humanResource",
     VIEW_ICON: 'viewIcon',
     COMMIT_ICON: 'commitIcon',
+    TRANSLATE: 'translate'
 }
 
 /**
@@ -53,17 +57,25 @@ export default function PublicIcon(
     {
         type,
         iconSize,
+        style,
     }
 ) {
 
     const render = () => {
         switch (type) {
-            // TODO 需要优化写法 need change3
+            // TODO 需要优化写法 need change3。拓展IconType，根据key获取图标地址和图标名称，createElement
             case IconType.NO_DATA:
                 return <Icon component={NoData} style={{fontSize: iconSize || defaultIconSize}}/>
 
             case IconType.VIEW_ICON:
                 return <Icon component={ViewIcon} style={{fontSize: iconSize || defaultIconSize}}/>
+
+            case IconType.TRANSLATE:
+                return <Icon component={Translate_White}
+                             style={{
+                                 ...style,
+                                 fontSize: iconSize || defaultIconSize,
+                             }}/>
 
             default:
                 return <Icon component={HumanResouce} style={{fontSize: iconSize || defaultIconSize}}/>

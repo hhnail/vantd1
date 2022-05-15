@@ -1,4 +1,19 @@
-import {Button, ConfigProvider, Form, Input, InputNumber, message, Modal, PageHeader, Space, Steps, Table} from "antd";
+import {
+    Button,
+    Checkbox,
+    Col,
+    ConfigProvider,
+    Form,
+    Input,
+    InputNumber,
+    message,
+    Modal,
+    PageHeader,
+    Row,
+    Space,
+    Steps,
+    Table
+} from "antd";
 import {useState} from "react";
 import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
@@ -6,6 +21,7 @@ import CurdButtonGroup from "../../../../component/CurdButtonGroup";
 import PublicIcon, {IconType} from "../../../../component/PublicIcon";
 
 const {Step} = Steps;
+const {TextArea} = Input;
 
 
 export default function AddTable() {
@@ -13,11 +29,17 @@ export default function AddTable() {
     // ========================== 创建表 ==========================
     // form表单
     const [addTableForm] = useForm()
+    const [addFieldForm] = useForm()
     // 创建表步骤条
     const [addTableCurrentStep, setAddTableCurrentStep] = useState(0)
     const [addFieldModalVisible, setAddFieldModalVisible] = useState(false)
 
     const navigate = useNavigate()
+    // 多选框当前选中的key
+    const [selectedRowKeys, setSelectedRowKeys] = useState([])
+    const onSelectChange = selectedRowKeys => {
+        setSelectedRowKeys(selectedRowKeys)
+    };
 
 
     const fieldColumns = [
@@ -46,6 +68,10 @@ export default function AddTable() {
             dataIndex: 'virtual',
         },
         {
+            title: '主键',
+            dataIndex: 'tableKey',
+        },
+        {
             title: '注释',
             dataIndex: 'remark',
         },
@@ -58,7 +84,12 @@ export default function AddTable() {
         // },
     ];
 
-    const fields = [];
+    const [fields, setFields] = useState([{
+        name: 'id',
+        type: 'int',
+        tableKey: 'primary key',
+        remark: '唯一编码',
+    }])
 
 
     /**
@@ -81,13 +112,36 @@ export default function AddTable() {
             extra={[
                 <CurdButtonGroup
                     addClick={() => {
-                        message.success("addClick！")
+                        addFieldForm.resetFields()
+                        setAddFieldModalVisible(true)
+                        // message.success("addClick！")
                     }}
                     editClick={() => {
-                        message.success("editClick！")
+                        console.log("selectedRowKeys", selectedRowKeys)
+                        if (selectedRowKeys.length != 1) {
+                            message.info("请选择一条数据")
+                            return
+                        }
                     }}
                     deleteClick={() => {
-                        message.success("deleteClick！")
+                        if (selectedRowKeys.length < 1) {
+                            message.info("请选择一条数据")
+                            return
+                        }
+                        Modal.confirm({
+                            title: "您确认要删除吗？",
+                            okText: '确定',
+                            cancelText: '取消',
+                            onOk: () => {
+                                // console.log('selectedRowKeys',selectedRowKeys)
+                                // console.log('fields',fields)
+                                const newData = fields.filter(item => {
+                                    return selectedRowKeys.indexOf(item.name) < 0
+                                })
+                                // console.log('newData', newData)
+                                setFields(newData)
+                            }
+                        })
                     }}
                 />
             ]}
@@ -116,7 +170,8 @@ export default function AddTable() {
                             span: 4,
                         }}
                         wrapperCol={{
-                            span: 16,
+                            span: 14,
+                            push: 1,
                         }}
                         autoComplete="off"
                     >
@@ -141,7 +196,15 @@ export default function AddTable() {
                                 label="英文名称"
                                 name="name"
                             >
-                                <Input/>
+                                <Input.Search enterButton={
+                                    <PublicIcon
+                                        type={IconType.TRANSLATE}
+                                                iconSize={25}
+                                                style={{
+                                        colon:'white'
+                                    }}/>
+                                }
+                                />
                             </Form.Item>
 
                             <Form.Item
@@ -168,6 +231,7 @@ export default function AddTable() {
                                 <Table
                                     dataSource={fields}
                                     columns={fieldColumns}
+                                    rowKey={'name'}
                                     pagination={{
                                         // style: {
                                         //     position:'absolute',
@@ -175,6 +239,10 @@ export default function AddTable() {
                                         //     right:45,
                                         // }
                                         size: 5,
+                                    }}
+                                    rowSelection={{
+                                        selectedRowKeys,
+                                        onChange: onSelectChange,
                                     }}
                                 />
                             </ConfigProvider>
@@ -229,14 +297,119 @@ export default function AddTable() {
 
         <Modal
             visible={addFieldModalVisible}
+            width={760}
+            cancelText={"取消"}
+            okText={"确定"}
+            onOk={() => {
+                addFieldForm.validateFields().then(value => {
+                    const newField = {
+                        ...value
+                    }
+                    console.log("newFil:", newField)
+                    setFields([...fields, newField])
+                }).finally(() => {
+                    setAddFieldModalVisible(false)
+                })
+
+            }}
             onCancel={() => {
                 setAddFieldModalVisible(false)
             }}
         >
-            <Form>
-                <Form.Item>
+            <Form
+                form={addFieldForm}
+                name="fieldConfig"
+                layout={"horizontal"}
+                labelCol={{span: 4}}
+                wrapperCol={{
+                    span: 16,
+                }}
+                style={{
+                    margin: "30px 10px 0px 10px"
+                }}
+            >
+                <Row>
+                    <Col span={12}>
+                        <Form.Item
+                            labelCol={{span: 4}}
+                            wrapperCol={{
+                                span: 16,
+                            }}
+                            label={"名"}
+                            name={'name'}>
+                            <Input/>
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            labelCol={{span: 4}}
+                            wrapperCol={{
+                                span: 16,
+                            }}
+                            label={"类型"}
+                            name={'type'}>
+                            <Input/>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={12}>
+                        <Form.Item
+                            label={"长度"}
+                            name={'length'}>
+                            <Input/>
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label={"精度"}
+                            name={'accuracy'}>
+                            <Input/>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={8}>
+                        <Form.Item
+                            labelCol={{span: 6, push: 1}}
+                            wrapperCol={{push: 1}}
+                            label={"非null"}
+                            name={'nullable'}>
+                            <Checkbox/>
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item
+                            label={"虚拟"}
+                            name={'virtual'}>
+                            <Checkbox/>
+                        </Form.Item>
+                    </Col>
+                    <Col span={8}>
+                        <Form.Item
+                            label={"主键"}
+                            name={'tableKey'}>
+                            <Checkbox/>
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={24}>
+                        <Form.Item
+                            labelCol={{span: 2}}
+                            wrapperCol={{span: 22}}
+                            label={"注释"}
+                            name={'remark'}>
+                            <Input.TextArea
+                                showCount={true}
+                                maxLength={100}
+                                style={{
+                                    height: 120,
+                                }}/>
+                        </Form.Item>
+                    </Col>
+                </Row>
 
-                </Form.Item>
             </Form>
         </Modal>
     </>
