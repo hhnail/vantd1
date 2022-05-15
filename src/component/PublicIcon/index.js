@@ -58,6 +58,7 @@ export default function PublicIcon(
         type,
         iconSize,
         style,
+        onClick,
     }
 ) {
 
@@ -65,20 +66,27 @@ export default function PublicIcon(
         switch (type) {
             // TODO 需要优化写法 need change3。拓展IconType，根据key获取图标地址和图标名称，createElement
             case IconType.NO_DATA:
-                return <Icon component={NoData} style={{fontSize: iconSize || defaultIconSize}}/>
+                return <Icon component={NoData}
+                             onClick={()=>onClick()}
+                             style={{fontSize: iconSize || defaultIconSize}}/>
 
             case IconType.VIEW_ICON:
-                return <Icon component={ViewIcon} style={{fontSize: iconSize || defaultIconSize}}/>
+                return <Icon component={ViewIcon}
+                             onClick={()=>onClick()}
+                             style={{fontSize: iconSize || defaultIconSize}}/>
 
             case IconType.TRANSLATE:
                 return <Icon component={Translate_White}
+                             onClick={()=>onClick()}
                              style={{
                                  ...style,
                                  fontSize: iconSize || defaultIconSize,
                              }}/>
 
             default:
-                return <Icon component={HumanResouce} style={{fontSize: iconSize || defaultIconSize}}/>
+                return <Icon component={HumanResouce}
+                             onClick={()=>onClick()}
+                             style={{fontSize: iconSize || defaultIconSize}}/>
         }
     }
     return render()

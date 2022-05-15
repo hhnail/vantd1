@@ -19,6 +19,7 @@ import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
 import CurdButtonGroup from "../../../../component/CurdButtonGroup";
 import PublicIcon, {IconType} from "../../../../component/PublicIcon";
+import {translate} from "../../../../service/utilService";
 
 const {Step} = Steps;
 const {TextArea} = Input;
@@ -198,11 +199,17 @@ export default function AddTable() {
                             >
                                 <Input.Search enterButton={
                                     <PublicIcon
+                                        onClick={() => {
+                                            translate("人员离职").then(res=>{
+                                                const {data} = res.data
+                                                console.log(data)
+                                            })
+                                        }}
                                         type={IconType.TRANSLATE}
-                                                iconSize={25}
-                                                style={{
-                                        colon:'white'
-                                    }}/>
+                                        iconSize={25}
+                                        style={{
+                                            colon: 'white'
+                                        }}/>
                                 }
                                 />
                             </Form.Item>
