@@ -113,7 +113,7 @@ export default function AddTable() {
      */
     const addModalOk = () => {
         addTableForm.validateFields().then(value => {
-            // console.log('addModalOk', value)
+            console.log('addModalOk', value)
             message.success("操作成功")
         })
     }
