@@ -12,13 +12,13 @@ import {
     Row,
     Space,
     Steps,
-    Table
+    Table, Tooltip
 } from "antd";
 import {useState} from "react";
 import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
 import CurdButtonGroup from "../../../../component/CurdButtonGroup";
-import PublicIcon, {IconType} from "../../../../component/PublicIcon";
+import PublicIcon, {ICON_TYPE} from "../../../../component/PublicIcon";
 import {translate} from "../../../../service/utilService";
 import {Select} from 'antd';
 import {FIELD_TYPE_LIST} from "../../../../enums/fieldType";
@@ -47,7 +47,7 @@ export default function AddTable() {
     };
 
     const [fieldTypeOptions] = useState(FIELD_TYPE_LIST)
-    console.log(FIELD_TYPE_LIST)
+    // console.log(FIELD_TYPE_LIST)
 
 
     const fieldColumns = [
@@ -113,7 +113,7 @@ export default function AddTable() {
      */
     const addModalOk = () => {
         addTableForm.validateFields().then(value => {
-            console.log('addModalOk', value)
+            // console.log('addModalOk', value)
             message.success("操作成功")
         })
     }
@@ -123,7 +123,7 @@ export default function AddTable() {
         FIELD_TYPE_LIST.forEach(item => {
             options.push(<Option value={item.value}>{item.value}</Option>)
         })
-        console.log(options)
+        // console.log(options)
         return <Select style={{width: 120}} defaultValue={FIELD_TYPE_LIST[0].value}>
             {options}
         </Select>
@@ -145,7 +145,7 @@ export default function AddTable() {
                         // message.success("addClick！")
                     }}
                     editClick={() => {
-                        console.log("selectedRowKeys", selectedRowKeys)
+                        // console.log("selectedRowKeys", selectedRowKeys)
                         if (selectedRowKeys.length != 1) {
                             message.info("请选择一条数据")
                             return
@@ -234,22 +234,10 @@ export default function AddTable() {
                                                     addTableForm.setFieldsValue({englishName: data})
                                                 })
                                             }}
-                                            type={IconType.TRANSLATE}
-                                            iconSize={25}
-                                            style={{
-                                                colon: 'white'
-                                            }}/>
+                                            type={ICON_TYPE.TRANSLATE_WHITE}
+                                            iconSize={25}/>
                                     }
                                 />
-                                {/*<Input.Group compact>*/}
-                                {/*    <Input*/}
-                                {/*        style={{ width: 'calc(100% - 200px)' }}*/}
-                                {/*        defaultValue="git@github.com:ant-design/ant-design.git"*/}
-                                {/*    />*/}
-                                {/*    <Tooltip title="copy git url">*/}
-                                {/*        <Button icon={<CopyOutlined />} />*/}
-                                {/*    </Tooltip>*/}
-                                {/*</Input.Group>*/}
                             </Form.Item>
                             <Form.Item
                                 label="排序号"
@@ -268,7 +256,7 @@ export default function AddTable() {
                                     textAlign: 'center',
                                     padding: 30
                                 }}>
-                                    <PublicIcon type={IconType.NO_DATA}/>
+                                    <PublicIcon type={ICON_TYPE.NO_DATA}/>
                                     <p>请根据右上角按钮组编辑字段</p>
                                 </div>
                             }}>
@@ -349,7 +337,7 @@ export default function AddTable() {
                     const newField = {
                         ...value
                     }
-                    console.log("newFil:", newField)
+                    // console.log("newFil:", newField)
                     setFields([...fields, newField])
                 }).finally(() => {
                     setAddFieldModalVisible(false)

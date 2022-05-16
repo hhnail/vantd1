@@ -34,17 +34,20 @@ import {ReactComponent as Accept} from "../../static/accept.svg";
 import {ReactComponent as Avatar} from "../../static/avatar.svg";
 import {ReactComponent as Translate_Gray} from "../../static/translate_gray.svg";
 import {ReactComponent as Translate_White} from "../../static/translate_white.svg";
+import {ReactComponent as Translate_Blue} from "../../static/translate_blue.svg";
 
 
 const defaultIconSize = 50
 
 // TODO 需要优化写法  change2
-export const IconType = {
+export const ICON_TYPE = {
     NO_DATA: "noData",
     HUMAN_RESOURCE: "humanResource",
     VIEW_ICON: 'viewIcon',
     COMMIT_ICON: 'commitIcon',
-    TRANSLATE: 'translate'
+    TRANSLATE_GRAY: 'translate_gray',
+    TRANSLATE_WHITE: 'translate_white',
+    TRANSLATE_BLUE: 'translate_blue',
 }
 
 /**
@@ -65,19 +68,33 @@ export default function PublicIcon(
     const render = () => {
         switch (type) {
             // TODO 需要优化写法 need change3。拓展IconType，根据key获取图标地址和图标名称，createElement
-            case IconType.NO_DATA:
+            case ICON_TYPE.NO_DATA:
                 return <Icon component={NoData}
-                             onClick={()=>onClick()}
+                             onClick={() => onClick()}
                              style={{fontSize: iconSize || defaultIconSize}}/>
 
-            case IconType.VIEW_ICON:
+            case ICON_TYPE.VIEW_ICON:
                 return <Icon component={ViewIcon}
-                             onClick={()=>onClick()}
+                             onClick={() => onClick()}
                              style={{fontSize: iconSize || defaultIconSize}}/>
 
-            case IconType.TRANSLATE:
+            case ICON_TYPE.TRANSLATE_GRAY:
+                return <Icon component={Translate_Gray}
+                             onClick={() => onClick()}
+                             style={{
+                                 ...style,
+                                 fontSize: iconSize || defaultIconSize,
+                             }}/>
+            case ICON_TYPE.TRANSLATE_WHITE:
                 return <Icon component={Translate_White}
-                             onClick={()=>onClick()}
+                             onClick={() => onClick()}
+                             style={{
+                                 ...style,
+                                 fontSize: iconSize || defaultIconSize,
+                             }}/>
+            case ICON_TYPE.TRANSLATE_BLUE:
+                return <Icon component={Translate_Blue}
+                             onClick={() => onClick()}
                              style={{
                                  ...style,
                                  fontSize: iconSize || defaultIconSize,
@@ -85,7 +102,7 @@ export default function PublicIcon(
 
             default:
                 return <Icon component={HumanResouce}
-                             onClick={()=>onClick()}
+                             onClick={() => onClick()}
                              style={{fontSize: iconSize || defaultIconSize}}/>
         }
     }
