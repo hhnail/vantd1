@@ -226,16 +226,18 @@ export default function AddTable() {
                             >
                                 <Input.Search
                                     enterButton={
-                                        <PublicIcon
+                                        <Button
+                                            icon={<PublicIcon
+                                                type={ICON_TYPE.TRANSLATE_BLUE}
+                                                iconSize={25}/>}
                                             onClick={() => {
                                                 const chineseName = addTableForm.getFieldValue("chineseName")
                                                 translate(chineseName).then(res => {
                                                     const {data} = res.data
                                                     addTableForm.setFieldsValue({englishName: data})
                                                 })
-                                            }}
-                                            type={ICON_TYPE.TRANSLATE_WHITE}
-                                            iconSize={25}/>
+                                            }}>
+                                        </Button>
                                     }
                                 />
                             </Form.Item>
