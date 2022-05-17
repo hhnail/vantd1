@@ -153,7 +153,7 @@ export default function AddTable() {
         addTableForm.validateFields().then(value => {
             console.log('addModalOk form value', value)
             console.log('addModalOk state value', fields)
-            message.success("操作成功")
+
             const data = {
                 ...value,
                 columns: fields,
@@ -161,6 +161,7 @@ export default function AddTable() {
             createTable(data).then(res => {
                 const {data} = res.data
                 console.log("createTable execute", data)
+                message.success("操作成功")
             })
         })
     }
