@@ -22,6 +22,8 @@ import PublicIcon, {ICON_TYPE} from "../../../../component/PublicIcon";
 import {translate} from "../../../../service/utilService";
 import {Select} from 'antd';
 import {FIELD_TYPE_LIST} from "../../../../enums/fieldType";
+import {isEmpty} from "../../../../util/stringUtil";
+import {createTable} from "../../../../service/tableService";
 
 const {Option} = Select;
 
@@ -62,35 +64,70 @@ export default function AddTable() {
         {
             title: '长度',
             dataIndex: 'length',
+            render: (value, item, index) => {
+                return (<InputNumber disabled/>)
+            }
         },
         {
             title: '精度',
             dataIndex: 'accuracy',
+            render: (value, item, index) => {
+                return (<Input disabled/>)
+            }
         },
         {
             title: '非null',
             dataIndex: 'nullable',
+            render: (value, item, index) => {
+                return (<Checkbox checked={item.nullable == 1} disabled/>)
+            }
         },
         {
             title: '虚拟',
             dataIndex: 'virtual',
+            render: (value, item, index) => {
+                return (<Checkbox checked={item.virtual == 1} disabled/>)
+            }
         },
         {
             title: '主键',
             dataIndex: 'tableKey',
+            render: (value, item, index) => {
+                return (<Checkbox defaultChecked={item.tableKey == 1} disabled/>)
+            }
         },
         {
             title: '自增',
             dataIndex: 'autoIncrement',
+            render: (value, item, index) => {
+                return (<Checkbox defaultChecked={item.autoIncrement == 1} disabled/>)
+            }
         },
         {
             title: '默认值',
             dataIndex: 'defaultValue',
+            render: (value, item, index) => {
+                return (<Input disabled/>)
+            }
+        },
+
+        // 业务所需字段
+        {
+            title: '可见',
+            dataIndex: 'visible',
+            render: (value, item, index) => {
+                // console.log("value",value)
+                // console.log("item",item)
+                // console.log("index",index)
+                // console.log("item.visible",item.visible)
+                return (<Checkbox defaultChecked={item.visible == 1} disabled/>)
+            }
         },
         {
             title: '注释',
             dataIndex: 'remark',
         },
+
         // {
         //     title: '操作',
         //     key: 'operation',
@@ -104,6 +141,7 @@ export default function AddTable() {
         name: 'id',
         type: 'int',
         tableKey: 'primary key',
+        visible: 1,
         remark: '唯一编码',
     }])
 
@@ -113,8 +151,17 @@ export default function AddTable() {
      */
     const addModalOk = () => {
         addTableForm.validateFields().then(value => {
-            console.log('addModalOk', value)
+            console.log('addModalOk form value', value)
+            console.log('addModalOk state value', fields)
             message.success("操作成功")
+            const data = {
+                ...value,
+                columns: fields,
+            }
+            createTable(data).then(res => {
+                const {data} = res.data
+                console.log("createTable execute", data)
+            })
         })
     }
 
@@ -229,14 +276,20 @@ export default function AddTable() {
                                         <Button
                                             icon={<PublicIcon
                                                 type={ICON_TYPE.TRANSLATE_BLUE}
-                                                iconSize={25}/>}
-                                            onClick={() => {
-                                                const chineseName = addTableForm.getFieldValue("chineseName")
-                                                translate(chineseName).then(res => {
-                                                    const {data} = res.data
-                                                    addTableForm.setFieldsValue({englishName: data})
-                                                })
-                                            }}>
+                                                iconSize={29}
+                                                onClick={() => {
+                                                    const chineseName = addTableForm.getFieldValue("chineseName")
+                                                    if (isEmpty(chineseName)) {
+                                                        message.info("请输入中文名称")
+                                                        return
+                                                    }
+                                                    translate(chineseName).then(res => {
+                                                        const {data} = res.data
+                                                        addTableForm.setFieldsValue({englishName: data})
+                                                    })
+                                                }}
+                                            />}
+                                        >
                                         </Button>
                                     }
                                 />
@@ -263,15 +316,16 @@ export default function AddTable() {
                                 </div>
                             }}>
                                 <Table
+                                    size={"small"}
                                     dataSource={fields}
                                     columns={fieldColumns}
                                     rowKey={'name'}
                                     pagination={{
                                         // style: {
                                         //     position:'absolute',
-                                        //     bottom:0,
+                                        //     top:90,
                                         //     right:45,
-                                        // }
+                                        // },
                                         size: 5,
                                     }}
                                     rowSelection={{
@@ -329,6 +383,7 @@ export default function AddTable() {
             </div>
         </div>
 
+        {/* ==================== 添加字段模态框 ==================== */}
         <Modal
             visible={addFieldModalVisible}
             width={760}
@@ -341,8 +396,8 @@ export default function AddTable() {
                     }
                     // console.log("newFil:", newField)
                     setFields([...fields, newField])
-                }).finally(() => {
                     setAddFieldModalVisible(false)
+                }).finally(() => {
                     setSelectedRowKeys([])
                 })
 
@@ -406,7 +461,7 @@ export default function AddTable() {
                         <Form.Item
                             label={"精度"}
                             name={'accuracy'}>
-                            <Input/>
+                            <InputNumber/>
                         </Form.Item>
                     </Col>
                 </Row>
@@ -480,5 +535,10 @@ export default function AddTable() {
 
             </Form>
         </Modal>
+
+
+        {/* ==================== 编辑字段模态框 ==================== */}
+
+
     </>
 }
