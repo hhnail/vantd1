@@ -10,6 +10,8 @@ const defaultState = {
 
 /**
  * 增删改查 按钮组（新增、编辑、删除）
+ *
+ * {btnsVisible,addClick,editClick,deleteClick,} <==> const {btnsVisible,addClick,editClick,deleteClick,} = props
  */
 export default function CurdButtonGroup(
     {

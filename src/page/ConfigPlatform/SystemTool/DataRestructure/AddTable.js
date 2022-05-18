@@ -159,9 +159,13 @@ export default function AddTable() {
                 columns: fields,
             }
             createTable(data).then(res => {
-                const {data} = res.data
-                console.log("createTable execute", data)
-                message.success("操作成功")
+                const response = res.data
+                console.log("createTable execute", response)
+                if (response.code == 0){
+                    message.success("操作成功")
+                }else {
+                    message.error("操作失败")
+                }
             })
         })
     }
