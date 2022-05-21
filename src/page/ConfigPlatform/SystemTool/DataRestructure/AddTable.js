@@ -31,6 +31,11 @@ const {Step} = Steps;
 const {TextArea} = Input;
 
 
+const validateMessages = {
+    required: "'${name}'不得为空",
+};
+
+
 export default function AddTable() {
 
     // ========================== 创建表 ==========================
@@ -47,9 +52,6 @@ export default function AddTable() {
     const onSelectChange = selectedRowKeys => {
         setSelectedRowKeys(selectedRowKeys)
     };
-
-    const [fieldTypeOptions] = useState(FIELD_TYPE_LIST)
-    // console.log(FIELD_TYPE_LIST)
 
 
     const fieldColumns = [
@@ -79,7 +81,7 @@ export default function AddTable() {
             title: '非null',
             dataIndex: 'nullable',
             render: (value, item, index) => {
-                return (<Checkbox checked={item.nullable == 1} disabled/>)
+                return (<Checkbox checked={item.nullable == 0} disabled/>)
             }
         },
         {
@@ -137,11 +139,14 @@ export default function AddTable() {
         // },
     ];
 
+    // TODO 主键固定字段由后台来构建。不用在前台展示？
     const [fields, setFields] = useState([{
         name: 'id',
         type: 'int',
-        tableKey: 'primary key',
+        tableKey: 1,
         visible: 1,
+        autoIncrement: 1,
+        nullable: 0,
         remark: '唯一编码',
     }])
 
@@ -151,8 +156,8 @@ export default function AddTable() {
      */
     const addModalOk = () => {
         addTableForm.validateFields().then(value => {
-            console.log('addModalOk form value', value)
-            console.log('addModalOk state value', fields)
+            // console.log('addModalOk form value', value)
+            // console.log('addModalOk state value', fields)
 
             const data = {
                 ...value,
@@ -160,10 +165,10 @@ export default function AddTable() {
             }
             createTable(data).then(res => {
                 const response = res.data
-                console.log("createTable execute", response)
-                if (response.code == 0){
+                // console.log("createTable execute", response)
+                if (response.code == 0) {
                     message.success("操作成功")
-                }else {
+                } else {
                     message.error("操作失败")
                 }
             })
@@ -176,7 +181,12 @@ export default function AddTable() {
             options.push(<Option value={item.value}>{item.value}</Option>)
         })
         // console.log(options)
-        return <Select style={{width: 120}} defaultValue={FIELD_TYPE_LIST[0].value}>
+        return <Select style={{width: 120}}
+                       defaultValue={FIELD_TYPE_LIST[0].value}
+            // onChange={(value)=>{
+            //
+            // }}
+        >
             {options}
         </Select>
     }
@@ -190,7 +200,7 @@ export default function AddTable() {
             }}
             title="返回"
             extra={[
-                <CurdButtonGroup
+                addTableCurrentStep == 1 && <CurdButtonGroup
                     addClick={() => {
                         addFieldForm.resetFields()
                         setAddFieldModalVisible(true)
@@ -229,6 +239,7 @@ export default function AddTable() {
         <div style={{
             padding: '0px 20px 0px 20px'
         }}>
+            {/* ====================== 步骤条 ====================== */}
             <div style={{
                 padding: '0px 200px 0px 200px'
             }}>
@@ -254,27 +265,36 @@ export default function AddTable() {
                             push: 1,
                         }}
                         autoComplete="off"
+                        validateMessages={validateMessages}
                     >
                         {/* =============== Step1 =============== */}
                         {/* 简单表单 */}
                         <div style={{display: addTableCurrentStep == 0 ? "" : "none"}}>
-                            {/*<Form.Item*/}
-                            {/*    label="表类型"*/}
-                            {/*    name="name"*/}
-                            {/*>*/}
-                            {/*    <Input disabled={true}/>*/}
-                            {/*</Form.Item>*/}
+                            <Form.Item
+                                label="模块编号"
+                                name="moduleId"
+                                required={true}
+                                initialValue={1}
+                            >
+                                <Input disabled={true}/>
+                            </Form.Item>
 
                             <Form.Item
                                 label="中文名称"
-                                name="chineseName"
+                                name="label"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '中文名称不得为空',
+                                    },
+                                ]}
                             >
                                 <Input/>
                             </Form.Item>
 
                             <Form.Item
                                 label="英文名称"
-                                name="englishName"
+                                name="name"
                             >
                                 <Input.Search
                                     enterButton={
@@ -283,14 +303,14 @@ export default function AddTable() {
                                                 type={ICON_TYPE.TRANSLATE_BLUE}
                                                 iconSize={29}
                                                 onClick={() => {
-                                                    const chineseName = addTableForm.getFieldValue("chineseName")
-                                                    if (isEmpty(chineseName)) {
+                                                    const label = addTableForm.getFieldValue("label")
+                                                    if (isEmpty(label)) {
                                                         message.info("请输入中文名称")
                                                         return
                                                     }
-                                                    translate(chineseName).then(res => {
+                                                    translate(label).then(res => {
                                                         const {data} = res.data
-                                                        addTableForm.setFieldsValue({englishName: data})
+                                                        addTableForm.setFieldsValue({name: data})
                                                     })
                                                 }}
                                             />}
@@ -309,7 +329,7 @@ export default function AddTable() {
 
 
                         {/* =============== Step2 =============== */}
-                        {/* 可编辑表格 */}
+                        {/* 动态表格 */}
                         <div style={{display: addTableCurrentStep == 1 ? "" : "none"}}>
                             <ConfigProvider renderEmpty={() => {
                                 return <div style={{
@@ -366,8 +386,10 @@ export default function AddTable() {
                         <Button
                             type={"primary"}
                             onClick={() => {
-                                setAddTableCurrentStep(addTableCurrentStep + 1)
-                                // setAddFieldModalVisible(true)
+                                addTableForm.validateFields().then(res => {
+                                    setAddTableCurrentStep(addTableCurrentStep + 1)
+                                    // setAddFieldModalVisible(true)
+                                })
                             }}
                             style={{
                                 display: addTableCurrentStep < 2 ? "" : "none",
@@ -476,8 +498,17 @@ export default function AddTable() {
                             labelCol={{span: 6, push: 1}}
                             wrapperCol={{push: 2}}
                             label={"非null"}
-                            name={'nullable'}>
-                            <Checkbox/>
+                            name={'nullable'}
+                            initialValue={1}
+                        >
+                            <Checkbox
+                                checked={false}
+                                onClick={() => {
+                                    const oldValue = addFieldForm.getFieldValue("nullable")
+                                    console.log('Checkbox click oldValue', oldValue)
+                                    addFieldForm.setFieldsValue({nullable: (oldValue == 1) ? 0 : 1})
+                                }}
+                            />
                         </Form.Item>
                     </Col>
                     <Col span={6}>
