@@ -4,6 +4,7 @@ import {Layout, Menu} from 'antd';
 import {getHeaderMenu, getSidebar} from "../service/commonService";
 import ConfigPlatform from "./ConfigPlatform";
 import {Route, Routes, useNavigate} from "react-router-dom";
+import {Button, Popover} from 'antd';
 import ModuleMaintenance from "./ConfigPlatform/SystemTool/ModuleMaintenance";
 import DataRestructure from "./ConfigPlatform/SystemTool/DataRestructure";
 import StaffDesktop from "./StaffDesktop";
@@ -130,10 +131,13 @@ export default function Home() {
 
     return (<div>
         {/* ============================== home header ============================== */}
-        <Header style={{
-            height: '63px',
-            size: 18,
-            fontWeight: 800,
+        <div style={{
+            height: '69px',
+            width: '100%',
+            size: 22,
+            fontWeight: 1200,
+            // display: 'flex',
+            // flexDirection: 'column',
         }}>
             {/*先获取头部菜单，才能知道默认高亮的key是多少*/}
             {headerMenu
@@ -141,11 +145,31 @@ export default function Home() {
                 <Menu items={headerMenu}
                       theme="dark"
                       mode="horizontal"
+                      style={{
+                          padding: '1px 1px 1px 1px',
+                          height: 55,
+                      }}
                     // 默认选择首个菜单
                       defaultSelectedKeys={[headerMenu[0].key]}
                       onClick={(item) => headerClick(item)}
                 />}
-        </Header>
+        </div>
+        <div style={{
+            position:'relative',
+            margin:'-55px 0px 0px 0px',
+            width:'100%',
+            height:50,
+            left:'91%',
+        }}>
+            <Popover
+                content={<div>
+                    <p>Content</p>
+                    <p>Content</p>
+                </div>}
+                title="Title">
+                <Button>Hover me</Button>
+            </Popover>
+        </div>
         {/* ============================== over home header ============================== */}
 
         {/* ============================== home body ============================== */}
