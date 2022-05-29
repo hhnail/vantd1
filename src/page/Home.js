@@ -155,7 +155,7 @@ export default function Home() {
         }}>
             {/* ======= sidebar =======*/}
             <div style={{
-                width: '11%',
+                width: '9%',
             }}>
                 <Menu mode="vertical"
                       items={sidebar}
@@ -168,14 +168,14 @@ export default function Home() {
                 // overflowY: 'auto',
                 width: '89%',
                 // height:400,
-                padding: '10px 0px 10px 0px'
+                padding: '10px 10px 10px 10px'
             }}>
                 {/* TODO 动态路由 */}
                 <Routes>
                     <Route exact path="/" element={<a>login please......</a>}/>
                     {/*===== 员工桌面 =====*/}
-                    {/*<Route exact path="/staffDesktop" element={<StaffDesktop/>}/>*/}
-                    <Route exact path="/staffDesktop" element={<AddTable/>}/>
+                    <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
+                    {/*<Route exact path="/staffDesktop" element={<AddTable/>}/>*/}
                     <Route exact path="/staffDesktop/myMessage" element={<MyMessage/>}/>
                     <Route exact path="/staffDesktop/myTodo" element={<MyTodo/>}/>
 
