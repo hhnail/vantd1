@@ -1,10 +1,20 @@
 import './App.css';
 import Home from "./page/Home";
-import {HashRouter, Navigate, Route, Routes, Link, BrowserRouter} from 'react-router-dom'
+import Login from "./page/Login";
+import {useEffect} from "react";
 
 function App() {
+
+    useEffect(() => {
+        console.log(localStorage.getItem("userLogin"))
+    }, [])
+
     return (<>
-            <Home/>
+        {
+            localStorage.getItem("userLogin")
+                ? <Home/>
+                : <Login/>
+        }
     </>)
 }
 

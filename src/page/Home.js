@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from "react";
 
-import {Layout, Menu} from 'antd';
+import {Button, Dropdown, Menu} from 'antd';
 import {getHeaderMenu, getSidebar} from "../service/commonService";
 import ConfigPlatform from "./ConfigPlatform";
 import {Route, Routes, useNavigate} from "react-router-dom";
-import {Button, Popover} from 'antd';
 import ModuleMaintenance from "./ConfigPlatform/SystemTool/ModuleMaintenance";
 import DataRestructure from "./ConfigPlatform/SystemTool/DataRestructure";
 import StaffDesktop from "./StaffDesktop";
@@ -17,8 +16,6 @@ import SingleCode from "./ConfigPlatform/DataDictionary/SingleCode";
 import MultilevelCode from "./ConfigPlatform/DataDictionary/MultilevelCode";
 import AddTable from "./ConfigPlatform/SystemTool/DataRestructure/AddTable";
 import RoleManage from "./ConfigPlatform/PermissionManage/RoleManage";
-
-const {Header} = Layout;
 
 export default function Home() {
 
@@ -128,7 +125,6 @@ export default function Home() {
         }
     }
 
-
     return (<div>
         {/* ============================== home header ============================== */}
         <div style={{
@@ -155,20 +151,36 @@ export default function Home() {
                 />}
         </div>
         <div style={{
-            position:'relative',
-            margin:'-55px 0px 0px 0px',
-            width:'100%',
-            height:50,
-            left:'91%',
+            position: 'relative',
+            margin: '-55px 0px 0px 0px',
+            width: '100%',
+            height: 50,
+            left: '95%',
         }}>
-            <Popover
-                content={<div>
-                    <p>Content</p>
-                    <p>Content</p>
-                </div>}
-                title="Title">
-                <Button>Hover me</Button>
-            </Popover>
+            <Dropdown overlay={
+                <Menu
+                    items={[
+                        {
+                            key: '1',
+                            label: (
+                                <a target="_self">
+                                    设置临时密码
+                                </a>
+                            ),
+                        },
+                        {
+                            key: '2',
+                            label: (
+                                <a target="_self" onClick={()=>{
+                                    localStorage.removeItem("userLogin")
+                                    navigate("/")
+                                }}>退出系统</a>
+                            ),
+                        },
+                    ]}
+                />} placement="bottomRight">
+                <Button shape={"circle"}>操作</Button>
+            </Dropdown>
         </div>
         {/* ============================== over home header ============================== */}
 
@@ -196,7 +208,7 @@ export default function Home() {
             }}>
                 {/* TODO 动态路由 */}
                 <Routes>
-                    <Route exact path="/" element={<a>login please......</a>}/>
+                    <Route exact path="/" element={<StaffDesktop/>}/>
                     {/*===== 员工桌面 =====*/}
                     <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
                     {/*<Route exact path="/staffDesktop" element={<AddTable/>}/>*/}
@@ -230,7 +242,5 @@ export default function Home() {
         {/* ============================== over home body ============================== */}
     </div>);
 }
-
-
 
 
