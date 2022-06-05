@@ -9,13 +9,15 @@ function App() {
         console.log(localStorage.getItem("userLogin"))
     }, [])
 
-    return (<>
+    return (<div style={{
+        overflowX: 'hidden',
+    }}>
         {
             localStorage.getItem("userLogin")
                 ? <Home/>
                 : <Login/>
         }
-    </>)
+    </div>)
 }
 
 export default App;

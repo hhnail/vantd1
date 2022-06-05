@@ -137,10 +137,11 @@ export default function  MyMessage() {
                             <div>
                                 <Alert
                                     type="success"
-                                    message="
-                                    您提交的个人信息正在审核中
-                                    内容为【性别[空]->[男]】
-                                    "
+                                    message={
+                                        `您提交的个人信息正在审核中
+                                        \n
+                                        内容为【性别[空]->[男]】`
+                                    }
                                     style={{
                                         width: 210,
                                     }}/>
