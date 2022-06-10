@@ -2,6 +2,7 @@ import {Button, Checkbox, Form, Input, InputNumber, Row, Select, Space, Tabs, Tr
 import {useEffect, useState} from "react";
 import {getRoleGroup} from "../../../../service/commonService";
 import {useNavigate} from "react-router-dom";
+import TablePro from "../../../../component/TablePro";
 
 const {TabPane} = Tabs;
 const {DirectoryTree} = Tree;
@@ -93,7 +94,7 @@ export default function RoleManage() {
                                         name={'belongRoleGroup'}
                                         label="所属角色组"
                                     >
-                                        <Select defaultOpen style={{ width: 120 }}>
+                                        <Select defaultOpen={true} style={{width: 120}}>
                                             <Option value="组1">组1</Option>
                                             <Option value="组2">组2</Option>
                                         </Select>
@@ -127,16 +128,94 @@ export default function RoleManage() {
                                 {/* role personnel */}
                                 <Tabs tabPosition={'left'}>
                                     <TabPane tab="按人员" key="1">
-                                        Content of Tab 1
+                                        <TablePro
+                                            rowSelectionType={"radio"}
+                                            pageSize={4}
+                                            columns={
+                                                [
+                                                    {
+                                                        title: '工号',
+                                                        dataIndex: 'jobNo',
+                                                        render: (jobNo) => jobNo,
+                                                    },
+                                                    {
+                                                        title: '人员',
+                                                        dataIndex: 'staffName',
+                                                        render: (text) => text,
+                                                    },
+                                                    {
+                                                        title: '角色名称',
+                                                        dataIndex: 'roleName',
+                                                    },
+                                                    {
+                                                        title: '有效期',
+                                                        dataIndex: 'activeTime',
+                                                    },
+                                                ]
+                                            }
+                                            dataSource={
+                                                [
+                                                    {
+                                                        key: '1',
+                                                        jobNo: '140787',
+                                                        staffName: '奥特曼',
+                                                        roleName: '运维管理员',
+                                                        activeTime: '2011-10-21',
+                                                    },
+                                                    {
+                                                        key: '2',
+                                                        jobNo: '140781',
+                                                        staffName: '奥特曼2',
+                                                        roleName: '运维管理员',
+                                                        activeTime: '2011-10-21',
+                                                    },
+                                                    {
+                                                        key: '3',
+                                                        jobNo: '140784',
+                                                        staffName: '奥特曼3',
+                                                        roleName: '运维管理员',
+                                                        activeTime: '2016-10-21',
+                                                    },
+                                                    {
+                                                        key: '4',
+                                                        jobNo: '140784',
+                                                        staffName: '奥特曼3',
+                                                        roleName: '运维管理员',
+                                                        activeTime: '2016-10-21',
+                                                    },
+                                                    {
+                                                        key: '5',
+                                                        jobNo: '140784',
+                                                        staffName: '奥特曼3',
+                                                        roleName: '运维管理员',
+                                                        activeTime: '2016-10-21',
+                                                    },
+                                                    {
+                                                        key: '6',
+                                                        jobNo: '140784',
+                                                        staffName: '奥特曼3',
+                                                        roleName: '运维管理员',
+                                                        activeTime: '2016-10-21',
+                                                    },
+                                                    {
+                                                        key: '7',
+                                                        jobNo: '140784',
+                                                        staffName: '奥特曼3',
+                                                        roleName: '运维管理员',
+                                                        activeTime: '2016-10-21',
+                                                    },
+                                                ]
+                                            }
+                                        />
                                     </TabPane>
                                     <TabPane tab="按组织" key="2">
-                                        Content of Tab 2
+                                        <TablePro/>
                                     </TabPane>
                                     <TabPane tab="按岗位" key="3">
-                                        Content of Tab 3
+                                        <TablePro/>
                                     </TabPane>
                                     <TabPane tab="按职位" key="4">
-                                        Content of Tab 3
+                                        <TablePro/>
                                     </TabPane>
                                 </Tabs>
                             </TabPane>

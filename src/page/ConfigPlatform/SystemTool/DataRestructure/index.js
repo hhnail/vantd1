@@ -29,16 +29,27 @@ export default function DataRestructure() {
 
     // 表格字段
     const columns = [
+        // {
+        //     title: '编号',
+        //     dataIndex: 'id',
+        //     key: 'id',
+        // },
         {
-            title: '编号',
-            dataIndex: 'id',
-            key: 'id',
+            title: '中文名称',
+            dataIndex: 'label',
+            key: 'label',
         },
         {
-            title: '名称',
+            title: '英文名称',
             dataIndex: 'name',
             key: 'name',
         },
+        {
+            title: '排序号',
+            dataIndex: 'orderId',
+            key: 'orderId',
+        },
+
     ];
 
 
@@ -88,8 +99,8 @@ export default function DataRestructure() {
 
     const btnEdit = () => {
         console.log('btn edit!')
-        if (selectedRowKeys.length < 1) {
-            message.info("请选择数据")
+        if (selectedRowKeys.length != 1) {
+            message.info("请选择单条数据")
         }
     }
 
@@ -175,6 +186,8 @@ export default function DataRestructure() {
         </div>
     )
 }
+
+
 
 
 

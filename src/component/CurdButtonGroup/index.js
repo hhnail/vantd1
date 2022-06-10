@@ -15,6 +15,7 @@ const defaultState = {
  */
 export default function CurdButtonGroup(
     {
+        // eg:[true,true,true]
         btnsVisible,
         addClick,
         editClick,
