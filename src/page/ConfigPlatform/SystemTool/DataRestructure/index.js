@@ -63,8 +63,9 @@ export default function DataRestructure() {
     /**
      * 刷新表分组和表数据
      * @param isShowActionMsg 是否通过手动刷新按钮触发。若是，则刷新后需要关闭按钮刷新特效
+     * @param cleanSelected 是否需要去掉之前勾选的项。默认否
      */
-    const refreshTableAndGroup = (isShowActionMsg) => {
+    const refreshTableAndGroup = (isShowActionMsg, cleanSelected) => {
         // 1、先查询表分组
         getTableGroup().then(res => {
             const {data} = res.data
@@ -79,6 +80,9 @@ export default function DataRestructure() {
                 if (isShowActionMsg) {
                     setBtnFlushLoading(false)
                     message.success("操作成功")
+                }
+                if (cleanSelected) {
+                    setSelectedRowKeys([])
                 }
             })
         })
@@ -230,7 +234,7 @@ export default function DataRestructure() {
                             console.log("data ", data)
                             updateTable(data).then(res => {
                                 console.log("v1 res", res)
-                                refreshTableAndGroup(true)
+                                refreshTableAndGroup(true, true)
                             })
 
                         }
