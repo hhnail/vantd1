@@ -15,7 +15,11 @@ const defaultState = {
  */
 export default function CurdButtonGroup(
     {
-        // eg:[true,true,true]
+        /**
+         * 含义：按钮是否可见
+         * 类型：布尔项数组
+         * eg:[true,true,true]
+         */
         btnsVisible,
         addClick,
         editClick,

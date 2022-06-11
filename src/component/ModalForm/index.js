@@ -30,8 +30,10 @@ export default function ModalForm() {
                 title="Title"
                 visible={visible}
                 onOk={handleOk}
+                okText={"确认"}
                 // confirmLoading={confirmLoading}
                 onCancel={handleCancel}
+                cancelText={"取消"}
             >
                 <Form
                     name="ModalForm"
