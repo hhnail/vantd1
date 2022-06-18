@@ -45,7 +45,7 @@ export function updateModule(data) {
  * 删除模块
  */
 export function deleteModule(id) {
-    return axios.post('/vapi/deleteModule', id)
+    return axios.post('/vapi/deleteModule', qs.stringify({id: id}))
 }
 
 /**

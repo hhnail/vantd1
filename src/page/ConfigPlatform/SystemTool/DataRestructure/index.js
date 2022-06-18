@@ -151,13 +151,14 @@ export default function DataRestructure() {
     }
 
     const btnColumnMaintain = () => {
-        console.log("selectedRowKeys.length:", selectedRowKeys.length)
-        console.log("selectedRowItem:", selectedRowItem)
+        // console.log("selectedRowKeys.length:", selectedRowKeys.length)
+        // console.log("selectedRowItem:", selectedRowItem)
         if (selectedRowKeys.length != 1 || selectedRowItem == null) {
             message.info("请选择单条数据")
             return
         }
         setColumnMaintainModalVisible(true)
+        // console.log("==5 selectedRowItem.id", selectedRowItem.id)
         getTableColumns(selectedRowItem.id)
             .then(res => {
                 console.log("==5 getTableColumns res：", res)

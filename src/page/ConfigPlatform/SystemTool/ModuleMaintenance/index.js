@@ -72,8 +72,7 @@ export default function ModuleMaintenance() {
             okText: '确认',
             cancelText: '取消',
             onOk: () => {
-                const data = qs.stringify({id: item.key})
-                deleteModule(data)
+                deleteModule(item.key)
                     .then(() => {
                         message.success("操作成功")
                     })

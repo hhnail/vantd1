@@ -11,9 +11,10 @@ export const updateTable = (data) => {
 }
 
 export const getTableColumns = (id) => {
-    if (typeof(id) != "string"){
-        id = id + ""
-    }
-    return axios.post('/vapi/getTableColumns', id)
+    return axios.post('/vapi/getTableColumns',
+        qs.stringify({
+            id: id
+        })
+    )
 }
 
