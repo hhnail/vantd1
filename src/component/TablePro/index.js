@@ -21,6 +21,7 @@ const defaultState = {
     rowSelectionType: ROW_SELECTION_TYPE.CHECKBOX,
     pageSize: 5,
     btnsSize: BUTTON_SIZE.SMALL.value,
+    scrollX: 1300,
 }
 
 /**
@@ -34,6 +35,7 @@ export default function TablePro(
         pageSize,
         columns,
         dataSource,
+        scrollX,
     }
 ) {
 
@@ -41,10 +43,16 @@ export default function TablePro(
     return (<>
         {/*分割线*/}
         {/*<Divider />*/}
-        <CurdButtonGroup
-            btnsVisible={[true, false, true]}
-            btnsSize={btnsSize || defaultState.btnsSize}
-        />
+        <div style={{
+            width: '100%',
+            marginLeft: '80%',
+            paddingBottom: 5,
+        }}>
+            <CurdButtonGroup
+                btnsVisible={[true, false, true]}
+                btnsSize={btnsSize || defaultState.btnsSize}
+            />
+        </div>
         <Table
             rowSelection={{
                 // radio checkbox
@@ -54,6 +62,10 @@ export default function TablePro(
             dataSource={dataSource}
             pagination={{
                 pageSize: pageSize || defaultState.pageSize,
+            }}
+            scroll={{
+                x: scrollX || defaultState.scrollX,
+                y: 500,
             }}
         />
 

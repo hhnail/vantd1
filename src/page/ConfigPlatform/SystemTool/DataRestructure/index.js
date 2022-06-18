@@ -31,9 +31,17 @@ export default function DataRestructure() {
     // [字段维护]模态框是否可见
     const [columnMaintainModalVisible, setColumnMaintainModalVisible] = useState(false)
 
+
+    // 数据——字段
+    const [tableColumnData, setTableColumnData] = useState( [
+        {
+            name: '1',
+            label: '140787',
+        },
+    ])
+
+
     const [editModalForm] = useForm();
-
-
     const navigate = useNavigate()
 
 
@@ -161,7 +169,9 @@ export default function DataRestructure() {
         // console.log("==5 selectedRowItem.id", selectedRowItem.id)
         getTableColumns(selectedRowItem.id)
             .then(res => {
-                console.log("==5 getTableColumns res：", res)
+                const {data} = res.data
+                // console.log("==5 getTableColumns res：", data)
+                setTableColumnData(data)
             })
 
     }
@@ -351,17 +361,46 @@ export default function DataRestructure() {
                                 title: '中文名',
                                 dataIndex: 'label',
                             },
-
-                        ]
-                    }
-                    dataSource={
-                        [
                             {
-                                name: '1',
-                                label: '140787',
+                                title: '类型',
+                                dataIndex: 'type',
+                            },
+                            {
+                                title: '长度',
+                                dataIndex: 'length',
+                            },
+                            {
+                                title: '精度',
+                                dataIndex: 'accuracy',
+                            },
+                            {
+                                title: '非空',
+                                dataIndex: 'nullable',
+                            },
+                            {
+                                title: '可见',
+                                dataIndex: 'visible',
+                            },
+                            {
+                                title: '自增',
+                                dataIndex: 'autoIncrement',
+                            },
+                            {
+                                title: '默认值',
+                                dataIndex: 'defaultValue',
+                            },
+                            {
+                                title: '键',
+                                dataIndex: 'tableKey',
+                            },
+                            {
+                                title: '备注',
+                                dataIndex: 'remark',
                             },
                         ]
                     }
+                    dataSource={tableColumnData}
+                    scrollX={1200}
                 />
             </Modal>
         </div>
