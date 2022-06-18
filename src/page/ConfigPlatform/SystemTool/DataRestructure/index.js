@@ -4,6 +4,7 @@ import {getTableGroup, getTables} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
 import {updateTable} from "../../../../service/tableService";
+import TablePro from "../../../../component/TablePro";
 
 
 const {Step} = Steps;
@@ -25,8 +26,10 @@ export default function DataRestructure() {
     // 当前选中的项，仅可编辑单项
     const [selectedRowItem, setSelectedRowItem] = useState()
 
-    // 编辑模态框是否可见
+    // [编辑表信息]模态框是否可见
     const [editModalVisible, setEditModalVisible] = useState(false)
+    // [字段维护]模态框是否可见
+    const [columnMaintainModalVisible, setColumnMaintainModalVisible] = useState(false)
 
     const [editModalForm] = useForm();
 
@@ -147,7 +150,16 @@ export default function DataRestructure() {
         console.log('btn delete!')
         if (selectedRowKeys.length < 1) {
             message.info("请选择数据")
+            return
         }
+    }
+
+    const btnColumnMaintain = ()=>{
+        if (selectedRowKeys.length != 1) {
+            message.info("请选择单条数据")
+            return
+        }
+        setColumnMaintainModalVisible(true)
     }
 
 
@@ -182,7 +194,7 @@ export default function DataRestructure() {
                         }}>
                         <Col span={14}>
                             <Space>
-                                <Button type={"primary"} size={"small"}>字段维护</Button>
+                                <Button type={"primary"} size={"small"} onClick={()=> btnColumnMaintain()}>字段维护</Button>
                                 <Button type={"primary"} size={"small"}>字段关联</Button>
                                 <Button type={"primary"} size={"small"}>校验规则</Button>
                             </Space>
@@ -221,6 +233,7 @@ export default function DataRestructure() {
             </Row>
 
 
+            {/*修改表信息模态框*/}
             <Modal
                 title="editModal"
                 visible={editModalVisible}
@@ -229,6 +242,7 @@ export default function DataRestructure() {
                             console.log("value", value)
                             const data = {
                                 id: selectedRowKeys[0],
+                                oldName: selectedRowItem.name,
                                 ...value,
                             }
                             console.log("data ", data)
@@ -302,6 +316,25 @@ export default function DataRestructure() {
                         <InputNumber/>
                     </Form.Item>
                 </Form>
+            </Modal>
+
+
+
+
+            {/*字段维护模态框*/}
+            <Modal
+                title="字段维护"
+                visible={columnMaintainModalVisible}
+                onOk={() => {
+                    setColumnMaintainModalVisible(false)
+                }}
+                okText={"确认"}
+                onCancel={() => {
+                    setColumnMaintainModalVisible(false)
+                }}
+                cancelText={"取消"}
+            >
+                <TablePro/>
             </Modal>
         </div>
     )
