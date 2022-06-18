@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {getTableGroup, getTables} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
-import {updateTable} from "../../../../service/tableService";
+import {getTableColumns, updateTable} from "../../../../service/tableService";
 import TablePro from "../../../../component/TablePro";
 
 
@@ -100,6 +100,16 @@ export default function DataRestructure() {
     const onSelectChange = selectedRowKeys => {
         // console.log('selectedRowKeys changed: ', selectedRowKeys);
         setSelectedRowKeys(selectedRowKeys)
+        dataSource.forEach(item => {
+            // 设置当前操作的项
+            if (item.id == selectedRowKeys) {
+                setSelectedRowItem(item);
+                // 跳出当前foreach。提高效率
+                return
+            }
+
+            // console.log("check foreach中的return未弹出全部栈")
+        })
     };
 
     const btnAdd = () => {
@@ -117,33 +127,19 @@ export default function DataRestructure() {
             message.info("请选择单条数据")
             return
         }
+        setEditModalVisible(true);
+
+        // console.log("item", item)
+
+        // 表单回显
+        editModalForm.setFieldsValue({
+            name: selectedRowItem.name,
+            label: selectedRowItem.label,
+            orderId: selectedRowItem.orderId,
+        })
 
         // console.log("beforeEdit", dataSource)
         // console.log("selectedRowKeys", selectedRowKeys)
-        dataSource.forEach(item => {
-            // 设置当前编辑的项
-            if (item.id == selectedRowKeys[0]) {
-                setSelectedRowItem(item);
-
-                setEditModalVisible(true);
-
-                // console.log("item", item)
-
-                // 表单回显
-                editModalForm.setFieldsValue({
-                    name: item.name,
-                    label: item.label,
-                    orderId: item.orderId,
-                })
-
-                // 跳出当前foreach。提高效率
-                return
-            }
-
-            // console.log("check foreach中的return未弹出全部栈")
-        })
-
-
     }
 
     const btnDelete = () => {
@@ -154,12 +150,19 @@ export default function DataRestructure() {
         }
     }
 
-    const btnColumnMaintain = ()=>{
-        if (selectedRowKeys.length != 1) {
+    const btnColumnMaintain = () => {
+        console.log("selectedRowKeys.length:", selectedRowKeys.length)
+        console.log("selectedRowItem:", selectedRowItem)
+        if (selectedRowKeys.length != 1 || selectedRowItem == null) {
             message.info("请选择单条数据")
             return
         }
         setColumnMaintainModalVisible(true)
+        getTableColumns(selectedRowItem.id)
+            .then(res => {
+                console.log("==5 getTableColumns res：", res)
+            })
+
     }
 
 
@@ -194,7 +197,8 @@ export default function DataRestructure() {
                         }}>
                         <Col span={14}>
                             <Space>
-                                <Button type={"primary"} size={"small"} onClick={()=> btnColumnMaintain()}>字段维护</Button>
+                                <Button type={"primary"} size={"small"}
+                                        onClick={() => btnColumnMaintain()}>字段维护</Button>
                                 <Button type={"primary"} size={"small"}>字段关联</Button>
                                 <Button type={"primary"} size={"small"}>校验规则</Button>
                             </Space>
@@ -233,21 +237,21 @@ export default function DataRestructure() {
             </Row>
 
 
-            {/*修改表信息模态框*/}
+            {/* ============ 修改表信息模态框 ============ */}
             <Modal
                 title="editModal"
                 visible={editModalVisible}
                 onOk={() => {
                     editModalForm.validateFields().then(value => {
-                            console.log("value", value)
+                            // console.log("value", value)
                             const data = {
                                 id: selectedRowKeys[0],
                                 oldName: selectedRowItem.name,
                                 ...value,
                             }
-                            console.log("data ", data)
+                            // console.log("data ", data)
                             updateTable(data).then(res => {
-                                console.log("v1 res", res)
+                                // console.log("v1 res", res)
                                 refreshTableAndGroup(true, true)
                             })
 
@@ -317,8 +321,6 @@ export default function DataRestructure() {
                     </Form.Item>
                 </Form>
             </Modal>
-
-
 
 
             {/*字段维护模态框*/}
