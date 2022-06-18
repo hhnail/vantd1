@@ -4,7 +4,7 @@ import {getTableGroup, getTables} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
 import {getTableColumns, updateTable} from "../../../../service/tableService";
-import TablePro from "../../../../component/TablePro";
+import TablePro, {ROW_SELECTION_TYPE} from "../../../../component/TablePro";
 
 
 const {Step} = Steps;
@@ -336,8 +336,33 @@ export default function DataRestructure() {
                     setColumnMaintainModalVisible(false)
                 }}
                 cancelText={"取消"}
+                width={998}
             >
-                <TablePro/>
+                <TablePro
+                    rowSelectionType={ROW_SELECTION_TYPE.CHECKBOX}
+                    pageSize={4}
+                    columns={
+                        [
+                            {
+                                title: '字段名',
+                                dataIndex: 'name',
+                            },
+                            {
+                                title: '中文名',
+                                dataIndex: 'label',
+                            },
+
+                        ]
+                    }
+                    dataSource={
+                        [
+                            {
+                                name: '1',
+                                label: '140787',
+                            },
+                        ]
+                    }
+                />
             </Modal>
         </div>
     )

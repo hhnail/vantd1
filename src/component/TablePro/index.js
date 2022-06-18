@@ -1,11 +1,26 @@
 import {Table} from 'antd';
 import React from 'react';
-import CurdButtonGroup from "../CurdButtonGroup";
+import CurdButtonGroup, {BUTTON_SIZE} from "../CurdButtonGroup";
 
+
+/**
+ * 表格多选按钮类型 枚举
+ */
+export const ROW_SELECTION_TYPE = {
+    // 圆形
+    RADIO: {
+        value: "radio",
+    },
+    // 方形
+    CHECKBOX: {
+        value: "checkbox",
+    }
+}
 
 const defaultState = {
-    rowSelectionType: "checkbox",
+    rowSelectionType: ROW_SELECTION_TYPE.CHECKBOX,
     pageSize: 5,
+    btnsSize: BUTTON_SIZE.SMALL.value,
 }
 
 /**
@@ -15,6 +30,7 @@ const defaultState = {
 export default function TablePro(
     {
         rowSelectionType,
+        btnsSize,
         pageSize,
         columns,
         dataSource,
@@ -22,17 +38,17 @@ export default function TablePro(
 ) {
 
 
-
     return (<>
         {/*分割线*/}
         {/*<Divider />*/}
         <CurdButtonGroup
             btnsVisible={[true, false, true]}
+            btnsSize={btnsSize || defaultState.btnsSize}
         />
         <Table
             rowSelection={{
                 // radio checkbox
-                type: rowSelectionType || defaultState.rowSelectionType,
+                type: rowSelectionType.value || defaultState.rowSelectionType.value,
             }}
             columns={columns}
             dataSource={dataSource}

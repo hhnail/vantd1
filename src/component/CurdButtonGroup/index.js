@@ -2,16 +2,30 @@ import {Button} from "antd";
 import {useEffect, useState} from "react";
 import {Space} from "antd";
 
+/**
+ * 按钮组大小 枚举
+ */
+export const BUTTON_SIZE = {
+    SMALL: {
+        value: "small",
+    },
+    MIDDLE: {
+        value: "middle",
+    },
+    LARGE: {
+        value: "large",
+    },
+
+}
 
 const defaultState = {
-    btnsVisible: [true, true, true]
+    btnsVisible: [true, true, true],
+    btnsSize: BUTTON_SIZE.MIDDLE.value
 }
 
 
 /**
  * 增删改查 按钮组（新增、编辑、删除）
- *
- * {btnsVisible,addClick,editClick,deleteClick,} <==> const {btnsVisible,addClick,editClick,deleteClick,} = props
  */
 export default function CurdButtonGroup(
     {
@@ -21,6 +35,7 @@ export default function CurdButtonGroup(
          * eg:[true,true,true]
          */
         btnsVisible,
+        btnsSize,
         addClick,
         editClick,
         deleteClick,
@@ -48,6 +63,8 @@ export default function CurdButtonGroup(
         <Space>
             <Button
                 type={"primary"}
+                size={btnsSize || defaultState.btnsSize}
+                // size={"middle"}
                 onClick={() => addClick()}
                 style={{
                     display: getBtnDisplay()[0] ? "" : "none",
@@ -58,6 +75,7 @@ export default function CurdButtonGroup(
 
             <Button
                 type={"primary"}
+                size={btnsSize || defaultState.btnsSize}
                 onClick={() => editClick()}
                 style={{
                     display: getBtnDisplay()[1] ? "" : "none",
@@ -65,9 +83,9 @@ export default function CurdButtonGroup(
                 }}
             >编辑</Button>
 
-
             <Button
                 danger
+                size={btnsSize || defaultState.btnsSize}
                 onClick={() => deleteClick()}
                 style={{
                     display: getBtnDisplay()[2] ? "" : "none",
