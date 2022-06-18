@@ -30,12 +30,18 @@ const defaultState = {
  */
 export default function TablePro(
     {
+        // 行选择器样式
         rowSelectionType,
+        // 按钮组尺寸大小
         btnsSize,
+        // 分页数量
         pageSize,
         columns,
         dataSource,
+        // 横向滚动宽度
         scrollX,
+        // 主键字段
+        rowKey,
     }
 ) {
 
@@ -55,7 +61,6 @@ export default function TablePro(
         </div>
         <Table
             rowSelection={{
-                // radio checkbox
                 type: rowSelectionType.value || defaultState.rowSelectionType.value,
             }}
             columns={columns}
@@ -66,6 +71,10 @@ export default function TablePro(
             scroll={{
                 x: scrollX || defaultState.scrollX,
                 y: 500,
+            }}
+            rowKey={rowKey || "id"}
+            style={{
+                padding:'0px 0px 0px 5px',
             }}
         />
 

@@ -35,6 +35,11 @@ import {ReactComponent as Avatar} from "../../static/avatar.svg";
 import {ReactComponent as Translate_Gray} from "../../static/translate_gray.svg";
 import {ReactComponent as Translate_White} from "../../static/translate_white.svg";
 import {ReactComponent as Translate_Blue} from "../../static/translate_blue.svg";
+import {ReactComponent as string} from "../../static/column-type-string.svg";
+import {ReactComponent as int} from "../../static/column-type-int.svg";
+import {ReactComponent as date} from "../../static/column-type-date.svg";
+import {ReactComponent as datetime} from "../../static/column-type-datetime.svg";
+
 
 
 const defaultIconSize = 50
@@ -48,6 +53,11 @@ export const ICON_TYPE = {
     TRANSLATE_GRAY: 'translate_gray',
     TRANSLATE_WHITE: 'translate_white',
     TRANSLATE_BLUE: 'translate_blue',
+    STRING: 'string',
+    VARCHAR: 'varchar',
+    INT: 'int',
+    DATE: 'date',
+    DATETIME: 'datetime',
 }
 
 /**
@@ -94,6 +104,42 @@ export default function PublicIcon(
                              }}/>
             case ICON_TYPE.TRANSLATE_BLUE:
                 return <Icon component={Translate_Blue}
+                             onClick={() => onClick()}
+                             style={{
+                                 ...style,
+                                 fontSize: iconSize || defaultIconSize,
+                             }}/>
+            // 数据库字段类型
+            case ICON_TYPE.STRING:
+                return <Icon component={string}
+                             onClick={() => onClick()}
+                             style={{
+                                 ...style,
+                                 fontSize: iconSize || defaultIconSize,
+                             }}/>
+            case ICON_TYPE.VARCHAR:
+                return <Icon component={string}
+                             onClick={() => onClick()}
+                             style={{
+                                 ...style,
+                                 fontSize: iconSize || defaultIconSize,
+                             }}/>
+            case ICON_TYPE.INT:
+                return <Icon component={int}
+                             onClick={() => onClick()}
+                             style={{
+                                 ...style,
+                                 fontSize: iconSize || defaultIconSize,
+                             }}/>
+            case ICON_TYPE.DATE:
+                return <Icon component={date}
+                             onClick={() => onClick()}
+                             style={{
+                                 ...style,
+                                 fontSize: iconSize || defaultIconSize,
+                             }}/>
+            case ICON_TYPE.DATETIME:
+                return <Icon component={datetime}
                              onClick={() => onClick()}
                              style={{
                                  ...style,

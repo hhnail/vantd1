@@ -5,6 +5,7 @@ import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
 import {getTableColumns, updateTable} from "../../../../service/tableService";
 import TablePro, {ROW_SELECTION_TYPE} from "../../../../component/TablePro";
+import PublicIcon, {ICON_TYPE} from "../../../../component/PublicIcon";
 
 
 const {Step} = Steps;
@@ -33,7 +34,7 @@ export default function DataRestructure() {
 
 
     // 数据——字段
-    const [tableColumnData, setTableColumnData] = useState( [
+    const [tableColumnData, setTableColumnData] = useState([
         {
             name: '1',
             label: '140787',
@@ -170,7 +171,7 @@ export default function DataRestructure() {
         getTableColumns(selectedRowItem.id)
             .then(res => {
                 const {data} = res.data
-                // console.log("==5 getTableColumns res：", data)
+                console.log("==5 getTableColumns res：", data)
                 setTableColumnData(data)
             })
 
@@ -364,6 +365,43 @@ export default function DataRestructure() {
                             {
                                 title: '类型',
                                 dataIndex: 'type',
+                                render: (value, item, index) => {
+                                    switch (value) {
+                                        case ICON_TYPE.STRING:
+                                            return <>
+                                                <PublicIcon
+                                                    type={ICON_TYPE.STRING}
+                                                    iconSize={20}
+                                                />
+                                                <div style={{
+                                                    display:'inline-block',
+                                                }}>string</div>
+                                            </>
+                                        case ICON_TYPE.VARCHAR:
+                                            return <>
+                                                <PublicIcon
+                                                    type={ICON_TYPE.STRING}
+                                                    iconSize={20}
+                                                />
+                                                <div style={{
+                                                    display:'inline-block',
+                                                }}>string</div>
+                                            </>
+                                        case ICON_TYPE.INT:
+                                            return <>
+                                                <PublicIcon
+                                                    type={ICON_TYPE.INT}
+                                                    iconSize={20}
+                                                />
+                                                <div style={{
+                                                    display:'inline-block',
+                                                }}>string</div>
+                                            </>
+
+                                        default:
+                                            break
+                                    }
+                                }
                             },
                             {
                                 title: '长度',
