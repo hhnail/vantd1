@@ -1,11 +1,11 @@
-import {Button, Col, Form, Input, InputNumber, message, Modal, Row, Space, Steps, Table, Tree} from 'antd';
+import {Button, Checkbox, Col, Form, Input, InputNumber, message, Modal, Row, Space, Steps, Table, Tree} from 'antd';
 import {useEffect, useState} from "react";
 import {getTableGroup, getTables} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
 import {getTableColumns, updateTable} from "../../../../service/tableService";
-import TablePro, {ROW_SELECTION_TYPE} from "../../../../component/TablePro";
-import PublicIcon, {ICON_TYPE} from "../../../../component/PublicIcon";
+import TablePro, {GAP_SIZE_TYPE, ROW_SELECTION_TYPE} from "../../../../component/TablePro";
+import {BUTTON_SIZE} from "../../../../component/CurdButtonGroup";
 
 
 const {Step} = Steps;
@@ -31,6 +31,8 @@ export default function DataRestructure() {
     const [editModalVisible, setEditModalVisible] = useState(false)
     // [字段维护]模态框是否可见
     const [columnMaintainModalVisible, setColumnMaintainModalVisible] = useState(false)
+    // 字段编辑 模态框 是否可见
+    const [columnEditModalVisible, setColumnEditModalVisible] = useState(false)
 
 
     // 数据——字段
@@ -41,8 +43,11 @@ export default function DataRestructure() {
         },
     ])
 
-
+    // 编辑表 模态框表单
     const [editModalForm] = useForm();
+    // 编辑字段 表单
+    const [columnEditModalForm] = useForm();
+    // 路由跳转
     const navigate = useNavigate()
 
 
@@ -350,6 +355,8 @@ export default function DataRestructure() {
                 width={998}
             >
                 <TablePro
+                    btnsSize={BUTTON_SIZE.SMALL}
+                    gapSize={GAP_SIZE_TYPE.SMALL}
                     rowSelectionType={ROW_SELECTION_TYPE.CHECKBOX}
                     pageSize={4}
                     columns={
@@ -366,6 +373,8 @@ export default function DataRestructure() {
                                 title: '类型',
                                 dataIndex: 'type',
                                 render: (value, item, index) => {
+                                    return value
+                                    /*
                                     switch (value) {
                                         case ICON_TYPE.STRING:
                                             return <>
@@ -401,6 +410,7 @@ export default function DataRestructure() {
                                         default:
                                             break
                                     }
+                                    */
                                 }
                             },
                             {
@@ -414,14 +424,23 @@ export default function DataRestructure() {
                             {
                                 title: '非空',
                                 dataIndex: 'nullable',
+                                render: (value) => {
+                                    return <Checkbox checked={value == 1} disabled/>
+                                }
                             },
                             {
                                 title: '可见',
                                 dataIndex: 'visible',
+                                render: (value) => {
+                                    return <Checkbox checked={value == 1} disabled/>
+                                }
                             },
                             {
                                 title: '自增',
                                 dataIndex: 'autoIncrement',
+                                render: (value) => {
+                                    return <Checkbox checked={value == 1} disabled/>
+                                }
                             },
                             {
                                 title: '默认值',
@@ -430,6 +449,12 @@ export default function DataRestructure() {
                             {
                                 title: '键',
                                 dataIndex: 'tableKey',
+                                render: (value) => {
+                                    if (value) {
+                                        return value == "PK" ? "主键" : "外键"
+                                    }
+                                    return value
+                                }
                             },
                             {
                                 title: '备注',
@@ -439,7 +464,60 @@ export default function DataRestructure() {
                     }
                     dataSource={tableColumnData}
                     scrollX={1200}
+                    editClick={()=>{
+                        setColumnEditModalVisible(true)
+                    }}
                 />
+            </Modal>
+
+
+            {/*字段编辑模态框*/}
+            <Modal
+                title="字段编辑"
+                okText={"确认"}
+                cancelText={"取消"}
+                visible={columnEditModalVisible}
+                onOk={() => {
+                    setColumnEditModalVisible(false)
+                }}
+                onCancel={() => {
+                    setColumnEditModalVisible(false)
+                }}
+            >
+                <Form
+                    form={columnEditModalForm}
+                    name="columnEditModalForm"
+                    labelCol={{
+                        span: 6,
+                    }}
+                    wrapperCol={{
+                        span: 18,
+                    }}
+                    initialValues={{
+                        remember: true,
+                    }}
+                >
+                    <Form.Item
+                        label="所属模块"
+                        name="moduleId"
+                        // initialValue={["人员模块"]}
+                    >
+                        <Input disabled defaultValue={"人员模块"}/>
+                    </Form.Item>
+
+                    <Form.Item
+                        label="表英文名"
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your username!',
+                            },
+                        ]}
+                    >
+                        <Input/>
+                    </Form.Item>
+                </Form>
             </Modal>
         </div>
     )
