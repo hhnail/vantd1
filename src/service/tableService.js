@@ -18,3 +18,15 @@ export const getTableColumns = (id) => {
     )
 }
 
+
+/**
+ * 获取编码表
+ */
+export const getCodeTable = (type) => {
+    return axios.post('/vapi/getCodeTable',
+        qs.stringify({
+            type: type
+        })
+    )
+}
+

@@ -1,6 +1,6 @@
 import {Tabs} from 'antd';
-
-
+import {useEffect} from "react";
+import {getCodeTable} from "../../../../service/tableService";
 
 
 const {TabPane} = Tabs;
@@ -31,6 +31,13 @@ export const TABS_POSITION = {
  */
 export default function SingleCode() {
 
+    useEffect(() => {
+        getCodeTable("SINGLE_CODE")
+            .then(res => {
+                const {data} = res.data
+                console.log("getCodeTable data: ", data)
+            })
+    }, [])
 
 
     return <>
