@@ -71,6 +71,13 @@ export function getRoleGroup() {
 }
 
 /**
+ *
+ */
+export function test() {
+    return request("/vapi/test", REQUEST_TYPE.POST)
+}
+
+/**
  * 请求类型
  */
 const REQUEST_TYPE = {

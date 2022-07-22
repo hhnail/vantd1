@@ -1,21 +1,28 @@
 import {Alert, Avatar, Col, Collapse, Descriptions, Row, Statistic, Tabs} from 'antd';
 import {AntDesignOutlined, LikeOutlined} from '@ant-design/icons';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {test} from "../../../service/commonService";
 
 const {TabPane} = Tabs;
-const { Panel } = Collapse;
+const {Panel} = Collapse;
 const text = `A dog is a type of domesticated animal.
             Known for its loyalty and faithfulness,
             it can be found as a welcome guest in many households across the world.
             `;
 
-export default function  MyMessage() {
+export default function MyMessage() {
 
     const [staffInfo, setStaffInfo] = useState([
         {label: "电话", value: "1803029xxx1", span: 1},
         {label: "微信", value: "微信", span: 1},
         {label: "邮箱", value: "hnaixx@1663.com", span: 1},
     ])
+
+    useEffect(() => {
+        test().then(res => {
+            console.log(res.data)
+        })
+    },[])
 
     const renderStaffInfo = () => {
         const descriptions = []
@@ -26,7 +33,7 @@ export default function  MyMessage() {
                 </Descriptions.Item>
             )
         })
-        return (<Collapse defaultActiveKey={['1','2']}>
+        return (<Collapse defaultActiveKey={['1', '2']}>
             <Panel header="1、基础信息" key="1">
                 <Descriptions column={2} bordered={true}>
                     {descriptions}
@@ -148,7 +155,7 @@ export default function  MyMessage() {
                             </div>
                             <div style={{
                                 padding: '10px 10px 10px 10px',
-                                width:'100%',
+                                width: '100%',
                             }}>
                                 {renderStaffInfo()}
                             </div>
