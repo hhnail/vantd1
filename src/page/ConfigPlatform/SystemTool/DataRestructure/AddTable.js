@@ -439,12 +439,8 @@ export default function AddTable() {
                 name="fieldConfig"
                 layout={"horizontal"}
                 labelCol={{span: 4}}
-                wrapperCol={{
-                    span: 16,
-                }}
-                style={{
-                    margin: "30px 10px 0px 10px"
-                }}
+                wrapperCol={{span: 16,}}
+                style={{margin: "30px 10px 0px 10px"}}
             >
                 <Row>
                     <Col span={12}>

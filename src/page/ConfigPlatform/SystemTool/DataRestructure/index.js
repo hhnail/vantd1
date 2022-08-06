@@ -1,4 +1,19 @@
-import {Button, Checkbox, Col, Form, Input, InputNumber, message, Modal, Row, Space, Steps, Table, Tree} from 'antd';
+import {
+    Button,
+    Checkbox,
+    Col,
+    Form,
+    Input,
+    InputNumber,
+    message,
+    Modal,
+    Row,
+    Select,
+    Space,
+    Steps,
+    Table,
+    Tree
+} from 'antd';
 import {useEffect, useState} from "react";
 import {getTableGroup, getTables} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
@@ -6,9 +21,10 @@ import {useNavigate} from "react-router-dom";
 import {getTableColumns, updateTable} from "../../../../service/tableService";
 import TablePro, {GAP_SIZE_TYPE, ROW_SELECTION_TYPE} from "../../../../component/TablePro";
 import {BUTTON_SIZE} from "../../../../component/CurdButtonGroup";
+import {FIELD_TYPE_LIST} from "../../../../enums/fieldType";
 
 
-const {Step} = Steps;
+const {Option} = Select;
 const {DirectoryTree} = Tree;
 
 /**
@@ -31,7 +47,8 @@ export default function DataRestructure() {
     const [editModalVisible, setEditModalVisible] = useState(false)
     // [字段维护]模态框是否可见
     const [columnMaintainModalVisible, setColumnMaintainModalVisible] = useState(false)
-    // 字段编辑 模态框 是否可见
+    // 字段新增、编辑 模态框 是否可见
+    const [columnAddModalVisible, setColumnAddModalVisible] = useState(false)
     const [columnEditModalVisible, setColumnEditModalVisible] = useState(false)
 
 
@@ -44,6 +61,7 @@ export default function DataRestructure() {
     ])
 
     // 编辑表 模态框表单
+    const [addFieldForm] = useForm()
     const [editModalForm] = useForm();
     // 编辑字段 表单
     const [columnEditModalForm] = useForm();
@@ -164,6 +182,7 @@ export default function DataRestructure() {
         }
     }
 
+    // 字段维护
     const btnColumnMaintain = () => {
         // console.log("selectedRowKeys.length:", selectedRowKeys.length)
         // console.log("selectedRowItem:", selectedRowItem)
@@ -176,10 +195,27 @@ export default function DataRestructure() {
         getTableColumns(selectedRowItem.id)
             .then(res => {
                 const {data} = res.data
-                console.log("==5 getTableColumns res：", data)
+                // console.log("==5 getTableColumns res：", data)
                 setTableColumnData(data)
             })
 
+    }
+
+
+    const renderFieldOptions = () => {
+        const options = []
+        FIELD_TYPE_LIST.forEach(item => {
+            options.push(<Option value={item.value}>{item.value}</Option>)
+        })
+        // console.log(options)
+        return <Select style={{width: 120}}
+                       defaultValue={FIELD_TYPE_LIST[0].value}
+            // onChange={(value)=>{
+            //
+            // }}
+        >
+            {options}
+        </Select>
     }
 
 
@@ -340,7 +376,7 @@ export default function DataRestructure() {
             </Modal>
 
 
-            {/*字段维护模态框*/}
+            {/*【字段维护】模态框*/}
             <Modal
                 title="字段维护"
                 visible={columnMaintainModalVisible}
@@ -464,10 +500,163 @@ export default function DataRestructure() {
                     }
                     dataSource={tableColumnData}
                     scrollX={1200}
+                    addClick={()=>{
+                        setColumnAddModalVisible(true)
+                    }}
                     editClick={()=>{
                         setColumnEditModalVisible(true)
                     }}
                 />
+            </Modal>
+
+
+
+            {/*字段新增模态框*/}
+            <Modal
+                title="字段编辑"
+                okText={"确认"}
+                cancelText={"取消"}
+                visible={columnAddModalVisible}
+                width={880}
+                onOk={() => {
+                    setColumnAddModalVisible(false)
+                }}
+                onCancel={() => {
+                    setColumnAddModalVisible(false)
+                }}
+            >
+                <Form
+                    form={columnEditModalForm}
+                    name="columnEditModalForm"
+                    layout={"horizontal"}
+                    labelCol={{span: 4}}
+                    wrapperCol={{span: 16,}}
+                    style={{margin: "30px 10px 0px 10px"}}
+                >
+                    <Row>
+                        <Col span={12}>
+                            <Form.Item
+                                labelCol={{span: 4}}
+                                wrapperCol={{
+                                    span: 16,
+                                }}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '字段名不得为空',
+                                    },
+                                ]}
+                                label={"名"}
+                                name={'name'}>
+                                <Input/>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                labelCol={{span: 4}}
+                                wrapperCol={{
+                                    span: 16,
+                                }}
+                                label={"类型"}
+                                name={'type'}>
+                                {renderFieldOptions()}
+                                {/*<Option value="Yiminghe">yiminghe</Option>*/}
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={12}>
+                            <Form.Item
+                                label={"长度"}
+                                name={'length'}>
+                                <InputNumber/>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item
+                                label={"精度"}
+                                name={'accuracy'}>
+                                <InputNumber/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={6}>
+                            <Form.Item
+                                labelCol={{span: 6, push: 1}}
+                                wrapperCol={{push: 2}}
+                                label={"非null"}
+                                name={'nullable'}
+                                initialValue={1}
+                            >
+                                <Checkbox
+                                    checked={false}
+                                    onClick={() => {
+                                        const oldValue = addFieldForm.getFieldValue("nullable")
+                                        console.log('Checkbox click oldValue', oldValue)
+                                        addFieldForm.setFieldsValue({nullable: (oldValue == 1) ? 0 : 1})
+                                    }}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                            <Form.Item
+                                labelCol={{span: 6, push: 1}}
+                                wrapperCol={{push: 2}}
+                                label={"虚拟"}
+                                name={'virtual'}>
+                                <Checkbox/>
+                            </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                            <Form.Item
+                                labelCol={{span: 6, push: 1}}
+                                wrapperCol={{push: 2}}
+                                label={"主键"}
+                                name={'tableKey'}>
+                                <Checkbox/>
+                            </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                            <Form.Item
+                                labelCol={{span: 6, push: 1}}
+                                wrapperCol={{push: 2}}
+                                label={"自增"}
+                                name={'autoIncrement'}>
+                                <Checkbox/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={12}>
+                            <Form.Item
+                                // labelCol={{span: 4}}
+                                // wrapperCol={{
+                                //     span: 16,
+                                // }}
+                                label={"默认值"}
+                                name={'autoIncrement'}>
+                                <Input/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={24}>
+                            <Form.Item
+                                labelCol={{span: 2}}
+                                wrapperCol={{span: 22}}
+                                label={"注释"}
+                                name={'remark'}>
+                                <Input.TextArea
+                                    showCount={true}
+                                    maxLength={100}
+                                    style={{
+                                        height: 60,
+                                    }}/>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
             </Modal>
 
 

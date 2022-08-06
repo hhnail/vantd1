@@ -24,6 +24,7 @@ export default function MyMessage() {
         })
     },[])
 
+    // 员工信息动态字段信息
     const renderStaffInfo = () => {
         const descriptions = []
         staffInfo.forEach(item => {
@@ -63,25 +64,14 @@ export default function MyMessage() {
                         border: '1px solid #efefef',
                     }}>
                     <Avatar
-                        size={{
-                            // 超小屏幕
-                            // xs: 24,
-                            // 小屏幕
-                            // sm: 32,
-                            // 中等屏幕
-                            // md: 40,
-                            // 大屏幕
-                            // lg: 64,
-                            // 超大屏幕
-                            xl: 100,
-                            // xxl: 100,
-                        }}
+                        // 屏幕适配
+                        size={{xl: 125,}}
                         style={{
-                            top: '18%',
-                            left: '22%',
+                            top: '12%',
+                            left: '18%',
                             // padding:'10px 10px 10px 10px'
                         }}
-                        icon={<AntDesignOutlined/>}
+                        src={"https://tse4-mm.cn.bing.net/th/id/OIP-C.vcWSCUMUSnIPzbypJT8gSAHaHa?pid=ImgDet&rs=1"}
                     />
                 </Col>
                 <Col

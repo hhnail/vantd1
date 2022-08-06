@@ -64,6 +64,8 @@ export default function TablePro(
         // 表格间距大小
         gapSize,
         // 按钮操作事件
+        // 新增
+        addClick,
         // 编辑
         editClick,
 
@@ -84,12 +86,8 @@ export default function TablePro(
                 <CurdButtonGroup
                     btnsVisible={[true, true, true]}
                     btnsSize={btnsSize.value || defaultState.btnsSize}
+                    addClick={() => addClick && addClick()}
                     editClick={() => editClick && editClick()}
-                    // editClick={() => {
-                    //     if (editClick) {
-                    //         editClick()
-                    //     }
-                    // }}
                 />
             </Col>
         </Row>

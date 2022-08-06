@@ -11,6 +11,9 @@ export const updateTable = (data) => {
     return axios.post('/vapi/updateTable', data)
 }
 
+/**
+ * 根据表格的逻辑字段
+ */
 export const getTableColumns = (id) => {
     return axios.post('/vapi/getTableColumns',
         qs.stringify({
