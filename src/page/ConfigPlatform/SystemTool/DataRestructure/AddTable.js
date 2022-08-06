@@ -24,6 +24,7 @@ import {Select} from 'antd';
 import {FIELD_TYPE_LIST} from "../../../../enums/fieldType";
 import {isEmpty} from "../../../../util/stringUtil";
 import {createTable} from "../../../../service/tableService";
+import {renderFieldOptions} from "./common";
 
 const {Option} = Select;
 
@@ -174,23 +175,6 @@ export default function AddTable() {
             })
         })
     }
-
-    const renderFieldOptions = () => {
-        const options = []
-        FIELD_TYPE_LIST.forEach(item => {
-            options.push(<Option value={item.value}>{item.value}</Option>)
-        })
-        // console.log(options)
-        return <Select style={{width: 120}}
-                       defaultValue={FIELD_TYPE_LIST[0].value}
-            // onChange={(value)=>{
-            //
-            // }}
-        >
-            {options}
-        </Select>
-    }
-
 
     return <>
         <PageHeader

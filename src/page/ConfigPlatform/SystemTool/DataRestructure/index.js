@@ -22,6 +22,7 @@ import {getTableColumns, updateTable} from "../../../../service/tableService";
 import TablePro, {GAP_SIZE_TYPE, ROW_SELECTION_TYPE} from "../../../../component/TablePro";
 import {BUTTON_SIZE} from "../../../../component/CurdButtonGroup";
 import {FIELD_TYPE_LIST} from "../../../../enums/fieldType";
+import {renderFieldOptions} from "./common";
 
 
 const {Option} = Select;
@@ -64,6 +65,7 @@ export default function DataRestructure() {
     const [addFieldForm] = useForm()
     const [editModalForm] = useForm();
     // 编辑字段 表单
+    const [columnAddModalForm] = useForm();
     const [columnEditModalForm] = useForm();
     // 路由跳转
     const navigate = useNavigate()
@@ -201,22 +203,6 @@ export default function DataRestructure() {
 
     }
 
-
-    const renderFieldOptions = () => {
-        const options = []
-        FIELD_TYPE_LIST.forEach(item => {
-            options.push(<Option value={item.value}>{item.value}</Option>)
-        })
-        // console.log(options)
-        return <Select style={{width: 120}}
-                       defaultValue={FIELD_TYPE_LIST[0].value}
-            // onChange={(value)=>{
-            //
-            // }}
-        >
-            {options}
-        </Select>
-    }
 
 
     return (
@@ -511,13 +497,13 @@ export default function DataRestructure() {
 
 
 
-            {/*字段新增模态框*/}
+            {/* ======= 字段新增模态框 ======= */}
             <Modal
                 title="字段编辑"
                 okText={"确认"}
                 cancelText={"取消"}
                 visible={columnAddModalVisible}
-                width={880}
+                width={890}
                 onOk={() => {
                     setColumnAddModalVisible(false)
                 }}
@@ -526,7 +512,7 @@ export default function DataRestructure() {
                 }}
             >
                 <Form
-                    form={columnEditModalForm}
+                    form={columnAddModalForm}
                     name="columnEditModalForm"
                     layout={"horizontal"}
                     labelCol={{span: 4}}
@@ -534,7 +520,7 @@ export default function DataRestructure() {
                     style={{margin: "30px 10px 0px 10px"}}
                 >
                     <Row>
-                        <Col span={12}>
+                        <Col span={6}>
                             <Form.Item
                                 labelCol={{span: 4}}
                                 wrapperCol={{
@@ -551,28 +537,24 @@ export default function DataRestructure() {
                                 <Input/>
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
+                        <Col span={6}>
                             <Form.Item
-                                labelCol={{span: 4}}
-                                wrapperCol={{
-                                    span: 16,
-                                }}
+                                labelCol={{span: 5}}
+                                wrapperCol={{span: 17,}}
                                 label={"类型"}
                                 name={'type'}>
                                 {renderFieldOptions()}
                                 {/*<Option value="Yiminghe">yiminghe</Option>*/}
                             </Form.Item>
                         </Col>
-                    </Row>
-                    <Row>
-                        <Col span={12}>
+                        <Col span={6}>
                             <Form.Item
                                 label={"长度"}
                                 name={'length'}>
                                 <InputNumber/>
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
+                        <Col span={6}>
                             <Form.Item
                                 label={"精度"}
                                 name={'accuracy'}>
@@ -593,7 +575,6 @@ export default function DataRestructure() {
                                     checked={false}
                                     onClick={() => {
                                         const oldValue = addFieldForm.getFieldValue("nullable")
-                                        console.log('Checkbox click oldValue', oldValue)
                                         addFieldForm.setFieldsValue({nullable: (oldValue == 1) ? 0 : 1})
                                     }}
                                 />
@@ -628,30 +609,26 @@ export default function DataRestructure() {
                         </Col>
                     </Row>
                     <Row>
-                        <Col span={12}>
+                        <Col span={6}>
                             <Form.Item
-                                // labelCol={{span: 4}}
-                                // wrapperCol={{
-                                //     span: 16,
-                                // }}
+                                labelCol={{span: 6}}
+                                wrapperCol={{span: 16,}}
                                 label={"默认值"}
                                 name={'autoIncrement'}>
                                 <Input/>
                             </Form.Item>
                         </Col>
-                    </Row>
-                    <Row>
-                        <Col span={24}>
+                        <Col span={6}>
                             <Form.Item
-                                labelCol={{span: 2}}
-                                wrapperCol={{span: 22}}
+                                // labelCol={{span: 2}}
+                                // wrapperCol={{span: 22}}
                                 label={"注释"}
                                 name={'remark'}>
                                 <Input.TextArea
                                     showCount={true}
                                     maxLength={100}
                                     style={{
-                                        height: 60,
+                                        height: 40,
                                     }}/>
                             </Form.Item>
                         </Col>
@@ -660,7 +637,7 @@ export default function DataRestructure() {
             </Modal>
 
 
-            {/*字段编辑模态框*/}
+            {/* ======= 字段编辑模态框 ======= */}
             <Modal
                 title="字段编辑"
                 okText={"确认"}
