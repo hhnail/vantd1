@@ -68,6 +68,8 @@ export default function TablePro(
         addClick,
         // 编辑
         editClick,
+        // 删除
+        deleteClick,
 
     }
 ) {
@@ -88,6 +90,7 @@ export default function TablePro(
                     btnsSize={btnsSize.value || defaultState.btnsSize}
                     addClick={() => addClick && addClick()}
                     editClick={() => editClick && editClick()}
+                    deleteClick={() => deleteClick && deleteClick()}
                 />
             </Col>
         </Row>

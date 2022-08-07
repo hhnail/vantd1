@@ -23,6 +23,7 @@ import TablePro, {GAP_SIZE_TYPE, ROW_SELECTION_TYPE} from "../../../../component
 import {BUTTON_SIZE} from "../../../../component/CurdButtonGroup";
 import {FIELD_TYPE_LIST} from "../../../../enums/fieldType";
 import {renderFieldOptions} from "./common";
+import {MESSAGE} from "../../../../enums/message";
 
 
 const {Option} = Select;
@@ -491,13 +492,22 @@ export default function DataRestructure() {
                     editClick={() => {
                         setColumnEditModalVisible(true)
                     }}
+                    deleteClick={()=>{
+                        // TODO 校验选择的记录数
+                        Modal.confirm({
+                            title: '删除',
+                            content: '您确认要删除吗？',
+                            okText: '确认',
+                            cancelText: '取消',
+                        });
+                    }}
                 />
             </Modal>
 
 
             {/* ======= 字段新增模态框 ======= */}
             <Modal
-                title="字段编辑"
+                title="字段新增"
                 okText={"确认"}
                 cancelText={"取消"}
                 visible={columnAddModalVisible}
@@ -511,12 +521,16 @@ export default function DataRestructure() {
                             }
                             console.log(data)
                             addField(data).then(res => {
-                                    console.log(res)
+                                    message.success("操作成功！")
                                 }
                             )
                         })
-                    // setColumnAddModalVisible(false)
-                    // message.success("操作成功！")
+                        .catch(err => {
+                            message.error("操作失败，请练习管理员！")
+                        })
+                        .finally(() => {
+                            setColumnAddModalVisible(false)
+                        })
                 }}
                 onCancel={() => {
                     setColumnAddModalVisible(false)
