@@ -1,6 +1,7 @@
 import axios from "axios";
 import qs from "qs";
 import {QueryOption, queryOption} from "../util/QueryOption";
+import {request, REQUEST_TYPE} from "../util/requestUtil";
 
 export const createTable = (data) => {
     return axios.post('/vapi/createTable', data)
@@ -38,4 +39,11 @@ export const getCodeTable = (type) => {
     console.log("options：", queryOption.getOption())
     return axios.post('/vapi/getCodeTable', queryOption.getOption())
 
+}
+
+/**
+ * 添加字段
+ */
+export const addField = (data) => {
+    return request('/vapi/addField', REQUEST_TYPE.POST, data)
 }

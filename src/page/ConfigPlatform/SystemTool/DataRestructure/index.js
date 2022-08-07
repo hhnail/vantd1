@@ -18,7 +18,7 @@ import {useEffect, useState} from "react";
 import {getTableGroup, getTables} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
-import {getTableColumns, updateTable} from "../../../../service/tableService";
+import {addField, getTableColumns, updateTable} from "../../../../service/tableService";
 import TablePro, {GAP_SIZE_TYPE, ROW_SELECTION_TYPE} from "../../../../component/TablePro";
 import {BUTTON_SIZE} from "../../../../component/CurdButtonGroup";
 import {FIELD_TYPE_LIST} from "../../../../enums/fieldType";
@@ -202,7 +202,6 @@ export default function DataRestructure() {
             })
 
     }
-
 
 
     return (
@@ -486,15 +485,14 @@ export default function DataRestructure() {
                     }
                     dataSource={tableColumnData}
                     scrollX={1200}
-                    addClick={()=>{
+                    addClick={() => {
                         setColumnAddModalVisible(true)
                     }}
-                    editClick={()=>{
+                    editClick={() => {
                         setColumnEditModalVisible(true)
                     }}
                 />
             </Modal>
-
 
 
             {/* ======= 字段新增模态框 ======= */}
@@ -505,7 +503,20 @@ export default function DataRestructure() {
                 visible={columnAddModalVisible}
                 width={890}
                 onOk={() => {
-                    setColumnAddModalVisible(false)
+                    columnAddModalForm.validateFields()
+                        .then(values => {
+                            const data = {
+                                ...values,
+                                sysTableId: selectedRowItem.id,
+                            }
+                            console.log(data)
+                            addField(data).then(res => {
+                                    console.log(res)
+                                }
+                            )
+                        })
+                    // setColumnAddModalVisible(false)
+                    // message.success("操作成功！")
                 }}
                 onCancel={() => {
                     setColumnAddModalVisible(false)
