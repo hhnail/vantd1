@@ -1,10 +1,11 @@
+import {useEffect, useState} from "react";
 import {Col, Row, Table} from 'antd';
 import React from 'react';
 import CurdButtonGroup, {BUTTON_SIZE} from "../CurdButtonGroup";
 
 
 /**
- * 表格多选按钮类型 枚举
+ * 枚举 表格多选按钮类型
  */
 export const ROW_SELECTION_TYPE = {
     // 圆形
@@ -18,7 +19,7 @@ export const ROW_SELECTION_TYPE = {
 }
 
 /**
- * 表格间距大小
+ * 枚举 表格间距大小
  */
 export const GAP_SIZE_TYPE = {
     // 小
@@ -35,6 +36,7 @@ export const GAP_SIZE_TYPE = {
     }
 }
 
+// 默认属性
 const defaultState = {
     rowSelectionType: ROW_SELECTION_TYPE.CHECKBOX,
     pageSize: 5,
@@ -45,7 +47,6 @@ const defaultState = {
 
 /**
  * 表格增强组件
- *
  */
 export default function TablePro(
     {
@@ -75,6 +76,27 @@ export default function TablePro(
 ) {
 
 
+    // 当前选中的key【多选框】
+    const [selectedRowKeys, setSelectedRowKeys] = useState([])
+    // 当前选中的项，仅可编辑单项
+    const [selectedRowItem, setSelectedRowItem] = useState()
+
+    const onSelectChange = selectedRowKeys => {
+        // console.log('selectedRowKeys changed: ', selectedRowKeys);
+        setSelectedRowKeys(selectedRowKeys)
+        dataSource.forEach(item => {
+            // 设置当前操作的项
+            if (item.id == selectedRowKeys) {
+                setSelectedRowItem(item);
+                // 跳出当前foreach。提高效率
+                return
+            }
+
+            // console.log("check foreach中的return未弹出全部栈")
+        })
+    };
+
+
     return (<>
         {/*分割线*/}
         {/*<Divider />*/}
@@ -102,6 +124,8 @@ export default function TablePro(
                 size={gapSize.value || defaultState.gapSize}
                 rowSelection={{
                     type: rowSelectionType.value || defaultState.rowSelectionType.value,
+                    selectedRowKeys,
+                    onChange: onSelectChange,
                 }}
                 columns={columns}
                 dataSource={dataSource}
