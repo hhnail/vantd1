@@ -18,7 +18,7 @@ import {useEffect, useState} from "react";
 import {getTableGroup, getTables} from "../../../../service/commonService";
 import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
-import {addField, getTableColumns, updateTable} from "../../../../service/tableService";
+import {addField, deleteField, getTableColumns, updateTable} from "../../../../service/tableService";
 import TablePro, {GAP_SIZE_TYPE, ROW_SELECTION_TYPE} from "../../../../component/TablePro";
 import {BUTTON_SIZE} from "../../../../component/CurdButtonGroup";
 import {FIELD_TYPE_LIST} from "../../../../enums/fieldType";
@@ -492,8 +492,8 @@ export default function DataRestructure() {
                     editClick={() => {
                         setColumnEditModalVisible(true)
                     }}
-                    deleteClick={()=>{
-                        // TODO 校验选择的记录数
+                    deleteClick={() => {
+                        // TODO 获取tablePro选中的记录、校验选择的记录数、封装请求参数
                         Modal.confirm({
                             title: '删除',
                             content: '您确认要删除吗？',
@@ -519,7 +519,7 @@ export default function DataRestructure() {
                                 ...values,
                                 sysTableId: selectedRowItem.id,
                             }
-                            console.log(data)
+                            // console.log(data)
                             addField(data).then(res => {
                                     message.success("操作成功！")
                                 }

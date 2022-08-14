@@ -47,3 +47,12 @@ export const getCodeTable = (type) => {
 export const addField = (data) => {
     return request('/vapi/addField', REQUEST_TYPE.POST, data)
 }
+
+/**
+ * 删除字段
+ */
+export const deleteField = (data) => {
+    return request('/vapi/deleteField', REQUEST_TYPE.POST, data)
+}
+
+
