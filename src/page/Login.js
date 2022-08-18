@@ -90,7 +90,7 @@ export default function Login() {
                                 localStorage.setItem("userLogin", {
                                     ...value
                                 })
-                                navigate("/ssss")
+                                navigate("/")
                             })
                         }}
                 >

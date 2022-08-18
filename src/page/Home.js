@@ -99,7 +99,7 @@ export default function Home() {
      * 侧边栏点击事件
      */
     const sidebarClick = (item) => {
-        console.log("sidebar item", item)
+        // console.log("sidebar item", item)
         // setCurrentSidebar()
         mapRoute(sidebar, item.key)
     }
