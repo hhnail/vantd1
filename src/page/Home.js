@@ -16,6 +16,8 @@ import SingleCode from "./ConfigPlatform/DataDictionary/SingleCode";
 import MultilevelCode from "./ConfigPlatform/DataDictionary/MultilevelCode";
 import AddTable from "./ConfigPlatform/SystemTool/DataRestructure/AddTable";
 import RoleManage from "./ConfigPlatform/PermissionManage/RoleManage";
+import Success from "./Success";
+import Login from "./Login";
 
 export default function Home() {
 
@@ -44,7 +46,7 @@ export default function Home() {
 
     useEffect(() => {
         // 初始化路由及侧边栏
-        let routeAddress = '/configPlatform/moduleMaintenance'
+        let routeAddress = '/'
         let moduleId = -1;
         if (headerMenu && headerMenu.length > 0) {
             moduleId = headerMenu[0].pid
@@ -171,7 +173,7 @@ export default function Home() {
                         {
                             key: '2',
                             label: (
-                                <a target="_self" onClick={()=>{
+                                <a target="_self" onClick={() => {
                                     localStorage.removeItem("userLogin")
                                     navigate("/")
                                 }}>退出系统</a>
@@ -208,7 +210,11 @@ export default function Home() {
             }}>
                 {/* TODO 动态路由 */}
                 <Routes>
-                    <Route exact path="/" element={<StaffDesktop/>}/>
+                    <Route exact path="/home" element={
+                        localStorage.getItem("userLogin")
+                            ? <StaffDesktop/>
+                            : <Login/>
+                    }/>
                     {/*===== 员工桌面 =====*/}
                     <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
                     {/*<Route exact path="/staffDesktop" element={<AddTable/>}/>*/}

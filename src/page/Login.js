@@ -8,11 +8,9 @@ export default function Login() {
     const navigate = useNavigate()
 
     const onFinish = (values) => {
-        console.log('Success:', values);
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
     };
 
     return <>
@@ -90,7 +88,7 @@ export default function Login() {
                                 localStorage.setItem("userLogin", {
                                     ...value
                                 })
-                                navigate("/")
+                                navigate("/home")
                             })
                         }}
                 >
