@@ -15,7 +15,7 @@ function App() {
         overflowX: 'hidden',
     }}>
         <Routes>
-            <Route exact path="/" element={
+            <Route path="/" element={
                 localStorage.getItem("userLogin")
                     ? <Home/>
                     : <Login/>

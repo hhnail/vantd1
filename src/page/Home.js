@@ -32,6 +32,9 @@ export default function Home() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        if(!localStorage.getItem("userLogin")){
+            navigate("/hhh")
+        }
         // 获取顶部菜单
         getHeaderMenu().then(res => {
             const {data} = res
@@ -65,6 +68,7 @@ export default function Home() {
 
     useEffect(() => {
         if (currentSidebar) {
+            console.log("currentSidebar:", currentSidebar)
             navigate(currentSidebar.url)
         }
     }, [currentSidebar])
@@ -210,12 +214,8 @@ export default function Home() {
             }}>
                 {/* TODO 动态路由 */}
                 <Routes>
-                    <Route exact path="/home" element={
-                        localStorage.getItem("userLogin")
-                            ? <StaffDesktop/>
-                            : <Login/>
-                    }/>
                     {/*===== 员工桌面 =====*/}
+                    <Route path="/home" element={<StaffDesktop/>}/>
                     <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
                     {/*<Route exact path="/staffDesktop" element={<AddTable/>}/>*/}
                     <Route exact path="/staffDesktop/myMessage" element={<MyMessage/>}/>
