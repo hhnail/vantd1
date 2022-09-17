@@ -18,6 +18,7 @@ import AddTable from "./ConfigPlatform/SystemTool/DataRestructure/AddTable";
 import RoleManage from "./ConfigPlatform/PermissionManage/RoleManage";
 import Success from "./Success";
 import Login from "./Login";
+import FormConfig from "./ConfigPlatform/FormConfig";
 
 export default function Home() {
 
@@ -32,9 +33,6 @@ export default function Home() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(!localStorage.getItem("userLogin")){
-            navigate("/hhh")
-        }
         // 获取顶部菜单
         getHeaderMenu().then(res => {
             const {data} = res
@@ -49,6 +47,7 @@ export default function Home() {
 
     useEffect(() => {
         // 初始化路由及侧边栏
+        // let routeAddress = '/configPlatform/moduleMaintenance'
         let routeAddress = '/'
         let moduleId = -1;
         if (headerMenu && headerMenu.length > 0) {
@@ -215,7 +214,8 @@ export default function Home() {
                 {/* TODO 动态路由 */}
                 <Routes>
                     {/*===== 员工桌面 =====*/}
-                    <Route path="/home" element={<StaffDesktop/>}/>
+                    {/*<Route path="/home" element={<StaffDesktop/>}/>*/}
+                    <Route exact path="/" element={<StaffDesktop/>}/>
                     <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
                     {/*<Route exact path="/staffDesktop" element={<AddTable/>}/>*/}
                     <Route exact path="/staffDesktop/myMessage" element={<MyMessage/>}/>
@@ -231,17 +231,17 @@ export default function Home() {
 
                     {/*===== 配置平台 =====*/}
                     <Route exact path="/configPlatform" element={<ConfigPlatform/>}/>
+                    {/*2系统工具*/}
                     <Route exact path="/configPlatform/systemTool" element={<SystemTool/>}/>
                     <Route exact path="/configPlatform/systemTool/moduleMaintenance" element={<ModuleMaintenance/>}/>
                     <Route exact path="/configPlatform/systemTool/dataRestructure" element={<DataRestructure/>}/>
                     <Route exact path="/configPlatform/systemTool/dataRestructure/addTable" element={<AddTable/>}/>
                     <Route exact path="/configPlatform/permissionManage/role" element={<RoleManage/>}/>
-
-
+                    {/*2数据字典*/}
                     <Route exact path="/configPlatform/dataDictionary" element={<>数据字典</>}/>
                     <Route exact path="/configPlatform/dataDictionary/singleCode" element={<SingleCode/>}/>
                     <Route exact path="/configPlatform/dataDictionary/multilevelCode" element={<MultilevelCode/>}/>
-
+                    <Route exact path="/configPlatform/formConfig" element={<FormConfig/>}/>
                 </Routes>
             </div>
         </div>
