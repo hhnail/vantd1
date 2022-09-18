@@ -214,10 +214,8 @@ export default function Home() {
                 {/* TODO 动态路由 */}
                 <Routes>
                     {/*===== 员工桌面 =====*/}
-                    {/*<Route path="/home" element={<StaffDesktop/>}/>*/}
-                    <Route exact path="/" element={<StaffDesktop/>}/>
-                    <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
-                    {/*<Route exact path="/staffDesktop" element={<AddTable/>}/>*/}
+                    {/*<Route exact path="/staffDesktop" element={<StaffDesktop/>}/>*/}
+                    <Route exact path="/staffDesktop" element={<FormConfig/>}/>
                     <Route exact path="/staffDesktop/myMessage" element={<MyMessage/>}/>
                     <Route exact path="/staffDesktop/myTodo" element={<MyTodo/>}/>
 
@@ -242,6 +240,8 @@ export default function Home() {
                     <Route exact path="/configPlatform/dataDictionary/singleCode" element={<SingleCode/>}/>
                     <Route exact path="/configPlatform/dataDictionary/multilevelCode" element={<MultilevelCode/>}/>
                     <Route exact path="/configPlatform/formConfig" element={<FormConfig/>}/>
+
+                    <Route path="/" element={<StaffDesktop/>}/>
                 </Routes>
             </div>
         </div>

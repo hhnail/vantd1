@@ -2,7 +2,7 @@ import {Button, Checkbox, Form, Input} from 'antd';
 import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
 
-import  './login.css'
+import styles from './Login.less'
 
 export default function Login() {
 
@@ -11,7 +11,7 @@ export default function Login() {
 
     return <>
         <div>
-            <div className={'container'}>
+            <div className={styles.container}>
                 我是背景图片
             </div>
 
@@ -20,7 +20,7 @@ export default function Login() {
                       labelCol={{span: 8,}}
                       wrapperCol={{span: 12,}}
                       initialValues={{remember: true,}}
-                      className={'form'}
+                      className={styles.form}
                 >
                     <Form.Item
                         label="用户名"
@@ -70,7 +70,7 @@ export default function Login() {
                                 onClick={() => {
                                     loginForm.validateFields().then(value => {
                                         localStorage.setItem("userLogin", JSON.stringify(value))
-                                        navigate("/home")
+                                        navigate("/staffDesktop")
                                     })
                                 }}
                         >

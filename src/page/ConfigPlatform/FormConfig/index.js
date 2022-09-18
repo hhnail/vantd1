@@ -1,66 +1,70 @@
-import { Tree } from 'antd';
-import React, { useState } from 'react';
-const initTreeData = [
-    {
-        title: 'Expand to load',
-        key: '0',
-    },
-    {
-        title: 'Expand to load',
-        key: '1',
-    },
-    {
-        title: 'Tree Node',
-        key: '2',
-        isLeaf: true,
-    },
-];
+import {Space, Table, Tag} from 'antd';
+import styles from './index.less'
+import {useState} from "react";
+import TreePro from "../../../component/TreePro";
+import CurdButtonGroup from "../../../component/CurdButtonGroup";
 
-const updateTreeData = (list, key, children) =>
-    list.map((node) => {
-        if (node.key === key) {
-            return { ...node, children };
-        }
-        if (node.children) {
-            return { ...node, children: updateTreeData(node.children, key, children) };
-        }
-        return node;
-    });
-
-/**
- * 表单配置
- * @returns {JSX.Element}
- * @constructor
- */
 export default function FormConfig() {
 
-    const [treeData, setTreeData] = useState(initTreeData);
+    const [formData, setFormData] = useState([
+        {
+            key: '1',
+            name: 'John Brown',
+            age: 32,
+        },
+        {
+            key: '2',
+            name: 'Jim Green',
+            age: 42,
+        },
+        {
+            key: '3',
+            name: 'Joe Black',
+            age: 32,
+        },
+    ])
 
-    const onLoadData = ({ key, children }) =>
-        new Promise((resolve) => {
-            if (children) {
-                resolve();
-                return;
-            }
+    const columns = [
+        {
+            title: '表单名称',
+            dataIndex: 'name',
+            key: 'name',
+            render: (text) => <a>{text}</a>,
+        },
+        {
+            title: '表单描述',
+            dataIndex: 'age',
+            key: 'age',
+        },
+        {
+            title: '所属部门',
+            dataIndex: 'address',
+            key: 'address',
+        },
+    ];
 
-            setTimeout(() => {
-                setTreeData((origin) =>
-                    updateTreeData(origin, key, [
-                        {
-                            title: 'Child Node',
-                            key: `${key}-0`,
-                        },
-                        {
-                            title: 'Child Node',
-                            key: `${key}-1`,
-                        },
-                    ]),
-                );
-                resolve();
-            }, 400);
-        });
 
     return <>
-        <Tree loadData={onLoadData} treeData={treeData} />
+        <div className={styles.container} style={{display: "flex",}}>
+            <div className={styles.rightPanel} style={{width: '20%'}}>
+                <TreePro/>
+            </div>
+
+            <div className={styles.leftPanel}
+                 style={{
+                     width: '80%',
+                     border: '1px solid rgba(63, 115, 196, 1)',
+                     padding: '10px 10px 10px 10px',
+                     margin: '5px 5px 5px 5px',
+                 }}>
+                <CurdButtonGroup/>
+                <Table
+                    size={"small"}
+                    columns={columns}
+                    dataSource={formData}/>
+            </div>
+        </div>
+
     </>
 }
+
