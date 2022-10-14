@@ -18,6 +18,7 @@ import AddTable from "./ConfigPlatform/SystemTool/DataRestructure/AddTable";
 import RoleManage from "./ConfigPlatform/PermissionManage/RoleManage";
 import Success from "./Success";
 import Login from "./Login";
+import FormConfig from "./ConfigPlatform/FormConfig";
 import FreeReport from "./ConfigPlatform/SystemTool/FreeReport";
 
 export default function Home() {
@@ -76,7 +77,7 @@ export default function Home() {
 
 
     /**
-     * 获取当前模块（顶部菜单）对应侧边栏
+     * 根据模块编码，重新获取侧边栏
      */
     const refreshSideBar = (moduleId) => {
         if (moduleId < 0) {
@@ -231,18 +232,20 @@ export default function Home() {
 
                     {/*===== 配置平台 =====*/}
                     <Route exact path="/configPlatform" element={<ConfigPlatform/>}/>
+                    {/*2系统工具*/}
                     <Route exact path="/configPlatform/systemTool" element={<SystemTool/>}/>
                     <Route exact path="/configPlatform/systemTool/freeReport" element={<FreeReport/>}/>
                     <Route exact path="/configPlatform/systemTool/moduleMaintenance" element={<ModuleMaintenance/>}/>
                     <Route exact path="/configPlatform/systemTool/dataRestructure" element={<DataRestructure/>}/>
                     <Route exact path="/configPlatform/systemTool/dataRestructure/addTable" element={<AddTable/>}/>
                     <Route exact path="/configPlatform/permissionManage/role" element={<RoleManage/>}/>
-
-
+                    {/*2数据字典*/}
                     <Route exact path="/configPlatform/dataDictionary" element={<>数据字典</>}/>
                     <Route exact path="/configPlatform/dataDictionary/singleCode" element={<SingleCode/>}/>
                     <Route exact path="/configPlatform/dataDictionary/multilevelCode" element={<MultilevelCode/>}/>
+                    <Route exact path="/configPlatform/formConfig" element={<FormConfig/>}/>
 
+                    <Route path="/" element={<StaffDesktop/>}/>
                 </Routes>
             </div>
         </div>
