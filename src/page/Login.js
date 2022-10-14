@@ -8,9 +8,11 @@ export default function Login() {
     const navigate = useNavigate()
 
     const onFinish = (values) => {
+
     };
 
     const onFinishFailed = (errorInfo) => {
+
     };
 
     return <>
@@ -85,9 +87,7 @@ export default function Login() {
                         htmlType="submit"
                         onClick={() => {
                             loginForm.validateFields().then(value => {
-                                localStorage.setItem("userLogin", {
-                                    ...value
-                                })
+                                localStorage.setItem("userLogin", JSON.stringify(value))
                                 navigate("/home")
                             })
                         }}

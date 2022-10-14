@@ -32,9 +32,9 @@ export default function Home() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if(!localStorage.getItem("userLogin")){
-            navigate("/hhh")
-        }
+        // if(!localStorage.getItem("userLogin")){
+        //     navigate("/hhh")
+        // }
         // 获取顶部菜单
         getHeaderMenu().then(res => {
             const {data} = res
@@ -75,7 +75,7 @@ export default function Home() {
 
 
     /**
-     * 根据模块编码，重新获取侧边栏
+     * 获取当前模块（顶部菜单）对应侧边栏
      */
     const refreshSideBar = (moduleId) => {
         if (moduleId < 0) {
@@ -215,7 +215,6 @@ export default function Home() {
                 {/* TODO 动态路由 */}
                 <Routes>
                     {/*===== 员工桌面 =====*/}
-                    <Route path="/home" element={<StaffDesktop/>}/>
                     <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
                     {/*<Route exact path="/staffDesktop" element={<AddTable/>}/>*/}
                     <Route exact path="/staffDesktop/myMessage" element={<MyMessage/>}/>

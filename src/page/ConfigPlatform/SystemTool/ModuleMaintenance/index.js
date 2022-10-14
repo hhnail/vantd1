@@ -161,7 +161,7 @@ export default function ModuleMaintenance() {
                     // 要新增的节点的pid == 当前操作节点的id
                     pid: currentItem.key,
                     name: name,
-                    routingAddress: currentItem.routingAddress + routingAddress,
+                    routingAddress: currentItem.routingAddress +"/"+ routingAddress,
                     level: currentItem.level + 1,
                     type: TREE_NODE_TYPE.SIDEBAR.value,
                     // currentItem为一级菜单时，moduleId为空。此时的moduleId就是item的key本身
@@ -276,7 +276,7 @@ export default function ModuleMaintenance() {
                             message: '请输入路由地址',
                         },
                     ]}
-                    ><Input addonBefore={currentItem.routingAddress}/>
+                    ><Input addonBefore={currentItem.routingAddress+"/"}/>
 
                     </Form.Item>
                 </Form>

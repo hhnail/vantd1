@@ -14,14 +14,15 @@ function App() {
     return (<div style={{
         overflowX: 'hidden',
     }}>
-        <Routes>
-            <Route path="/" element={
-                localStorage.getItem("userLogin")
-                    ? <Home/>
-                    : <Login/>
-            }/>
-        </Routes>
-
+        {/*<Routes>*/}
+        {/*    <Route path="/" element={*/}
+        {/*        localStorage.getItem("userLogin")*/}
+        {/*            ? <Home/>*/}
+        {/*            : <Login/>*/}
+        {/*    }/>*/}
+        {/*    <Route path="/home" element={<Home/>}/>*/}
+        {/*</Routes>*/}
+        <Home/>
     </div>)
 }
 
