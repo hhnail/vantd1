@@ -18,6 +18,7 @@ import AddTable from "./ConfigPlatform/SystemTool/DataRestructure/AddTable";
 import RoleManage from "./ConfigPlatform/PermissionManage/RoleManage";
 import Success from "./Success";
 import Login from "./Login";
+import FreeReport from "./ConfigPlatform/SystemTool/FreeReport";
 
 export default function Home() {
 
@@ -215,8 +216,8 @@ export default function Home() {
                 {/* TODO 动态路由 */}
                 <Routes>
                     {/*===== 员工桌面 =====*/}
-                    <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
-                    {/*<Route exact path="/staffDesktop" element={<AddTable/>}/>*/}
+                    {/*<Route exact path="/staffDesktop" element={<StaffDesktop/>}/>*/}
+                    <Route exact path="/staffDesktop" element={<FreeReport/>}/>
                     <Route exact path="/staffDesktop/myMessage" element={<MyMessage/>}/>
                     <Route exact path="/staffDesktop/myTodo" element={<MyTodo/>}/>
 
@@ -231,6 +232,7 @@ export default function Home() {
                     {/*===== 配置平台 =====*/}
                     <Route exact path="/configPlatform" element={<ConfigPlatform/>}/>
                     <Route exact path="/configPlatform/systemTool" element={<SystemTool/>}/>
+                    <Route exact path="/configPlatform/systemTool/freeReport" element={<FreeReport/>}/>
                     <Route exact path="/configPlatform/systemTool/moduleMaintenance" element={<ModuleMaintenance/>}/>
                     <Route exact path="/configPlatform/systemTool/dataRestructure" element={<DataRestructure/>}/>
                     <Route exact path="/configPlatform/systemTool/dataRestructure/addTable" element={<AddTable/>}/>

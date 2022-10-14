@@ -37,7 +37,9 @@ export default function CurdButtonGroup(
         btnsVisible,
         btnsSize,
         addClick,
+        saveClick,
         editClick,
+        refreshClick,
         deleteClick,
     }) {
 
@@ -61,6 +63,17 @@ export default function CurdButtonGroup(
 
     return <>
         <Space>
+
+            <Button
+                type={"primary"}
+                size={btnsSize || defaultState.btnsSize}
+                onClick={() => refreshClick()}
+                style={{
+                    display: getBtnDisplay()[2] ? "" : "none",
+                    width: 74,
+                }}
+            >刷新</Button>
+
             <Button
                 type={"primary"}
                 size={btnsSize || defaultState.btnsSize}
@@ -72,7 +85,6 @@ export default function CurdButtonGroup(
                 }}
             >新增</Button>
 
-
             <Button
                 type={"primary"}
                 size={btnsSize || defaultState.btnsSize}
@@ -83,6 +95,17 @@ export default function CurdButtonGroup(
                 }}
             >编辑</Button>
 
+
+            <Button
+                type={"primary"}
+                size={btnsSize || defaultState.btnsSize}
+                onClick={() => saveClick()}
+                style={{
+                    display: getBtnDisplay()[2] ? "" : "none",
+                    width: 74,
+                }}
+            >保存</Button>
+
             <Button
                 danger
                 size={btnsSize || defaultState.btnsSize}
@@ -92,6 +115,8 @@ export default function CurdButtonGroup(
                     width: 74,
                 }}
             >删除</Button>
+
+
         </Space>
     </>
 }
