@@ -1,7 +1,9 @@
-import {Collapse, Form, Input, Space, Button, Row, Col, message} from 'antd';
+import {Col, Collapse, Form, Input, message, Row, Space, Table, Button} from 'antd';
 import React, {useEffect, useState} from 'react';
 import CurdButtonGroup from "../../../../component/CurdButtonGroup";
 import {useForm} from "antd/es/form/Form";
+import {DeleteTwoTone, PlusCircleOutlined} from '@ant-design/icons'
+
 
 const {Panel} = Collapse;
 
@@ -23,6 +25,72 @@ export default function FreeReport() {
     const [reportForm] = useForm()
     const [onlyView, setOnlyView] = useState(true)
     const [reportData, setReportData] = useState()
+
+    const columns = [
+        {
+            title: '序号',
+            key: 'key',
+            render: (value, item, index) => index + 1,
+        },
+        {
+            title: '字段名称',
+            dataIndex: 'name',
+            key: 'name',
+            render: (value) => {
+                return <div>
+                    <Input disabled={onlyView}
+                           onChange={(e) => {
+
+
+                           }}/>
+                </div>
+            },
+        },
+        {
+            title: '展示列名称',
+            dataIndex: 'label',
+            key: 'label',
+            render: (value) => {
+                return <Input disabled={onlyView}/>
+            },
+        },
+        {
+            title: '字段类型',
+            dataIndex: 'type',
+            key: 'type',
+            render: (value) => {
+                return value
+            },
+        },
+        {
+            title: '操作',
+            dataIndex: 'action',
+            key: 'action',
+            render: (value, item, index) => {
+                return <Button
+                    icon={<DeleteTwoTone twoToneColor={"#ff0000"}/>}
+                    disabled={onlyView}
+                    onClick={() => {
+                        // console.log("index:", index)
+                        const newData = showFieldData.filter((value, index2) => {
+                            return index2 != index
+                        })
+                        // console.log("delete newData:", newData)
+                        setShowFieldData(newData)
+                    }}
+                />
+            },
+        },
+    ];
+
+    const EMPTY_ITEM = {
+        key: '1',
+        name: '',
+        label: '',
+        type: "文本"
+    }
+
+    const [showFieldData, setShowFieldData] = useState([EMPTY_ITEM]);
 
 
     return <>
@@ -64,29 +132,29 @@ export default function FreeReport() {
             >
                 <Panel header="基础信息" key="1">
                     <Row>
-                        <Col span={8}>
+                        <Col span={10}>
                             <Form.Item
                                 label="报表名称"
                                 name="name"
                                 labelCol={{span: 8}}
-                                wrapperCol={{span: 16}}
+                                wrapperCol={{span: 14}}
                             >
                                 <Input disabled={onlyView}/>
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
+                        <Col span={10} push={1}>
                             <Form.Item
                                 label="所属模块"
                                 name="moduleName"
                                 labelCol={{span: 8}}
-                                wrapperCol={{span: 16}}
+                                wrapperCol={{span: 14}}
                             >
                                 <Input disabled={onlyView}/>
                             </Form.Item>
                         </Col>
                     </Row>
                     <Row>
-                        <Col span={16}>
+                        <Col span={20}>
                             <Form.Item
                                 label="描述"
                                 name="description"
@@ -121,7 +189,24 @@ export default function FreeReport() {
                     </Form.Item>
                 </Panel>
                 <Panel header="显示字段配置" key="3">
-                    <p>xxxxxxxxxxxxv</p>
+
+                    <Table
+                        columns={columns}
+                        dataSource={showFieldData}
+                        footer={() => {
+                            return <Button icon={<PlusCircleOutlined/>}
+                                           disabled={onlyView}
+                                           onClick={() => {
+                                               const newData = showFieldData
+                                               newData.push(EMPTY_ITEM)
+                                               setShowFieldData([...newData])
+                                           }}
+                                           style={{
+                                               width: '100%'
+                                           }}/>
+                        }}
+                        pagination={false}
+                    />
                 </Panel>
                 <Panel header="传参字段配置" key="4">
                     <p>xxxxxxxxxxxxv</p>
@@ -130,10 +215,6 @@ export default function FreeReport() {
         </Form>
     </>
 }
-
-
-
-
 
 
 
