@@ -3,7 +3,8 @@ import React, {useEffect, useState} from 'react';
 import CurdButtonGroup from "../../../../component/CurdButtonGroup";
 import {useForm} from "antd/es/form/Form";
 import {DeleteTwoTone, PlusCircleOutlined} from '@ant-design/icons'
-
+import uuid from 'react-uuid';
+import {saveFreeReport} from "../../../../service/freeReportService";
 
 const {Panel} = Collapse;
 
@@ -36,22 +37,30 @@ export default function FreeReport() {
             title: '字段名称',
             dataIndex: 'name',
             key: 'name',
-            render: (value) => {
-                return <div>
-                    <Input disabled={onlyView}
-                           onChange={(e) => {
-
-
-                           }}/>
-                </div>
+            render: (value, item, index) => {
+                return <Form.Item
+                    style={{
+                        marginTop: 15
+                    }}
+                    name={"free_column_name_" + index}
+                >
+                    <Input disabled={onlyView}/>
+                </Form.Item>
             },
         },
         {
             title: '展示列名称',
             dataIndex: 'label',
             key: 'label',
-            render: (value) => {
-                return <Input disabled={onlyView}/>
+            render: (value, item, index) => {
+                return <Form.Item
+                    style={{
+                        marginTop: 15
+                    }}
+                    name={"free_column_label_" + index}
+                >
+                    <Input disabled={onlyView}/>
+                </Form.Item>
             },
         },
         {
@@ -84,7 +93,7 @@ export default function FreeReport() {
     ];
 
     const EMPTY_ITEM = {
-        key: '1',
+        key: uuid(),
         name: '',
         label: '',
         type: "文本"
@@ -106,7 +115,11 @@ export default function FreeReport() {
                         return
                     }
                     setOnlyView(true)
-                    message.success("操作成功！")
+                    reportForm.validateFields().then((values) => {
+                        saveFreeReport(values).then(res => {
+                            message.success("操作成功！")
+                        })
+                    })
                 }}
             />
         </Space>
