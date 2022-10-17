@@ -20,6 +20,9 @@ import Success from "./Success";
 import Login from "./Login";
 import FormConfig from "./ConfigPlatform/FormConfig";
 import FreeReport from "./ConfigPlatform/SystemTool/FreeReport";
+import FreeForm from "./ConfigPlatform/SystemTool/FreeForm";
+import Policy from "./Policy";
+import Report from "./Policy/Report";
 
 export default function Home() {
 
@@ -223,17 +226,23 @@ export default function Home() {
                     <Route exact path="/staffDesktop/myTodo" element={<MyTodo/>}/>
 
 
+
                     {/*===== 在线学习 =====*/}
                     <Route exact path="/onlineLearn" element={<OnlineLearn/>}/>
 
+
+
                     {/*===== 人力资本 =====*/}
                     <Route exact path="/humanResource" element={<HumanResource/>}/>
+
+
 
 
                     {/*===== 配置平台 =====*/}
                     <Route exact path="/configPlatform" element={<ConfigPlatform/>}/>
                     {/*2系统工具*/}
                     <Route exact path="/configPlatform/systemTool" element={<SystemTool/>}/>
+                    <Route exact path="/configPlatform/systemTool/freeForm" element={<FreeForm/>}/>
                     <Route exact path="/configPlatform/systemTool/freeReport" element={<FreeReport/>}/>
                     <Route exact path="/configPlatform/systemTool/moduleMaintenance" element={<ModuleMaintenance/>}/>
                     <Route exact path="/configPlatform/systemTool/dataRestructure" element={<DataRestructure/>}/>
@@ -244,6 +253,14 @@ export default function Home() {
                     <Route exact path="/configPlatform/dataDictionary/singleCode" element={<SingleCode/>}/>
                     <Route exact path="/configPlatform/dataDictionary/multilevelCode" element={<MultilevelCode/>}/>
                     <Route exact path="/configPlatform/formConfig" element={<FormConfig/>}/>
+
+
+
+
+                    {/*===== 决策平台 =====*/}
+                    <Route exact path="/policy" element={<Policy/>}/>
+                    <Route exact path="/policy/report" element={<Report/>}/>
+
 
                     <Route path="/" element={<StaffDesktop/>}/>
                 </Routes>
