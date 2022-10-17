@@ -1,9 +1,16 @@
 import {Input, Table, Tree, Space} from 'antd';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import {getFreeReport} from "../../../service/freeReportService";
 
 const {Search} = Input;
 
 export default function Report() {
+
+    useEffect(() => {
+        getFreeReport("1").then(res => {
+            console.log("getFreeReport res：", res)
+        })
+    }, [])
 
     const [treeData, setTreeData] = useState([
         {
