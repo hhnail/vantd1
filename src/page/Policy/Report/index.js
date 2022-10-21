@@ -11,6 +11,7 @@ export default function Report() {
             const {data} = res.data
             const {viewColumns} = data
             console.log("getFreeReport res data：", data)
+            // 设置展示字段列
             setViewColumns(viewColumns)
         })
     }, [])
