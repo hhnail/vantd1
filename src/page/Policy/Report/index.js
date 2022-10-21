@@ -8,7 +8,10 @@ export default function Report() {
 
     useEffect(() => {
         getFreeReport("1").then(res => {
-            console.log("getFreeReport res：", res)
+            const {data} = res.data
+            const {viewColumns} = data
+            console.log("getFreeReport res data：", data)
+            setViewColumns(viewColumns)
         })
     }, [])
 
@@ -31,42 +34,26 @@ export default function Report() {
         },
     ])
 
-    const [viewColumns, setViewColumns] = useState([
-        {
-            title: '姓名',
-            dataIndex: 'name',
-            key: 'name',
-        },
-        {
-            title: '年龄',
-            dataIndex: 'age',
-            key: 'age',
-        },
-        {
-            title: '地址',
-            dataIndex: 'address',
-            key: 'address',
-        },
-    ])
+    const [viewColumns, setViewColumns] = useState([])
 
     const [viewData, setViewData] = useState([
         {
             key: '1',
             name: 'John Brown',
-            age: 32,
-            address: 'New York No. 1 Lake Park',
+            label: 32,
+            module_id: 'New York No. 1 Lake Park',
         },
         {
             key: '2',
             name: 'Jim Green',
-            age: 42,
-            address: 'London No. 1 Lake Park',
+            label: 42,
+            module_id: 'London No. 1 Lake Park',
         },
         {
             key: '3',
             name: 'Joe Black',
-            age: 32,
-            address: 'Sidney No. 1 Lake Park',
+            label: 32,
+            module_id: 'Sidney No. 1 Lake Park',
         },
     ])
 
