@@ -61,62 +61,75 @@ export default function CurdButtonGroup(
         }
     }
 
+    const buttonConfig = [
+        {
+            type: "primary",
+            size: btnsSize || defaultState.btnsSize,
+            clickCallBack: () => addClick(),
+            text: "新增"
+        },
+        {
+            type: "primary",
+            size: btnsSize || defaultState.btnsSize,
+            clickCallBack: () => editClick(),
+            text: "编辑"
+        },
+        {
+            type: "primary",
+            size: btnsSize || defaultState.btnsSize,
+            clickCallBack: () => deleteClick(),
+            text: "删除"
+        },
+        {
+            type: "danger",
+            size: btnsSize || defaultState.btnsSize,
+            clickCallBack: () => deleteClick(),
+            text: "删除"
+        },
+        {
+            type: "primary",
+            size: btnsSize || defaultState.btnsSize,
+            clickCallBack: () => saveClick(),
+            text: "保存"
+        },
+        {
+            type: "primary",
+            size: btnsSize || defaultState.btnsSize,
+            clickCallBack: () => refreshClick(),
+            text: "刷新"
+        },
+    ]
+
+    const renderButtons = () => {
+        const buttons = []
+        buttonConfig.forEach((item, index) => {
+            buttons.push(
+                <Button
+                    type={item.type}
+                    size={item.size}
+                    onClick={() => item.clickCallBack()}
+                    style={{
+                        display: getBtnDisplay()[index] ? "" : "none",
+                        width: 74,
+                    }}
+                >{item.text}</Button>
+            )
+        })
+        return buttons
+    }
+
     return <>
         <Space>
-
-            <Button
-                type={"primary"}
-                size={btnsSize || defaultState.btnsSize}
-                onClick={() => refreshClick()}
-                style={{
-                    display: getBtnDisplay()[2] ? "" : "none",
-                    width: 74,
-                }}
-            >刷新</Button>
-
-            <Button
-                type={"primary"}
-                size={btnsSize || defaultState.btnsSize}
-                // size={"middle"}
-                onClick={() => addClick()}
-                style={{
-                    display: getBtnDisplay()[0] ? "" : "none",
-                    width: 74,
-                }}
-            >新增</Button>
-
-            <Button
-                type={"primary"}
-                size={btnsSize || defaultState.btnsSize}
-                onClick={() => editClick()}
-                style={{
-                    display: getBtnDisplay()[1] ? "" : "none",
-                    width: 74,
-                }}
-            >编辑</Button>
-
-
-            <Button
-                type={"primary"}
-                size={btnsSize || defaultState.btnsSize}
-                onClick={() => saveClick()}
-                style={{
-                    display: getBtnDisplay()[2] ? "" : "none",
-                    width: 74,
-                }}
-            >保存</Button>
-
-            <Button
-                danger
-                size={btnsSize || defaultState.btnsSize}
-                onClick={() => deleteClick()}
-                style={{
-                    display: getBtnDisplay()[2] ? "" : "none",
-                    width: 74,
-                }}
-            >删除</Button>
-
-
+            {/*<Button*/}
+            {/*    type={"primary"}*/}
+            {/*    size={btnsSize || defaultState.btnsSize}*/}
+            {/*    onClick={() => saveClick()}*/}
+            {/*    style={{*/}
+            {/*        display: getBtnDisplay()[3] ? "" : "none",*/}
+            {/*        width: 74,*/}
+            {/*    }}*/}
+            {/*>保存</Button>*/}
+            {renderButtons()}
         </Space>
     </>
 }

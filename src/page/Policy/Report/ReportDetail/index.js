@@ -6,13 +6,17 @@ import {useEffect, useState} from "react";
 export default function ReportDetail() {
 
     useEffect(() => {
+        setTableLoading(true)
         getFreeReport(id).then(res => {
             const {data} = res.data
             setReport(data)
+        }).finally(() => {
+            setTableLoading(false)
         })
     }, [])
 
     const [report, setReport] = useState({})
+    const [tableLoading, setTableLoading] = useState(false)
     const navigate = useNavigate()
     const {id} = useParams()
 
@@ -31,6 +35,7 @@ export default function ReportDetail() {
             ]}
         >
             <Table
+                loading={tableLoading}
                 size={"small"}
                 columns={report.viewColumns}
                 dataSource={report.viewData}

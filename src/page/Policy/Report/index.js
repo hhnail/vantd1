@@ -1,7 +1,8 @@
-import {Button, Input, PageHeader, Table, Tree} from 'antd';
+import {Input, message, Popover, Table, Tree} from 'antd';
 import React, {useEffect, useState} from 'react';
-import {getFreeReport, getFreeReportList} from "../../../service/freeReportService";
+import {getFreeReportList} from "../../../service/freeReportService";
 import {useNavigate} from "react-router-dom";
+import CurdButtonGroup from "../../../component/CurdButtonGroup";
 
 const {Search} = Input;
 
@@ -42,15 +43,40 @@ export default function Report() {
             dataIndex: 'id',
             key: 'id',
             render: (value, item, index) => {
-                return <a onClick={()=>{
-                    navigate(`/policy/report/${value}`);
-                }}>{value}</a>
+                return <Popover content="点击查看详情">
+                    <a onClick={() => {
+                        navigate(`/policy/report/${value}`);
+                    }}>{value}</a>
+                </Popover>
+
+
             }
         },
         {
             title: '名称',
             dataIndex: 'reportName',
             key: 'reportName',
+        },
+        {
+            title: '描述',
+            dataIndex: 'description',
+            key: 'description',
+        },
+        {
+            title: '操作',
+            key: 'action',
+            render: () => {
+                return <CurdButtonGroup
+                    btnsSize={"small"}
+                    btnsVisible={[false, true, true, false, false]}
+                    deleteClick={() => {
+
+                    }}
+                    editClick={()=>{
+                        message.info("编辑！")
+                    }}
+                />
+            }
         },
 
     ];
@@ -92,5 +118,3 @@ export default function Report() {
         </div>
     </>
 }
-
-
