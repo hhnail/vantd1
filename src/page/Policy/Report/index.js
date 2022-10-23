@@ -1,20 +1,26 @@
 import {Input, message, Popover, Table, Tree} from 'antd';
 import React, {useEffect, useState} from 'react';
-import {getFreeReportList} from "../../../service/freeReportService";
+import {deleteFreeReportById, getFreeReportList} from "../../../service/freeReportService";
 import {useNavigate} from "react-router-dom";
 import CurdButtonGroup from "../../../component/CurdButtonGroup";
+import {MESSAGE} from "../../../enums/message";
 
 const {Search} = Input;
 
 export default function Report() {
 
     useEffect(() => {
+        refreshTableData()
+    }, [])
+
+    const refreshTableData = () => {
         getFreeReportList().then(res => {
             const {data} = res.data
             // console.log("v1 data:",data)
             setListData(data)
+            setTableLoading(false)
         })
-    }, [])
+    }
 
     const [treeData, setTreeData] = useState([
         {
@@ -35,6 +41,7 @@ export default function Report() {
         },
     ])
     const [listData, setListData] = useState([])
+    const [tableLoading, setTableLoading] = useState(false)
     const navigate = useNavigate()
 
     const listColumns = [
@@ -48,8 +55,6 @@ export default function Report() {
                         navigate(`/policy/report/${value}`);
                     }}>{value}</a>
                 </Popover>
-
-
             }
         },
         {
@@ -65,15 +70,22 @@ export default function Report() {
         {
             title: '操作',
             key: 'action',
-            render: () => {
+            render: (_, item, index) => {
                 return <CurdButtonGroup
                     btnsSize={"small"}
-                    btnsVisible={[false, true, true, false, false]}
+                    btnsVisible={[false, false, true, false, false]}
                     deleteClick={() => {
-
+                        setTableLoading(true)
+                        deleteFreeReportById(item.id).then(_ => {
+                            message.success(MESSAGE.SUCCESS)
+                        }).catch(_ => {
+                            message.error(MESSAGE.ERROR)
+                        }).finally(_ => {
+                            refreshTableData()
+                        })
                     }}
-                    editClick={()=>{
-                        message.info("编辑！")
+                    editClick={() => {
+                        message.info("还没写！！")
                     }}
                 />
             }
@@ -110,6 +122,7 @@ export default function Report() {
                 border: "1px solid blue",
             }}>
                 <Table
+                    loading={tableLoading}
                     size={"small"}
                     columns={listColumns}
                     dataSource={listData}

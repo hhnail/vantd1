@@ -19,7 +19,7 @@ export const BUTTON_SIZE = {
 }
 
 const defaultState = {
-    btnsVisible: [true, true, true],
+    btnsVisible: [true, true, true, true, true],
     btnsSize: BUTTON_SIZE.MIDDLE.value
 }
 
@@ -75,12 +75,6 @@ export default function CurdButtonGroup(
             text: "编辑"
         },
         {
-            type: "primary",
-            size: btnsSize || defaultState.btnsSize,
-            clickCallBack: () => deleteClick(),
-            text: "删除"
-        },
-        {
             type: "danger",
             size: btnsSize || defaultState.btnsSize,
             clickCallBack: () => deleteClick(),
@@ -103,17 +97,16 @@ export default function CurdButtonGroup(
     const renderButtons = () => {
         const buttons = []
         buttonConfig.forEach((item, index) => {
-            buttons.push(
-                <Button
-                    type={item.type}
-                    size={item.size}
-                    onClick={() => item.clickCallBack()}
-                    style={{
-                        display: getBtnDisplay()[index] ? "" : "none",
-                        width: 74,
-                    }}
-                >{item.text}</Button>
-            )
+            if (getBtnDisplay()[index]) {
+                buttons.push(
+                    <Button
+                        type={item.type}
+                        size={item.size}
+                        onClick={() => item.clickCallBack()}
+                        style={{width: 74,}} // 为了避免刷新的loading效果越界
+                    >{item.text}</Button>
+                )
+            }
         })
         return buttons
     }

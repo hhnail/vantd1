@@ -20,3 +20,13 @@ export function getFreeReportList() {
 export function getFreeReport(id) {
     return axios.post('/vapi/getFreeReport', qs.stringify({id: id}))
 }
+
+
+/**
+ * 根据id 删除自由报表
+ */
+export function deleteFreeReportById(id) {
+    return axios.post('/vapi/deleteFreeReportById', qs.stringify({id: id}))
+}
+
+

@@ -5,6 +5,7 @@ import {useForm} from "antd/es/form/Form";
 import {DeleteTwoTone, PlusCircleOutlined} from '@ant-design/icons'
 import uuid from 'react-uuid';
 import {saveFreeReport} from "../../../../service/freeReportService";
+import {MESSAGE} from "../../../../enums/message";
 
 const {Panel} = Collapse;
 
@@ -111,7 +112,7 @@ export default function FreeReport() {
                 }}
                 saveClick={() => {
                     if (onlyView) {
-                        message.info("请勿重复保存！")
+                        message.info(MESSAGE.CAN_NOT_AGAIN)
                         return
                     }
                     setOnlyView(true)
