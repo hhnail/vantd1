@@ -9,10 +9,11 @@ export default function Report() {
     useEffect(() => {
         getFreeReport("1").then(res => {
             const {data} = res.data
-            const {viewColumns} = data
+            const {viewColumns,viewData} = data
             console.log("getFreeReport res data：", data)
             // 设置展示字段列
             setViewColumns(viewColumns)
+            setViewData(viewData)
         })
     }, [])
 
