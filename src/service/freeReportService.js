@@ -8,6 +8,13 @@ export function saveFreeReport(data) {
 }
 
 /**
+ * 查询自由报表列表
+ */
+export function getFreeReportList() {
+    return axios.post('/vapi/getFreeReportList')
+}
+
+/**
  * 获取自由报表
  */
 export function getFreeReport(id) {

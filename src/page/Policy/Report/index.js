@@ -1,19 +1,17 @@
-import {Input, Table, Tree, Space} from 'antd';
+import {Button, Input, PageHeader, Table, Tree} from 'antd';
 import React, {useEffect, useState} from 'react';
-import {getFreeReport} from "../../../service/freeReportService";
+import {getFreeReport, getFreeReportList} from "../../../service/freeReportService";
+import {useNavigate} from "react-router-dom";
 
 const {Search} = Input;
 
 export default function Report() {
 
     useEffect(() => {
-        getFreeReport("1").then(res => {
+        getFreeReportList().then(res => {
             const {data} = res.data
-            const {viewColumns,viewData} = data
-            console.log("getFreeReport res data：", data)
-            // 设置展示字段列
-            setViewColumns(viewColumns)
-            setViewData(viewData)
+            // console.log("v1 data:",data)
+            setListData(data)
         })
     }, [])
 
@@ -35,29 +33,27 @@ export default function Report() {
             children: null,
         },
     ])
+    const [listData, setListData] = useState([])
+    const navigate = useNavigate()
 
-    const [viewColumns, setViewColumns] = useState([])
+    const listColumns = [
+        {
+            title: '编码',
+            dataIndex: 'id',
+            key: 'id',
+            render: (value, item, index) => {
+                return <a onClick={()=>{
+                    navigate(`/policy/report/${value}`);
+                }}>{value}</a>
+            }
+        },
+        {
+            title: '名称',
+            dataIndex: 'reportName',
+            key: 'reportName',
+        },
 
-    const [viewData, setViewData] = useState([
-        {
-            key: '1',
-            name: 'John Brown',
-            label: 32,
-            module_id: 'New York No. 1 Lake Park',
-        },
-        {
-            key: '2',
-            name: 'Jim Green',
-            label: 42,
-            module_id: 'London No. 1 Lake Park',
-        },
-        {
-            key: '3',
-            name: 'Joe Black',
-            label: 32,
-            module_id: 'Sidney No. 1 Lake Park',
-        },
-    ])
+    ];
 
 
     return <>
@@ -89,8 +85,8 @@ export default function Report() {
             }}>
                 <Table
                     size={"small"}
-                    columns={viewColumns}
-                    dataSource={viewData}
+                    columns={listColumns}
+                    dataSource={listData}
                 />
             </div>
         </div>

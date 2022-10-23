@@ -23,6 +23,8 @@ import FreeReport from "./ConfigPlatform/SystemTool/FreeReport";
 import FreeForm from "./ConfigPlatform/SystemTool/FreeForm";
 import Policy from "./Policy";
 import Report from "./Policy/Report";
+import FreeReportDetail from "./Policy/Report/ReportDetail";
+import ReportDetail from "./Policy/Report/ReportDetail";
 
 export default function Home() {
 
@@ -259,6 +261,7 @@ export default function Home() {
 
                     {/*===== 决策平台 =====*/}
                     <Route exact path="/policy" element={<Policy/>}/>
+                    <Route exact path="/policy/report/:id" element={<ReportDetail/>}/>
                     <Route exact path="/policy/report" element={<Report/>}/>
 
 
