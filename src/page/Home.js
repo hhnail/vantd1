@@ -19,12 +19,13 @@ import RoleManage from "./ConfigPlatform/PermissionManage/RoleManage";
 import Success from "./Success";
 import Login from "./Login";
 import FormConfig from "./ConfigPlatform/FormConfig";
-import FreeReport from "./ConfigPlatform/SystemTool/FreeReport";
-import FreeForm from "./ConfigPlatform/SystemTool/FreeForm";
 import Policy from "./Policy";
-import Report from "./Policy/Report";
-import FreeReportDetail from "./Policy/Report/ReportDetail";
+import FreeReportDetail from "./ConfigPlatform/SystemTool/FreeReport/FreeReportDetail";
+import FreeReport from "./ConfigPlatform/SystemTool/FreeReport";
 import ReportDetail from "./Policy/Report/ReportDetail";
+import Report from "./Policy/Report";
+import FreeForm from "./ConfigPlatform/SystemTool/FreeForm";
+
 
 export default function Home() {
 
@@ -245,6 +246,7 @@ export default function Home() {
                     {/*2系统工具*/}
                     <Route exact path="/configPlatform/systemTool" element={<SystemTool/>}/>
                     <Route exact path="/configPlatform/systemTool/freeForm" element={<FreeForm/>}/>
+                    <Route exact path="/configPlatform/systemTool/freeReport/:id" element={<FreeReportDetail/>}/>
                     <Route exact path="/configPlatform/systemTool/freeReport" element={<FreeReport/>}/>
                     <Route exact path="/configPlatform/systemTool/moduleMaintenance" element={<ModuleMaintenance/>}/>
                     <Route exact path="/configPlatform/systemTool/dataRestructure" element={<DataRestructure/>}/>

@@ -5,4 +5,5 @@ export const MESSAGE = {
     ERROR: "操作失败，请联系管理员",
     ERROR_BTN_NAME: "请设置正确的按钮名称",
     CAN_NOT_AGAIN: "请勿重复操作",
+    COMFIRM_DELETE: "您确认要删除吗？",
 }

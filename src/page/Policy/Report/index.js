@@ -1,4 +1,4 @@
-import {Input, message, Popover, Table, Tree} from 'antd';
+import {Input, message, Modal, Popover, Table, Tree} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {deleteFreeReportById, getFreeReportList} from "../../../service/freeReportService";
 import {useNavigate} from "react-router-dom";
@@ -75,13 +75,18 @@ export default function Report() {
                     btnsSize={"small"}
                     btnsVisible={[false, false, true, false, false]}
                     deleteClick={() => {
-                        setTableLoading(true)
-                        deleteFreeReportById(item.id).then(_ => {
-                            message.success(MESSAGE.SUCCESS)
-                        }).catch(_ => {
-                            message.error(MESSAGE.ERROR)
-                        }).finally(_ => {
-                            refreshTableData()
+                        Modal.confirm({
+                            title: MESSAGE.COMFIRM_DELETE,
+                            onOk: () => {
+                                setTableLoading(true)
+                                deleteFreeReportById(item.id).then(_ => {
+                                    message.success(MESSAGE.SUCCESS)
+                                }).catch(_ => {
+                                    message.error(MESSAGE.ERROR)
+                                }).finally(_ => {
+                                    refreshTableData()
+                                })
+                            }
                         })
                     }}
                     editClick={() => {

@@ -18,6 +18,15 @@ export const BUTTON_SIZE = {
 
 }
 
+/**
+ * 插件类型
+ */
+export const V_BUTTON_PLUGIN_TYPE = {
+    CUD: [true, true, true, false, false],
+    CUDF: [true, true, true, false, true],
+    ONLY_DELETE: [false, false, true, false, false],
+}
+
 const defaultState = {
     btnsVisible: [true, true, true, true, true],
     btnsSize: BUTTON_SIZE.MIDDLE.value
@@ -25,10 +34,14 @@ const defaultState = {
 
 
 /**
- * 增删改查 按钮组（新增、编辑、删除）
+ * 增删改查 按钮组（新增、编辑、删除、保存、刷新）
  */
 export default function CurdButtonGroup(
     {
+        /**
+         * 插件类型：PLUGIN_TYPE
+         */
+        pluginType,
         /**
          * 含义：按钮是否可见
          * 类型：布尔项数组
@@ -43,17 +56,18 @@ export default function CurdButtonGroup(
         deleteClick,
     }) {
 
-    // console.log(defaultState.btnsVisible)
-
-    // 按钮组可见性
-    // const [btnsVisible, setBtnsVisible] = useState(btnsVisible || defaultState.btnsVisible)
-
     useEffect(() => {
-        // setVvBtnsVisible()
-        // console.log("props:", props)
+        console.log("CurdButtonGroup loaded!")
     }, [])
 
     const getBtnDisplay = () => {
+        // console.log("pluginType", pluginType)
+        // console.log("pluginType size:", pluginType.length)
+        if (pluginType && pluginType.length > 0) {
+            // console.log(pluginType)
+            return pluginType
+        }
+
         if (btnsVisible) {
             return btnsVisible
         } else {

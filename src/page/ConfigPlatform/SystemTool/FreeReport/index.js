@@ -1,234 +1,145 @@
-import {Col, Collapse, Form, Input, message, Row, Space, Table, Button} from 'antd';
+import {Input, message, Modal, Popover, Table, Tree} from 'antd';
 import React, {useEffect, useState} from 'react';
-import CurdButtonGroup from "../../../../component/CurdButtonGroup";
-import {useForm} from "antd/es/form/Form";
-import {DeleteTwoTone, PlusCircleOutlined} from '@ant-design/icons'
-import uuid from 'react-uuid';
-import {saveFreeReport} from "../../../../service/freeReportService";
+import {useNavigate} from "react-router-dom";
+import {getFreeReportList, deleteFreeReportById} from "../../../../service/freeReportService";
 import {MESSAGE} from "../../../../enums/message";
+import CurdButtonGroup from "../../../../component/CurdButtonGroup";
 
-const {Panel} = Collapse;
+const {Search} = Input;
 
-/**
- * 自由报表
- */
 export default function FreeReport() {
 
     useEffect(() => {
-        reportForm.setFieldsValue({
-            name: "商品反馈报表",
-            moduleName: "自由报表",
-            description: "搜集调研的商品的使用反馈，用户评论等",
-            reportSql: "select id,name,label,module_id from sys_table where 1=1",
-        })
+        refreshTableData()
     }, [])
 
+    const refreshTableData = () => {
+        getFreeReportList().then(res => {
+            const {data} = res.data
+            // console.log("v1 data:",data)
+            setListData(data)
+            setTableLoading(false)
+        })
+    }
 
-    const [reportForm] = useForm()
-    const [onlyView, setOnlyView] = useState(true)
-    const [reportData, setReportData] = useState()
+    const [treeData, setTreeData] = useState([
+        {
+            key: "1",
+            title: "研发部",
+            children: [
+                {
+                    key: "2",
+                    title: "研发一部",
+                    children: null,
+                },
+            ]
+        },
+        {
+            key: "3",
+            title: "营销部",
+            children: null,
+        },
+    ])
+    const [listData, setListData] = useState([])
+    const [tableLoading, setTableLoading] = useState(false)
+    const navigate = useNavigate()
 
-    const columns = [
+    const listColumns = [
         {
-            title: '序号',
-            key: 'key',
-            render: (value, item, index) => index + 1,
-        },
-        {
-            title: '字段名称',
-            dataIndex: 'name',
-            key: 'name',
+            title: '编码',
+            dataIndex: 'id',
+            key: 'id',
             render: (value, item, index) => {
-                return <Form.Item
-                    style={{
-                        marginTop: 15
-                    }}
-                    name={"free_column_name_" + index}
-                >
-                    <Input disabled={onlyView}/>
-                </Form.Item>
-            },
+                return <Popover content="点击查看详情">
+                    <a onClick={() => {
+                        navigate(`/configPlatform/systemTool/freeReport/${value}`);
+                    }}>{value}</a>
+                </Popover>
+            }
         },
         {
-            title: '展示列名称',
-            dataIndex: 'label',
-            key: 'label',
-            render: (value, item, index) => {
-                return <Form.Item
-                    style={{
-                        marginTop: 15
-                    }}
-                    name={"free_column_label_" + index}
-                >
-                    <Input disabled={onlyView}/>
-                </Form.Item>
-            },
+            title: '名称',
+            dataIndex: 'reportName',
+            key: 'reportName',
         },
         {
-            title: '字段类型',
-            dataIndex: 'type',
-            key: 'type',
-            render: (value) => {
-                return value
-            },
+            title: '描述',
+            dataIndex: 'description',
+            key: 'description',
         },
         {
             title: '操作',
-            dataIndex: 'action',
             key: 'action',
-            render: (value, item, index) => {
-                return <Button
-                    icon={<DeleteTwoTone twoToneColor={"#ff0000"}/>}
-                    disabled={onlyView}
-                    onClick={() => {
-                        // console.log("index:", index)
-                        const newData = showFieldData.filter((value, index2) => {
-                            return index2 != index
+            render: (_, item, index) => {
+                return <CurdButtonGroup
+                    btnsSize={"small"}
+                    btnsVisible={[false, true, true, false, false]}
+                    deleteClick={() => {
+                        Modal.confirm({
+                            title: MESSAGE.COMFIRM_DELETE,
+                            onOk: () => {
+                                setTableLoading(true)
+                                deleteFreeReportById(item.id).then(_ => {
+                                    message.success(MESSAGE.SUCCESS)
+                                }).catch(_ => {
+                                    message.error(MESSAGE.ERROR)
+                                }).finally(_ => {
+                                    refreshTableData()
+                                })
+                            }
                         })
-                        // console.log("delete newData:", newData)
-                        setShowFieldData(newData)
+
+                    }}
+                    editClick={() => {
+                        message.info("还没写！！")
                     }}
                 />
-            },
+            }
         },
+
     ];
-
-    const EMPTY_ITEM = {
-        key: uuid(),
-        name: '',
-        label: '',
-        type: "文本"
-    }
-
-    const [showFieldData, setShowFieldData] = useState([EMPTY_ITEM]);
 
 
     return <>
-        <Space>
-            <CurdButtonGroup
-                btnsSize={"small"}
-                editClick={() => {
-                    setOnlyView(false)
-                }}
-                saveClick={() => {
-                    if (onlyView) {
-                        message.info(MESSAGE.CAN_NOT_AGAIN)
-                        return
-                    }
-                    setOnlyView(true)
-                    reportForm.validateFields().then((values) => {
-                        saveFreeReport(values).then(res => {
-                            message.success("操作成功！")
-                        })
-                    })
-                }}
-            />
-        </Space>
-        <Form
-            form={reportForm}
-            name="basic"
-            size={"small"}
-            layout={"horizontal"}
-            initialValues={{
-                remember: true,
-            }}
-            onFinish={() => {
-            }}
-            autoComplete="off"
-            style={{
-                padding: "10px 0px 0px 0px"
-            }}
-        >
-            <Collapse defaultActiveKey={['1', '2', '3']}
-                      onChange={() => {
+        <div style={{
+            display: "flex",
+            flexDirection: "row",
+        }}>
+            {/*左侧面板——树*/}
+            <div style={{
+                width: "20%",
+            }}>
+                <Search
+                    style={{
+                        marginBottom: 8,
+                    }}
+                    placeholder="Search"
+                />
+                <Tree
+                    treeData={treeData}
+                />
+            </div>
 
-                      }}
-            >
-                <Panel header="基础信息" key="1">
-                    <Row>
-                        <Col span={10}>
-                            <Form.Item
-                                label="报表名称"
-                                name="name"
-                                labelCol={{span: 8}}
-                                wrapperCol={{span: 14}}
-                            >
-                                <Input disabled={onlyView}/>
-                            </Form.Item>
-                        </Col>
-                        <Col span={10} push={1}>
-                            <Form.Item
-                                label="所属模块"
-                                name="moduleName"
-                                labelCol={{span: 8}}
-                                wrapperCol={{span: 14}}
-                            >
-                                <Input disabled={onlyView}/>
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={20}>
-                            <Form.Item
-                                label="描述"
-                                name="description"
-                                labelCol={{span: 4}}
-                                wrapperCol={{span: 20}}
-                            >
-                                <Input.TextArea
-                                    row={4}
-                                    disabled={onlyView}
-                                    allowClear
-                                    showCount
-                                />
-                            </Form.Item>
-                        </Col>
-                    </Row>
 
-                </Panel>
-                <Panel header="SQL维护" key="2">
-                    <Form.Item
-                        name="reportSql"
-                        rules={[
-                            {
-                                required: true,
-                                message: '请输入SQL配置',
-                            },
-                        ]}
-                    >
-                        <Input.TextArea
-                            row={7}
-                            size={"small"}
-                            disabled={onlyView}/>
-                    </Form.Item>
-                </Panel>
-                <Panel header="显示字段配置" key="3">
-
-                    <Table
-                        columns={columns}
-                        dataSource={showFieldData}
-                        footer={() => {
-                            return <Button icon={<PlusCircleOutlined/>}
-                                           disabled={onlyView}
-                                           onClick={() => {
-                                               const newData = showFieldData
-                                               newData.push(EMPTY_ITEM)
-                                               setShowFieldData([...newData])
-                                           }}
-                                           style={{
-                                               width: '100%'
-                                           }}/>
-                        }}
-                        pagination={false}
-                    />
-                </Panel>
-                <Panel header="传参字段配置" key="4">
-                    <p>xxxxxxxxxxxxv</p>
-                </Panel>
-            </Collapse>
-        </Form>
+            {/*右侧面板——表格*/}
+            <div style={{
+                width: "80%",
+                padding: "10px 10px 10px 10px",
+                border: "1px solid blue",
+            }}>
+                <CurdButtonGroup
+                    btnsVisible={[true]}
+                    addClick={()=>{
+                        navigate(`/configPlatform/systemTool/freeReport/-1`);
+                    }}
+                />
+                <Table
+                    loading={tableLoading}
+                    size={"small"}
+                    columns={listColumns}
+                    dataSource={listData}
+                />
+            </div>
+        </div>
     </>
 }
-
-
-
