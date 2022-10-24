@@ -23,7 +23,9 @@ export const BUTTON_SIZE = {
  */
 export const V_BUTTON_PLUGIN_TYPE = {
     CUD: [true, true, true, false, false],
-    CUDF: [true, true, true, false, true],
+    CUD_RF: [true, true, true, false, true],
+    ONLY_SAVE: [false, false, false, true, false],
+    ONLY_REFRESH: [false, false, false, false, true],
     ONLY_DELETE: [false, false, true, false, false],
 }
 
