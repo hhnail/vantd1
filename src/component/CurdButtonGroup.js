@@ -22,10 +22,9 @@ export const BUTTON_SIZE = {
  * 插件类型
  */
 export const V_BUTTON_PLUGIN_TYPE = {
+    ALL: [true, true, true, true, true],
     CUD: [true, true, true, false, false],
     CUD_RF: [true, true, true, false, true],
-    ONLY_SAVE: [false, false, false, true, false],
-    ONLY_REFRESH: [false, false, false, false, true],
     ONLY_DELETE: [false, false, true, false, false],
     ONLY_SAVE: [false, false, false, true, false],
     ONLY_REFRESH: [false, false, false, false, true],
@@ -58,6 +57,7 @@ export default function CurdButtonGroup(
         editClick,
         refreshClick,
         deleteClick,
+        importClick,
     }) {
 
     useEffect(() => {
@@ -109,6 +109,12 @@ export default function CurdButtonGroup(
             size: btnsSize || defaultState.btnsSize,
             clickCallBack: () => refreshClick(),
             text: "刷新"
+        },
+        {
+            type: "primary",
+            size: btnsSize || defaultState.btnsSize,
+            clickCallBack: () => importClick(),
+            text: "导入"
         },
     ]
 

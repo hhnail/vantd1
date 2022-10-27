@@ -1,0 +1,13 @@
+.container {
+    flex-direction: column;
+    display: flex;
+    height: 320px;
+}
+
+.upPanel {
+    height: 30%;
+}
+
+.downPanel {
+    height: 70%;
+}

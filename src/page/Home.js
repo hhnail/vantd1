@@ -25,6 +25,7 @@ import FreeReport from "./ConfigPlatform/SystemTool/FreeReport";
 import ReportDetail from "./Policy/Report/ReportDetail";
 import Report from "./Policy/Report";
 import FreeForm from "./ConfigPlatform/SystemTool/FreeForm";
+import OrganizationManage from "./HumanResource/Organization/manage";
 
 
 export default function Home() {
@@ -40,9 +41,6 @@ export default function Home() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        // if(!localStorage.getItem("userLogin")){
-        //     navigate("/hhh")
-        // }
         // 获取顶部菜单
         getHeaderMenu().then(res => {
             const {data} = res
@@ -151,18 +149,19 @@ export default function Home() {
         }}>
             {/*先获取头部菜单，才能知道默认高亮的key是多少*/}
             {headerMenu
-                &&
-                <Menu items={headerMenu}
-                      theme="dark"
-                      mode="horizontal"
-                      style={{
-                          padding: '1px 1px 1px 1px',
-                          height: 55,
-                      }}
-                    // 默认选择首个菜单
-                      defaultSelectedKeys={[headerMenu[0].key]}
-                      onClick={(item) => headerClick(item)}
-                />}
+            &&
+            <Menu items={headerMenu}
+                  theme="dark"
+                  mode="horizontal"
+                  style={{
+                      padding: '1px 1px 1px 1px',
+                      height: 55,
+                      position: 'fiexd',
+                  }}
+                // 默认选择首个菜单
+                  defaultSelectedKeys={[headerMenu[0].key]}
+                  onClick={(item) => headerClick(item)}
+            />}
         </div>
         <div style={{
             position: 'relative',
@@ -229,16 +228,13 @@ export default function Home() {
                     <Route exact path="/staffDesktop/myTodo" element={<MyTodo/>}/>
 
 
-
                     {/*===== 在线学习 =====*/}
                     <Route exact path="/onlineLearn" element={<OnlineLearn/>}/>
 
 
-
                     {/*===== 人力资本 =====*/}
                     <Route exact path="/humanResource" element={<HumanResource/>}/>
-
-
+                    <Route exact path="/humanResource/organization/manage" element={<OrganizationManage/>}/>
 
 
                     {/*===== 配置平台 =====*/}
@@ -257,8 +253,6 @@ export default function Home() {
                     <Route exact path="/configPlatform/dataDictionary/singleCode" element={<SingleCode/>}/>
                     <Route exact path="/configPlatform/dataDictionary/multilevelCode" element={<MultilevelCode/>}/>
                     <Route exact path="/configPlatform/formConfig" element={<FormConfig/>}/>
-
-
 
 
                     {/*===== 决策平台 =====*/}
