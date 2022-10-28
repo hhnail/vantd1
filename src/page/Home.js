@@ -222,8 +222,8 @@ export default function Home() {
                 {/* TODO 动态路由 */}
                 <Routes>
                     {/*===== 员工桌面 =====*/}
-                    {/*<Route exact path="/staffDesktop" element={<StaffDesktop/>}/>*/}
-                    <Route exact path="/staffDesktop" element={<FreeReport/>}/>
+                    <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
+                    {/*<Route exact path="/staffDesktop" element={<FreeReport/>}/>*/}
                     <Route exact path="/staffDesktop/myMessage" element={<MyMessage/>}/>
                     <Route exact path="/staffDesktop/myTodo" element={<MyTodo/>}/>
 

@@ -8,7 +8,7 @@ const {Step} = Steps;
 
 const props = {
     name: 'file',
-    action: '/vapi/uploadFile',
+    action: '/vapi/getExcelSheetList',
     multiple: false,
     headers: {
         authorization: 'authorization-text',
