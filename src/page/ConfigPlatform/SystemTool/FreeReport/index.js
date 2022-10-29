@@ -2,7 +2,7 @@ import {Input, message, Modal, Popover, Table, Tree} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {getFreeReportList, deleteFreeReportById} from "../../../../service/freeReportService";
-import {MESSAGE} from "../../../../enums/message";
+import {SYSTEM_MESSAGE} from "../../../../enums/message";
 import CurdButtonGroup from "../../../../component/CurdButtonGroup";
 
 const {Search} = Input;
@@ -76,13 +76,13 @@ export default function FreeReport() {
                     btnsVisible={[false, true, true, false, false]}
                     deleteClick={() => {
                         Modal.confirm({
-                            title: MESSAGE.COMFIRM_DELETE,
+                            title: SYSTEM_MESSAGE.COMFIRM_DELETE,
                             onOk: () => {
                                 setTableLoading(true)
                                 deleteFreeReportById(item.id).then(_ => {
-                                    message.success(MESSAGE.SUCCESS)
+                                    message.success(SYSTEM_MESSAGE.SUCCESS)
                                 }).catch(_ => {
-                                    message.error(MESSAGE.ERROR)
+                                    message.error(SYSTEM_MESSAGE.ERROR)
                                 }).finally(_ => {
                                     refreshTableData()
                                 })

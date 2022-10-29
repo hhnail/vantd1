@@ -1,5 +1,5 @@
 import {Button} from "antd";
-import {MESSAGE} from "../../enums/message";
+import {SYSTEM_MESSAGE} from "../../enums/message";
 
 /**
  * 按钮类型
@@ -45,7 +45,7 @@ export function VButton(
                 btnName = BUTTON_TYPE.DELETE.name
                 break
             default:
-                return MESSAGE.ERROR_BTN_NAME
+                return SYSTEM_MESSAGE.ERROR_BTN_NAME
         }
         return btnName
     }

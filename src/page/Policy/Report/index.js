@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {deleteFreeReportById, getFreeReportList} from "../../../service/freeReportService";
 import {useNavigate} from "react-router-dom";
 import CurdButtonGroup from "../../../component/CurdButtonGroup";
-import {MESSAGE} from "../../../enums/message";
+import {SYSTEM_MESSAGE} from "../../../enums/message";
 
 const {Search} = Input;
 
@@ -76,13 +76,13 @@ export default function Report() {
                     btnsVisible={[false, false, true, false, false]}
                     deleteClick={() => {
                         Modal.confirm({
-                            title: MESSAGE.COMFIRM_DELETE,
+                            title: SYSTEM_MESSAGE.COMFIRM_DELETE,
                             onOk: () => {
                                 setTableLoading(true)
                                 deleteFreeReportById(item.id).then(_ => {
-                                    message.success(MESSAGE.SUCCESS)
+                                    message.success(SYSTEM_MESSAGE.SUCCESS)
                                 }).catch(_ => {
-                                    message.error(MESSAGE.ERROR)
+                                    message.error(SYSTEM_MESSAGE.ERROR)
                                 }).finally(_ => {
                                     refreshTableData()
                                 })

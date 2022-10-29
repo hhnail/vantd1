@@ -4,7 +4,7 @@ module.exports = function (app) {
     app.use(
         '/vapi',
         createProxyMiddleware({
-            target: 'http://localhost:7777/',
+            target: 'http://localhost:18080/',
             changeOrigin: true,
             secure: false,
             pathRewrite: {

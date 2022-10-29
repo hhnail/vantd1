@@ -186,7 +186,7 @@ export default function Home() {
                             label: (
                                 <a target="_self" onClick={() => {
                                     localStorage.removeItem("userLogin")
-                                    navigate("/")
+                                    navigate("/login")
                                 }}>退出系统</a>
                             ),
                         },
@@ -222,8 +222,9 @@ export default function Home() {
                 {/* TODO 动态路由 */}
                 <Routes>
                     {/*===== 员工桌面 =====*/}
-                    {/*<Route exact path="/staffDesktop" element={<StaffDesktop/>}/>*/}
-                    <Route exact path="/staffDesktop" element={<FreeReport/>}/>
+                    <Route exact path="/login" element={<Login/>}/>
+                    <Route exact path="/staffDesktop" element={<StaffDesktop/>}/>
+                    {/*<Route exact path="/staffDesktop" element={<FreeReport/>}/>*/}
                     <Route exact path="/staffDesktop/myMessage" element={<MyMessage/>}/>
                     <Route exact path="/staffDesktop/myTodo" element={<MyTodo/>}/>
 
