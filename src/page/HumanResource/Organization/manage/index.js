@@ -8,7 +8,7 @@ const {Step} = Steps;
 
 const props = {
     name: 'file',
-    action: '/vapi/uploadFile',
+    action: '/vapi/getExcelSheetList',
     multiple: false,
     headers: {
         authorization: 'authorization-text',
@@ -18,7 +18,8 @@ const props = {
             console.log(info.file, info.fileList);
         }
         if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
+            message.success(`${info.file.name}文件上传成功`);
+            console.log("info:", info)
         } else if (info.file.status === 'error') {
             message.error(`${info.file.name} file upload failed.`);
         }
@@ -48,6 +49,28 @@ export default function OrganizationManage() {
             currentStep == 2 && <Button type={"primary"}>保存</Button>,
         ]
         return footerBts
+    }
+
+    /**
+     * 渲染sheet下拉选择框
+     * @returns {JSX.Element}
+     */
+    const renderSelectSheet = () => {
+
+
+        return <Select
+            defaultValue="lucy"
+            style={{
+                width: 120,
+            }}
+        >
+            <Option value="jack">Jack</Option>
+            <Option value="lucy">Lucy</Option>
+            <Option value="disabled" disabled>
+                Disabled
+            </Option>
+            <Option value="Yiminghe">yiminghe</Option>
+        </Select>
     }
 
     return <>
@@ -97,19 +120,7 @@ export default function OrganizationManage() {
                                 选择sheet：
                             </Col>
                             <Col span={8}>
-                                <Select
-                                    defaultValue="lucy"
-                                    style={{
-                                        width: 120,
-                                    }}
-                                >
-                                    <Option value="jack">Jack</Option>
-                                    <Option value="lucy">Lucy</Option>
-                                    <Option value="disabled" disabled>
-                                        Disabled
-                                    </Option>
-                                    <Option value="Yiminghe">yiminghe</Option>
-                                </Select>
+                                {renderSelectSheet()}
                             </Col>
                         </Row>
                     </div>
