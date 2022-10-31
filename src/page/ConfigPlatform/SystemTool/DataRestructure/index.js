@@ -23,7 +23,7 @@ import TablePro, {GAP_SIZE_TYPE, ROW_SELECTION_TYPE} from "../../../../component
 import {BUTTON_SIZE} from "../../../../component/CurdButtonGroup";
 import {FIELD_TYPE_LIST} from "../../../../enums/fieldType";
 import {renderFieldOptions} from "./common";
-import {MESSAGE} from "../../../../enums/message";
+import {SYSTEM_MESSAGE} from "../../../../enums/message";
 
 
 const {Option} = Select;

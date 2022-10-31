@@ -5,7 +5,7 @@ import {DeleteTwoTone, PlusCircleOutlined} from '@ant-design/icons'
 import uuid from 'react-uuid';
 import CurdButtonGroup, {V_BUTTON_PLUGIN_TYPE} from "../../../../../component/CurdButtonGroup";
 import {saveFreeReport} from "../../../../../service/freeReportService";
-import {MESSAGE} from "../../../../../enums/message";
+import {SYSTEM_MESSAGE} from "../../../../../enums/message";
 
 const {Panel} = Collapse;
 
@@ -113,7 +113,7 @@ export default function FreeReportDetail() {
                 }}
                 saveClick={() => {
                     if (onlyView) {
-                        message.info(MESSAGE.CAN_NOT_AGAIN)
+                        message.info(SYSTEM_MESSAGE.CAN_NOT_AGAIN)
                         return
                     }
                     setOnlyView(true)

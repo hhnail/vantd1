@@ -1,8 +1,10 @@
-import {Button, Checkbox, Form, Input} from 'antd';
+import {Button, Checkbox, Form, Input, message} from 'antd';
 import {useForm} from "antd/es/form/Form";
 import {useNavigate} from "react-router-dom";
 
 import styles from './Login.less'
+import {login} from "../service/userService";
+import {SYSTEM_MESSAGE} from "../enums/message";
 
 export default function Login() {
 
@@ -69,8 +71,19 @@ export default function Login() {
                                 htmlType="submit"
                                 onClick={() => {
                                     loginForm.validateFields().then(value => {
-                                        localStorage.setItem("userLogin", JSON.stringify(value))
-                                        navigate("/staffDesktop")
+                                        login(value).then(res => {
+                                            // console.log("res::", res)
+                                            // console.log("res.code:", res.data.code)
+                                            // if (res.data.code != 0) {
+                                            if (res.status != 200) {
+                                                message.error(SYSTEM_MESSAGE.USERNAME_OR_PASSWORD_ERROR)
+                                                return
+                                            }
+                                            message.success(SYSTEM_MESSAGE.LOGIN_SUCCESS)
+                                            const {data} = res.data
+                                            localStorage.setItem("userLogin", JSON.stringify(data))
+                                            navigate("/staffDesktop")
+                                        })
                                     })
                                 }}
                         >
