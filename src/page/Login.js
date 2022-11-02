@@ -82,6 +82,7 @@ export default function Login() {
                                             message.success(SYSTEM_MESSAGE.LOGIN_SUCCESS)
                                             const {data} = res.data
                                             localStorage.setItem("userLogin", JSON.stringify(data))
+                                            localStorage.setItem("token", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyTmFtZSI6IuW8oOS4iSIsInJvbGUiOiJhZG1pbiIsInN1YiI6ImFkbWluLXRlc3QiLCJleHAiOjE2NjczNjg3MzcsImp0aSI6IjIxODlkM2VhLTNhYTctNGNkYi1hNjZiLWNhYTQyNmUzYzFhNSJ9.d5W6h1Z-pIPnqGZMPPr-h4mCJsO5Gz7OLWrQ-fTzREU")
                                             navigate("/staffDesktop")
                                         })
                                     })

@@ -1,31 +1,10 @@
-import {Button, Col, message, Modal, Row, Select, Steps, Upload} from 'antd';
+import {Button, Col, Input, message, Modal, Row, Select, Steps, Upload} from 'antd';
 import React, {useState} from 'react';
 import './index.css'
 import {UploadOutlined} from '@ant-design/icons';
 
 const {Option} = Select;
 const {Step} = Steps;
-
-const props = {
-    name: 'file',
-    action: '/vapi/getExcelSheetList',
-    multiple: false,
-    headers: {
-        authorization: 'authorization-text',
-    },
-    onChange(info) {
-        if (info.file.status !== 'uploading') {
-            console.log(info.file, info.fileList);
-        }
-        if (info.file.status === 'done') {
-            message.success(`${info.file.name}文件上传成功`);
-            console.log("info:", info)
-        } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
-        }
-    },
-};
-
 
 /**
  * 组织管理
@@ -34,6 +13,7 @@ export default function OrganizationManage() {
 
     const [modalVisible, setModalVisible] = useState(false)
     const [currentStep, setCurrentStep] = useState(0)
+    const [sheetList, setSheetList] = useState([])
 
     /**
      * 渲染模态框底部按钮
@@ -57,20 +37,45 @@ export default function OrganizationManage() {
      */
     const renderSelectSheet = () => {
 
+        const options = []
+
+        sheetList.forEach(item => {
+            options.push(
+                <Option value={item.sheetNo}>{item.sheetName}</Option>
+            )
+        })
 
         return <Select
-            defaultValue="lucy"
+            placeholder="请选择sheet"
             style={{
                 width: 120,
             }}
         >
-            <Option value="jack">Jack</Option>
-            <Option value="lucy">Lucy</Option>
-            <Option value="disabled" disabled>
-                Disabled
-            </Option>
-            <Option value="Yiminghe">yiminghe</Option>
+            {options}
         </Select>
+    }
+
+
+    const renderSelectTable = () => {
+
+        // const options = []
+
+        // sheetList.forEach(item => {
+        //     options.push(
+        //         <Option value={item.sheetNo}>{item.sheetName}</Option>
+        //     )
+        // })
+
+        // return <Select
+        //     placeholder="请选择目标表"
+        //     style={{
+        //         width: 120,
+        //     }}
+        // >
+        //     {options}
+        // </Select>
+
+        return <Input/>
     }
 
     return <>
@@ -112,8 +117,29 @@ export default function OrganizationManage() {
                                 文件：
                             </Col>
                             <Col span={8}>
-                                <Upload {...props}>
-                                    <Button icon={<UploadOutlined/>}>Click to Upload</Button>
+                                <Upload name={"file"}
+                                        action={"/vapi/saveFile"}
+                                        // action={"/vapi/getExcelSheetList"}
+                                        multiple={false}
+                                        headers={{
+                                            authorization: 'authorization-text',
+                                            token: localStorage.getItem("token"),
+                                        }}
+                                        onChange={info => {
+                                            if (info.file.status !== 'uploading') {
+                                                console.log(info.file, info.fileList);
+                                            }
+                                            if (info.file.status === 'done') {
+                                                message.success(`${info.file.name} 文件上传成功`);
+                                                const {data} = info.file.response
+                                                console.log("info data:", data)
+                                                setSheetList(data.sheetList)
+                                            } else if (info.file.status === 'error') {
+                                                message.error(`${info.file.name} 文件上传失败`);
+                                            }
+                                        }}
+                                >
+                                    <Button icon={<UploadOutlined/>}>点击上传</Button>
                                 </Upload>
                             </Col>
                             <Col span={2}>
@@ -121,6 +147,17 @@ export default function OrganizationManage() {
                             </Col>
                             <Col span={8}>
                                 {renderSelectSheet()}
+                            </Col>
+                        </Row>
+                        <Row style={{
+                            marginTop: 20
+                        }}>
+                            <Col span={2} push={10}>
+                                目标表：
+                            </Col>
+                            <Col span={8} push={10}>
+                                {/*{renderSelectTable()}*/}
+                                <Input/>
                             </Col>
                         </Row>
                     </div>

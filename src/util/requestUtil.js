@@ -32,7 +32,12 @@ export const request = (url, type, params) => {
     }
     switch (type) {
         case REQUEST_TYPE.POST:
-            return axios.post(url, params)
+            return axios.post(url, params, {
+                headers: {
+                    token: localStorage.getItem("token")
+                        // "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyTmFtZSI6IuW8oOS4iSIsInJvbGUiOiJhZG1pbiIsInN1YiI6ImFkbWluLXRlc3QiLCJleHAiOjE2NjczNjg3MzcsImp0aSI6IjIxODlkM2VhLTNhYTctNGNkYi1hNjZiLWNhYTQyNmUzYzFhNSJ9.d5W6h1Z-pIPnqGZMPPr-h4mCJsO5Gz7OLWrQ-fTzREU"
+                }
+            })
         case REQUEST_TYPE.GET:
             return axios.get(url)
         case REQUEST_TYPE.DELETE:

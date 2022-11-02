@@ -44,9 +44,9 @@ export default function Home() {
         // 获取顶部菜单
         getHeaderMenu().then(res => {
             const {data} = res
-            // console.log("header", data)
             setHeaderMenu(data)
             if (data && data.length > 0) {
+                console.log("header:", data[0])
                 setCurrentHeader(data[0])
             }
         })
@@ -159,7 +159,11 @@ export default function Home() {
                       position: 'fiexd',
                   }}
                 // 默认选择首个菜单
-                  defaultSelectedKeys={[headerMenu[0].key]}
+                  defaultSelectedKeys={
+                      headerMenu && headerMenu.length > 0
+                          ? [headerMenu[0].key]
+                          : "headerMenu-key-1"
+                  }
                   onClick={(item) => headerClick(item)}
             />}
         </div>

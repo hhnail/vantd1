@@ -6,9 +6,9 @@ import {request, REQUEST_TYPE} from "../util/requestUtil";
  * 获取头部菜单
  */
 export function getHeaderMenu() {
-    return axios.post('/vapi/getHeaderMenu')
+    return request('/vapi/getHeaderMenu', REQUEST_TYPE.POST)
+    // return axios.post('/vapi/getHeaderMenu')
 }
-
 
 /**
  * 获取模块信息
@@ -21,11 +21,16 @@ export function getModule() {
  * 获取侧边栏
  */
 export function getSidebar(pid) {
-    return axios.post('/vapi/getSidebar',
+    return request('/vapi/getSidebar',
+        REQUEST_TYPE.POST,
         qs.stringify({
             pid: pid
-        })
-    )
+        }))
+    // return axios.post('/vapi/getSidebar',
+    //     qs.stringify({
+    //         pid: pid
+    //     })
+    // )
 }
 
 /**

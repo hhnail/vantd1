@@ -8,7 +8,7 @@ import StaffDesktop from "./page/StaffDesktop";
 function App() {
 
     useEffect(() => {
-        console.log(localStorage.getItem("userLogin"))
+        // console.log("App useEffect:",localStorage.getItem("userLogin"))
     }, [])
 
     return (<div style={{
