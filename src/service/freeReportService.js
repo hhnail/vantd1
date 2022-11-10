@@ -1,5 +1,7 @@
 import axios from "axios";
 import qs from 'qs'
+import {request, REQUEST_TYPE} from "../util/requestUtil";
+
 /**
  * 保存自由报表
  */

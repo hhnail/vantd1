@@ -14,7 +14,7 @@ export function getHeaderMenu() {
  * 获取模块信息
  */
 export function getModule() {
-    return axios.post('/vapi/getModule')
+    return request('/vapi/getModule', REQUEST_TYPE.POST)
 }
 
 /**
@@ -37,7 +37,7 @@ export function getSidebar(pid) {
  * 新增模块
  */
 export function addModule(data) {
-    return axios.post('/vapi/addModule', data)
+    return request('/vapi/addModule', REQUEST_TYPE.POST, data)
 }
 
 /**

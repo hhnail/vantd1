@@ -113,7 +113,7 @@ export default function DataRestructure() {
             // 2、再查询分组下的表
             getTables().then(res => {
                 const {data} = res
-                // console.log("sys tables", data)
+                console.log("sys tables", data)
                 setDataSource(data)
                 if (isShowActionMsg) {
                     setBtnFlushLoading(false)

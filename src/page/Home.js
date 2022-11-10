@@ -26,6 +26,7 @@ import ReportDetail from "./Policy/Report/ReportDetail";
 import Report from "./Policy/Report";
 import FreeForm from "./ConfigPlatform/SystemTool/FreeForm";
 import OrganizationManage from "./HumanResource/Organization/manage";
+import StaffManage from "./HumanResource/Staff/StaffManage";
 
 
 export default function Home() {
@@ -239,6 +240,7 @@ export default function Home() {
 
                     {/*===== 人力资本 =====*/}
                     <Route exact path="/humanResource" element={<HumanResource/>}/>
+                    <Route exact path="/humanResource/staff/manage" element={<StaffManage/>}/>
                     <Route exact path="/humanResource/organization/manage" element={<OrganizationManage/>}/>
 
 
